@@ -13,6 +13,11 @@ const loader=async function({expressApp}){
     await sequelize.authenticate();
     Logger.log('info','✌️ DB loaded and connected!');
 
+    await expressLoader.loadModules({app:expressApp});
+    Logger.log('info', '✌️ Express loaded');
+
+    // TODO: setup Redis for session
+
 }
 
 module.exports=loader;
