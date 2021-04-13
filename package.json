@@ -1,0 +1,62 @@
+{
+  "name": "bread-and-breakfast-backend",
+  "version": "1.0.0",
+  "description": "backend to https://desi-airbnb.netlify.app/",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "celebrate": "^14.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-winston": "^4.1.0",
+    "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "node-cmd": "^4.0.0",
+    "nodemon": "^2.0.7",
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon",
+    "sequelize": "env $(cat .env | grep -v ^# | xargs) sequelize"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aquib-J/bread-and-breakfast-backend.git"
+  },
+  "keywords": [
+    "node",
+    "node-project",
+    "jansher",
+    "aquib",
+    "aquib-J",
+    "postgres",
+    "redis",
+    "airbnb",
+    "airbnb-clone",
+    "sequelize",
+    "s3",
+    "heroku",
+    "bulletproof",
+    "node",
+    "backend"
+  ],
+  "author": "Jansher Aquib || aquib-J",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aquib-J/bread-and-breakfast-backend/issues"
+  },
+  "homepage": "https://github.com/aquib-J/bread-and-breakfast-backend#readme"
+}
