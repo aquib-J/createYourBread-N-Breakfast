@@ -16,10 +16,24 @@ Logger.init({ level: config.logs.level });
         process.exit(1);
         return;
       }
-      Logger.log('info', `bread and breakfast on port :${config.port}`,);
+      Logger.log(
+        'info',
+        `Welcome to bread and breakfast
+
+      $$$$$$$\                        $$$$$$$\  
+      $$  __$$\                       $$  __$$\ 
+      $$ |  $$ |      $$$$$$$\        $$ |  $$ |
+      $$$$$$$\ |      $$  __$$\       $$$$$$$\ |
+      $$  __$$\       $$ |  $$ |      $$  __$$\ 
+      $$ |  $$ |      $$ |  $$ |      $$ |  $$ |
+      $$$$$$$  |      $$ |  $$ |      $$$$$$$  |
+      \_______/       \__|  \__|      \_______/  
+      
+      on port :${config.port}`,
+      );
     });
-  }catch(err){
-      console.log('error-------------------------------------------------', err);
-      Logger.log('error','',err);
+  } catch (err) {
+    console.log('error-------------------------------------------------', err);
+    Logger.log('error', '', err);
   }
 })();
