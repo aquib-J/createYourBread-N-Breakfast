@@ -17,18 +17,12 @@ Logger.init({ level: config.logs.level });
         return;
       }
       Logger.log(
-        'info',
-        `Welcome to bread and breakfast
+        'info', //TODO: fix the winston transport error (parses the lines wrong)
+        `
+        ################################################
+            Welcome to bread and breakfast *BnB*
+        ################################################
 
-      $$$$$$$\                        $$$$$$$\  
-      $$  __$$\                       $$  __$$\ 
-      $$ |  $$ |      $$$$$$$\        $$ |  $$ |
-      $$$$$$$\ |      $$  __$$\       $$$$$$$\ |
-      $$  __$$\       $$ |  $$ |      $$  __$$\ 
-      $$ |  $$ |      $$ |  $$ |      $$ |  $$ |
-      $$$$$$$  |      $$ |  $$ |      $$$$$$$  |
-      \_______/       \__|  \__|      \_______/  
-      
       on port :${config.port}`,
       );
     });
