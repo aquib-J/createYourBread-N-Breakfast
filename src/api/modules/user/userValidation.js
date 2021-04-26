@@ -63,4 +63,5 @@ module.exports = {
       body: {},
     },
     { allowUnknown: true, abortEarly: false },
+  ),
 };
