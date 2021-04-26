@@ -6,48 +6,52 @@ module.exports = (queryInterface, DataTypes) => {
             type:DataTypes.STRING,
             primaryKey:true,
         },
-        hostId:{
+        userId:{
             type:DataTypes.STRING,
             allowNull:false,
         },
         pricePerDay:{
-            type:DataTypes.STRING,
+            type:DataTypes.DECIMAL(20,2),
             allowNull:false,
         },
         miscCostPercentage:{
-            type:DataTypes.DATE,
-            allowNull:,
-            default:
+            type:DataTypes.DECIMAL(20,2),
+            allowNull:true,
+            defaultValue:0.0,
         },
         address:{
-            type:DataTypes.String,
-            allowNull:,
-            default:
-        },
-        description:{
-            type:,
-            default:,
-        },
-        cityId:{
-            type:,
-            default:,
-        },
-        avgRating:{
-            type:DataTypes.NUMBER,
+            type:DataTypes.STRING,
             allowNull:false,
         },
-        features:{
+        description:{
             type:DataTypes.STRING,
-            default:"",
+            allowNull:true,
         },
-        ,createdAt:{
-            type:,
-            default:,
+        cityId:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
         },
-        updatedAt:{
-            type:,
-            default:,
+        avgRating:{
+            type:DataTypes.DECIMAL(5,2),
+            allowNull:true,
+            defaultValue:5.0
         },
+        features:{
+            type:DataTypes.JSONB,
+            defaultValue:null,
+        },
+         createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+          updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+          deletedAt: {
+            type: DataTypes.DATE,
+            defaultValue: null,
+          },
 
     },{
         timestamps:true,

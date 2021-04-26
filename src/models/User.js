@@ -15,34 +15,37 @@ module.exports = (queryInterface, DataTypes) => {
             allowNull:false,
         },
         bio:{
-            type:DataTypes.DATE,
-            allowNull:,
-            default:
+            type:DataTypes.STRING,
+            allowNull:true,
         },
-        email:{
-            type:DataTypes.DATE,
-            allowNull:,
-            default:
+        emailId:{
+            type:DataTypes.STRING,
+            allowNull:false,
         },
         password:{
-            type:,
-            default:,
+            type:DataTypes.STRING,
+            defaultValue:null,
         },
         dob:{
-            type:,
-            default:,
+            type:DataTypes.DATEONLY,
+            defaultValue:null,
         },
         profilePictureUrl:{
-            type:DataTypes.NUMBER,
-            allowNull:false,
-        },createdAt:{
-            type:,
-            default:,
-        },
-        updatedAt:{
-            type:,
-            default:,
-        },
+            type:DataTypes.STRING,
+            allowNull:true,
+            defaultValue:null,
+        }, createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+          updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+          deletedAt: {
+            type: DataTypes.DATE,
+            defaultValue: null,
+          },
     },{
         timestamps:true,
         paranoid:true,

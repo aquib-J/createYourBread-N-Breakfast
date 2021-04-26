@@ -15,27 +15,30 @@ module.exports = (queryInterface, DataTypes) => {
             allowNull:false,
         },
         checkinDate:{
-            type:DataTypes.DATE,
-            allowNull:,
-            default:
-        },
-        checkOutDate:{
-            type:DataTypes.DATE,
-            allowNull:,
-            default:
-        },
-        createdAt:{
-            type:,
-            default:,
-        },
-        updatedAt:{
-            type:,
-            default:,
-        },
-        totalPrice:{
-            type:DataTypes.NUMBER,
+            type:DataTypes.DATEONLY,
             allowNull:false,
         },
+        checkOutDate:{
+            type:DataTypes.DATEONLY,
+            allowNull:false,
+        },
+        totalPrice:{
+            type:DataTypes.DECIMAL(20,2),
+            allowNull:false,
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+          updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+          },
+          deletedAt: {
+            type: DataTypes.DATE,
+            defaultValue: null,
+          },
+       
     },{
         timestamps:true,
         paranoid:true,
