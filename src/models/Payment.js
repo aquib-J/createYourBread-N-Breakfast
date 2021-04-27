@@ -44,7 +44,9 @@ module.exports = (queryInterface, DataTypes) => {
   );
 
   payment.associate = function (models) {
+    this.hasOne(models.booking);
     this.belongsTo(models.booking);
+
   };
 
   return payment;

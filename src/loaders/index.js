@@ -5,7 +5,7 @@ const expressLoader = require('./express');
 const Redis = require('./redis');
 
 const loader = async function ({ expressApp }) {
-  if (Config.sequelizeConfig.autoMigrate === 'true' || sequelizeConfig.autoMigrate === true) {
+  if (Config.sequelizeConfig.autoMigrate === 'true' || Config.sequelizeConfig.autoMigrate === true) {
     await migrate();
     Logger.log('info', '** DB Migrated **');
   }

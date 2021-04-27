@@ -35,7 +35,7 @@ module.exports = (queryInterface, DataTypes) => {
   );
 
   state.associate = function (models) {
-    this.hasOne(models.country);
+    this.belongsTo(models.country);
     this.hasMany(models.city);
   };
 

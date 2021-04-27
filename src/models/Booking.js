@@ -14,6 +14,10 @@ module.exports = (queryInterface, DataTypes) => {
             type:DataTypes.STRING,
             allowNull:false,
         },
+        paymentId:{
+            type:DataTypes.INTEGER,
+            allowNull:true,
+        },
         checkinDate:{
             type:DataTypes.DATEONLY,
             allowNull:false,
@@ -46,9 +50,11 @@ module.exports = (queryInterface, DataTypes) => {
 
     booking.associate=function(models){
         this.hasMany(models.review);
-        this.hasOne(models.user);
-        this.hasOne(models.listing);
+        this.hasMany(models.user);
+        this.belongsTo(models.user);
+        this.belongsTo(models.listing);
         this.hasOne(models.payment);
+        this.belongsTo(models.payment);
     };
     booking.addHook('beforeCreate',obj=>{
         obj.id=getCryptoRandom();

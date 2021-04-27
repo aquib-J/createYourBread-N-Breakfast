@@ -3,34 +3,49 @@ const { Op } = require('sequelize');
 module.exports = {
   up: (queryInterface, DataTypes) =>
     queryInterface
-      .createTable('bookings', {
+      .createTable('listings', {
         id: {
           type: DataTypes.STRING,
           primaryKey: true,
+        },
+        listingName: {
+          type: DataTypes.STRING,
+          allowNull: true,
+          defaultValue: null,
         },
         userId: {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        listingId: {
+        pricePerDay: {
+          type: DataTypes.DECIMAL(20, 2),
+          allowNull: false,
+        },
+        miscCostPercentage: {
+          type: DataTypes.DECIMAL(20, 2),
+          allowNull: true,
+          defaultValue: 0.0,
+        },
+        address: {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        paymentId: {
-          type: DataTypes.INTEGER,
+        description: {
+          type: DataTypes.STRING,
           allowNull: true,
         },
-        checkinDate: {
-          type: DataTypes.DATEONLY,
+        cityId: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
-        checkOutDate: {
-          type: DataTypes.DATEONLY,
-          allowNull: false,
+        avgRating: {
+          type: DataTypes.DECIMAL(5, 2),
+          allowNull: true,
+          defaultValue: 5.0,
         },
-        totalPrice: {
-          type: DataTypes.DECIMAL(20, 2),
-          allowNull: false,
+        features: {
+          type: DataTypes.JSONB,
+          defaultValue: null,
         },
         createdAt: {
           type: DataTypes.DATE,
@@ -46,7 +61,7 @@ module.exports = {
         },
       })
       .then(async () => {
-        await queryInterface.addIndex('bookings', ['userId', 'paymentId'], {
+        await queryInterface.addIndex('listings', ['listingName'], {
           unique: true,
           where: {
             deletedAt: {
@@ -56,5 +71,5 @@ module.exports = {
         });
       }),
 
-  down: (queryInterface, DataTypes) => queryInterface.dropTable('bookings'),
+  down: (queryInterface, DataTypes) => queryInterface.dropTable('listings'),
 };

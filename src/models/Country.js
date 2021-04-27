@@ -1,6 +1,6 @@
 module.exports = (queryInterface, DataTypes) => {
   const country = queryInterface.define(
-    'coountry',
+    'country',
     {
       id: {
         type: DataTypes.INTEGER,

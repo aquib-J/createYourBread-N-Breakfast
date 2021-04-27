@@ -3,34 +3,30 @@ const { Op } = require('sequelize');
 module.exports = {
   up: (queryInterface, DataTypes) =>
     queryInterface
-      .createTable('bookings', {
+      .createTable('reviews', {
         id: {
-          type: DataTypes.STRING,
+          type: DataTypes.INTEGER,
           primaryKey: true,
+        },
+        bookingId: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.STRING,
+          allowNull: true,
+          defaultValue:null,
+        },
+        rating: {
+          type: DataTypes.DECIMAL(5,2),
+          allowNull: true,
         },
         userId: {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        listingId: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        paymentId: {
-          type: DataTypes.INTEGER,
-          allowNull: true,
-        },
-        checkinDate: {
-          type: DataTypes.DATEONLY,
-          allowNull: false,
-        },
-        checkOutDate: {
-          type: DataTypes.DATEONLY,
-          allowNull: false,
-        },
-        totalPrice: {
-          type: DataTypes.DECIMAL(20, 2),
-          allowNull: false,
+        byHost:{
+            type:DataTypes.BOOLEAN
         },
         createdAt: {
           type: DataTypes.DATE,
@@ -46,7 +42,7 @@ module.exports = {
         },
       })
       .then(async () => {
-        await queryInterface.addIndex('bookings', ['userId', 'paymentId'], {
+        await queryInterface.addIndex('reviews', ['bookingId'], {
           unique: true,
           where: {
             deletedAt: {
@@ -56,5 +52,5 @@ module.exports = {
         });
       }),
 
-  down: (queryInterface, DataTypes) => queryInterface.dropTable('bookings'),
+  down: (queryInterface, DataTypes) => queryInterface.dropTable('reviews'),
 };

@@ -34,7 +34,7 @@ module.exports = (queryInterface, DataTypes) => {
   );
 
   bookmark.associate = function (models) {
-    this.hasOne(models.listing);
+    this.belongsTo(models.listing);
     this.belongsTo(models.user);
   };
 

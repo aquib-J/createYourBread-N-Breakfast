@@ -1,18 +1,15 @@
-module.exports = (queryInterface, DataTypes) => {
-  const city = queryInterface.define(
-    'city',
-    {
+const { Op } = require('sequelize');
+
+module.exports = {
+  up: (queryInterface, DataTypes) =>
+    queryInterface.createTable('countries', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement:true,
       },
-      cityName: {
+      countryName: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      stateId: {
-        type: DataTypes.INTEGER,
         allowNull: false,
       },
       createdAt: {
@@ -27,17 +24,7 @@ module.exports = (queryInterface, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: null,
       },
-    },
-    {
-      timestamps: true,
-      paranoid: true,
-    },
-  );
+    }),
 
-  city.associate = function (models) {
-    this.belongsTo(models.state);
-    this.hasMany(models.listing);
-  };
-
-  return city;
+  down: (queryInterface, DataTypes) => queryInterface.dropTable('countries'),
 };

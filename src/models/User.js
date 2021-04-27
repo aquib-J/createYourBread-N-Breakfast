@@ -53,6 +53,7 @@ module.exports = (queryInterface, DataTypes) => {
 
     user.associate=function(models){
         this.hasMany(models.booking);
+        this.belongsTo(models.booking);
         this.hasMany(models.listing);
         this.hasMany(models.bookmark);
         this.hasMany(models.review);
