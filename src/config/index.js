@@ -1,5 +1,13 @@
 const config = {
   /**
+   * seed with mock data for tables other than city,state and country
+   */
+  dataMock:
+    process.env.NODE_ENV === 'local' &&
+    (process.env.SEED_WITH_MOCK === true || process.env.SEED_WITH_MOCK.toLowerCase() === 'true')
+      ? true
+      : false,
+  /**
    * port of choice
    */
   port: parseInt(process.env.PORT, 10),

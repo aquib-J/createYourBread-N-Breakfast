@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const {stateArray}=require('./../../src/utils').utilityMethods;
 
 module.exports = {
   up: (queryInterface, DataTypes) =>
@@ -28,6 +29,8 @@ module.exports = {
         type: DataTypes.DATE,
         defaultValue: null,
       },
+    }).then(async ()=>{
+      await queryInterface.bulkInsert('states',stateArray);
     }),
 
   down: (queryInterface, DataTypes) => queryInterface.dropTable('states'),

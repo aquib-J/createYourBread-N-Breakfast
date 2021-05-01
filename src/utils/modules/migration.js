@@ -1,4 +1,4 @@
-const cmd = require('node-cmd');
+const { exec } = require('child_process');
 
 module.exports = () =>
   new Promise((resolve, reject) => {
@@ -6,13 +6,14 @@ module.exports = () =>
       resolve();
     } else {
       if (process.env.NODE_ENV) {
-        cmd.get('sequelize-cli db:migrate', (err, data, stderr) => {
+        exec('sequelize-cli db:migrate', { maxBuffer: 1024 * 20000 }, (err, stdout, stderr) => {
+          // by-default buffer size is 1024KB, we can set a higher range as we've done above
           if (err) {
             reject(err);
           } else if (stderr) {
             reject(stderr);
           } else {
-            resolve(data);
+            resolve();
           }
         });
       } else {
