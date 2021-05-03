@@ -1,14 +1,20 @@
 const { Logger, Migration: migrate } = require('../utils');
 const Config = require('../config');
-const { sequelize } = require('./sequelize');
+const { sequelize, models } = require('./sequelize');
 const expressLoader = require('./express');
 const Redis = require('./redis');
-const {mockAll}=require('./../utils').utilityMethods
+const { mockAll } = require('./../utils').mockAll;
+const { getCryptoRandom:GCR } = require('./../utils').utilityMethods;
 
 const loader = async function ({ expressApp }) {
   if (Config.sequelizeConfig.autoMigrate === 'true' || Config.sequelizeConfig.autoMigrate === true) {
     await migrate();
     Logger.log('info', '** DB Migrated **');
+  }
+
+  if (Config.dataMock) {
+    await mockAll(Config.noOfMockRecords, models,GCR);
+    Logger.log('info', '** DB seeded with mock data **');
   }
 
   await sequelize.authenticate();

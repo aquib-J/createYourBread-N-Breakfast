@@ -7,6 +7,7 @@ module.exports = {
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
         },
         bookingId: {
           type: DataTypes.STRING,
@@ -15,18 +16,18 @@ module.exports = {
         description: {
           type: DataTypes.STRING,
           allowNull: true,
-          defaultValue:null,
+          defaultValue: null,
         },
         rating: {
-          type: DataTypes.DECIMAL(5,2),
+          type: DataTypes.DECIMAL(5, 2),
           allowNull: true,
         },
         userId: {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        byHost:{
-            type:DataTypes.BOOLEAN
+        byHost: {
+          type: DataTypes.BOOLEAN,
         },
         createdAt: {
           type: DataTypes.DATE,

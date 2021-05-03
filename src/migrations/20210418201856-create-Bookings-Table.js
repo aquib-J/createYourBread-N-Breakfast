@@ -20,7 +20,7 @@ module.exports = {
           type: DataTypes.INTEGER,
           allowNull: true,
         },
-        checkinDate: {
+        checkInDate: {
           type: DataTypes.DATEONLY,
           allowNull: false,
         },

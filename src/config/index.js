@@ -8,6 +8,10 @@ const config = {
       ? true
       : false,
   /**
+   *  no of mock entries to create
+   */
+  noOfMockRecords: process.env.NO_OF_MOCK_RECORDS,
+  /**
    * port of choice
    */
   port: parseInt(process.env.PORT, 10),

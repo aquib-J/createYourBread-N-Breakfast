@@ -5,6 +5,7 @@ module.exports = (queryInterface, DataTypes) => {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
       listingId: {
         type: DataTypes.STRING,

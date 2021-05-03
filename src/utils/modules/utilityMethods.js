@@ -4,6 +4,7 @@ const path = require('path');
 const util = require('util');
 const { Logger } = require('.');
 
+
 const readFile = util.promisify(fs.readFile);
 
 let cityArray = [];
@@ -53,13 +54,7 @@ module.exports = {
       throw err;
     }
   },
-  mockAll:async(sequelize)=>{
-    try{
-      Logger.log('info','begin seeding with mock values for the database');
-      
 
-    }catch(err){
-      Logger.log('error','failed to seed the db with mock values',err);
-    }
-  }
 };
+
+
