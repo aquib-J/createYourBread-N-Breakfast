@@ -5,7 +5,7 @@ class UserController {
   static async signup(req, res) {
     try {
       Logger.log('info', 'signing up a user');
-      const servRes = await UserService.signup(req.headers, req.body);
+      const servRes = await UserService.createUser(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
@@ -13,7 +13,7 @@ class UserController {
   }
   static async login(req, res) {
     try {
-      Logger.log('info', 'signing up a user');
+      Logger.log('info', 'loggin in a user');
       const servRes = await UserService.login(req.headers, req.body);
       Response.success(res, servRes);
     } catch (err) {
@@ -22,35 +22,37 @@ class UserController {
   }
   static async logout(req, res) {
     try {
-      Logger.log('info', 'signing up a user');
+      Logger.log('info', 'logging out user');
       const servRes = await UserService.logout(req.headers, req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
     }
   }
-  static async fetchUserInfo(req, res) {
+  static async getUser(req, res) {
     try {
-      Logger.log('info', 'signing up a user');
-      const servRes = await UserService.fetchUserInfo(req.headers, req.body);
+      Logger.log('info', 'fetch user info');
+      const servRes = await UserService.getUser(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
     }
   }
-  static async editUser(req, res) {
+
+  static async getCompleteUserRecord(req, res) {
     try {
-      Logger.log('info', 'signing up a user');
-      const servRes = await UserService.editUser(req.headers, req.body);
+      Logger.log('info', 'fetch complete user data record');
+      const servRes = await UserService.getCompleteUserRecord(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
     }
   }
-  static async createUser(req, res) {
+  static async updateUser(req, res) {
     try {
-      Logger.log('info', 'signing up a user');
-      const servRes = await UserService.createUser(req.headers, req.body);
+      Logger.log('info', 'updating user info');
+        let params={body:req.body,id:req.params.id}
+      const servRes = await UserService.updateUser(params);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
@@ -58,7 +60,7 @@ class UserController {
   }
   static async dpUpload(req, res) {
     try {
-      Logger.log('info', 'signing up a user');
+      Logger.log('info', 'upload user profile pic');
       const servRes = await UserService.dpUpload(req.headers, req.body);
       Response.success(res, servRes);
     } catch (err) {

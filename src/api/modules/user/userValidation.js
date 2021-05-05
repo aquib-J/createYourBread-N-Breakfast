@@ -28,7 +28,7 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  fetchUserInfo: celebrate(
+  getUser: celebrate(
     {
       headers: {},
       query: {},
@@ -37,7 +37,7 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  editUser: celebrate(
+  getCompleteUserRecord: celebrate(
     {
       headers: {},
       query: {},
@@ -46,7 +46,7 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  createUser: celebrate(
+  updateUser: celebrate(
     {
       headers: {},
       query: {},

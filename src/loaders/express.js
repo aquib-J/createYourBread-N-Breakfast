@@ -37,9 +37,10 @@ exports.loadModules = ({ app }) => {
   // Middleware that transforms the raw string of req.body into json
   app.use(bodyParser.json());
 
-  // might come handy some day if sensitive data is stored in prod for 
+  // might come handy some day if sensitive data is stored in prod for
   // something like PCI DSS compliance etc
-  app.use(
+
+  /* app.use(
     AccessLog.global({
       requestWhitelist: ['params', 'body'],
       bodyWhitelist: [],
@@ -48,52 +49,52 @@ exports.loadModules = ({ app }) => {
       headerBlacklist: [],
     }),
   );
-
+*/
   //handle errors from 'celebrate'
-  app.use(errors())
+  app.use(errors());
 
-  //load API routes 
+  //load API routes
   /**
-   * All the APIs reside here among the entire 
-   * middleware pipeline in this express project 
+   * All the APIs reside here among the entire
+   * middleware pipeline in this express project
    */
-  router.loadRoutes(app,prefix);
+  router.loadRoutes(app, prefix);
 
   //catch a 404 and forward to error handler
-  app.use((req,res,next)=>{
-    const err=Error(`Route ${req.url} Not Found`);
-    err.status=StatusCodes.NOT_FOUND;
+  app.use((req, res, next) => {
+    const err = Error(`Route ${req.url} Not Found`);
+    err.status = StatusCodes.NOT_FOUND;
     next(err);
-  })
+  });
 
   // generic error handlers
 
-  app.use((err,req,res,next)=>{
-      /**
-       * Handle some 401 || generic unauthorized due to middleware jwt/validation || bcrypt auth?
-       */
-      if(err.name==='UnauthorizedError'){// generic string for now
-        return Response.fail(res,err.message,err.status);
+  app.use((err, req, res, next) => {
+    /**
+     * Handle some 401 || generic unauthorized due to middleware jwt/validation || bcrypt auth?
+     */
+    if (err.name === 'UnauthorizedError') {
+      // generic string for now
+      return Response.fail(res, err.message, err.status);
     }
     /**
-     * Handle errors originating from celebrate/Joi 
+     * Handle errors originating from celebrate/Joi
      */
-    if(isCelebrateError(err)){
-        return Response.fail(res,err.message,StatusCodes.UNPROCESSABLE_ENTITY,StatusCodes.UNPROCESSABLE_ENTITY,{
-            errors:err.details,
-        });
+    if (isCelebrateError(err)) {
+      return Response.fail(res, err.message, StatusCodes.UNPROCESSABLE_ENTITY, StatusCodes.UNPROCESSABLE_ENTITY, {
+        errors: err.details,
+      });
     }
 
-    return Response.fail(res,err.message,err.status);
+    return Response.fail(res, err.message, err.status);
   });
 
-  app.use((err,req,res)=>{
-      res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR);
-      res.json({
-          errors:{
-              message:err.message,
-          },
-      });
+  app.use((err, req, res) => {
+    res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR);
+    res.json({
+      errors: {
+        message: err.message,
+      },
+    });
   });
-  
 };

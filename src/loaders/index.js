@@ -4,7 +4,7 @@ const { sequelize, models } = require('./sequelize');
 const expressLoader = require('./express');
 const Redis = require('./redis');
 const { mockAll } = require('./../utils').mockAll;
-const { getCryptoRandom:GCR } = require('./../utils').utilityMethods;
+const { getCryptoRandom: GCR } = require('./../utils').utilityMethods;
 
 const loader = async function ({ expressApp }) {
   if (Config.sequelizeConfig.autoMigrate === 'true' || Config.sequelizeConfig.autoMigrate === true) {
@@ -13,7 +13,7 @@ const loader = async function ({ expressApp }) {
   }
 
   if (Config.dataMock) {
-    await mockAll(Config.noOfMockRecords, models,GCR);
+    await mockAll(Config.noOfMockRecords, models, GCR);
     Logger.log('info', '** DB seeded with mock data **');
   }
 

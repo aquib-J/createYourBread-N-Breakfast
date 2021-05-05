@@ -6,6 +6,7 @@ const {
     Migration,
     utilityMethods,
     mockAll,
+    Message,
 } = require('./modules');
 
 
@@ -17,4 +18,5 @@ module.exports={
     Logger,
     Response,
     Migration,
+    Message,
 }
