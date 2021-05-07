@@ -82,4 +82,22 @@ module.exports = {
     resCode: 1011,
     message: 'Invalid date',
   },
+  listingAlreadyBooked: {
+    name: 'CustomError',
+    code: StatusCodes.CONFLICT,
+    resCode: 1012,
+    message: 'The listing has already been booked for the given time slot, please try a different time slot',
+  },
+  failedToFetchListingPrice: {
+    name: 'CustomError',
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    resCode: 1013,
+    message: 'Failed to fetch out the listing price for total price calculation',
+  },
+  BookingNotFound: {
+    name: 'CustomError',
+    code: StatusCodes.NOT_FOUND,
+    resCode: 1014,
+    message: 'Failed to fetch bookings for the user',
+  },
 };

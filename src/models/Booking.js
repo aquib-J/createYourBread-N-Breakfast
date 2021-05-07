@@ -44,7 +44,7 @@ module.exports = (queryInterface, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: null,
       },
-    },
+    },//TODO: add another flag field called status:(ENUM->default(BOOKED))booked/cancelled which will allow this particular listing to be booked post cancellation on the same day and also filtering for double entry becomes easier
     {
       timestamps: true,
       paranoid: true,
