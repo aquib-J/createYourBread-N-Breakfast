@@ -3,8 +3,8 @@ const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const Authentication = require('./AuthenticationService');
 
-class UserService {
-  static async createUser(params) {
+class ReviewService {
+  static async createReview(params) {
     try {
       Logger.log('info', 'fetching user info for idempotency check');
       let user = await models.user.findOne({
@@ -30,13 +30,7 @@ class UserService {
       throw Response.createError(Message.tryAgain, err);
     }
   }
-  static async login(params) {
-    return;
-  }
-  static async logout(params) {
-    return;
-  }
-  static async getUser(params) {
+  static async getUserReviews(params) {
     try {
       Logger.log('info', 'getting user');
       const user = await models.user.findOne({
@@ -54,7 +48,7 @@ class UserService {
     }
   }
 
-  static async updateUser(params) {
+  static async getListingReviews(params) {
     try {
       Logger.log('info', 'updating user ');
       let user = await models.user.update(
@@ -74,12 +68,6 @@ class UserService {
       throw Response.createError(Message.tryAgain, err);
     }
   }
-  static async getCompleteUserRecord(params) {
-    return;
-  }
-  static async dpUpload(params){
-    return;
-  }
 }
 
-module.exports = UserService;
+module.exports = ReviewService;

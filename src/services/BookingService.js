@@ -3,8 +3,8 @@ const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const Authentication = require('./AuthenticationService');
 
-class UserService {
-  static async createUser(params) {
+class BookingService {
+  static async createBooking(params) {
     try {
       Logger.log('info', 'fetching user info for idempotency check');
       let user = await models.user.findOne({
@@ -30,13 +30,8 @@ class UserService {
       throw Response.createError(Message.tryAgain, err);
     }
   }
-  static async login(params) {
-    return;
-  }
-  static async logout(params) {
-    return;
-  }
-  static async getUser(params) {
+
+  static async getBooking(params) {
     try {
       Logger.log('info', 'getting user');
       const user = await models.user.findOne({
@@ -54,32 +49,6 @@ class UserService {
     }
   }
 
-  static async updateUser(params) {
-    try {
-      Logger.log('info', 'updating user ');
-      let user = await models.user.update(
-        {
-          ...params.body,
-        },
-        {
-          where: {
-            id: params.id,
-          },
-        },
-      );
-      if (user) return { data: user.get({ plain: true }) };
-      throw Response.createError(Message.errorUpdatingUser);
-    } catch (err) {
-      Logger.log('error', 'error updating user', err);
-      throw Response.createError(Message.tryAgain, err);
-    }
-  }
-  static async getCompleteUserRecord(params) {
-    return;
-  }
-  static async dpUpload(params){
-    return;
-  }
 }
 
-module.exports = UserService;
+module.exports = BookingService;

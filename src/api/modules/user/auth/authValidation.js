@@ -1,18 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 
 module.exports = {
-  search: celebrate(
-    {
-      headers: {},
-      query: {
-          
-      },
-      params: {},
-      body: {},
-    },
-    { allowUnknown: true, abortEarly: false },
-  ),
-  getListingById: celebrate(
+  signup: celebrate(
     {
       headers: {},
       query: {},
@@ -21,7 +10,7 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  createListing: celebrate(
+  login: celebrate(
     {
       headers: {},
       query: {},
@@ -30,16 +19,7 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  getListingByUserId: celebrate(
-    {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
-    },
-    { allowUnknown: true, abortEarly: false },
-  ),
-  uploadListingImages: celebrate(
+  logout: celebrate(
     {
       headers: {},
       query: {},

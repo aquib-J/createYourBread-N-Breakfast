@@ -3,12 +3,13 @@ const validation = require('./userValidation');
 const controller = require('./userControllers');
 const { Multer } = require('../../../utils');
 const { PushToBody } = require('./../../middlewares');
+
+const authRoutes=require('./auth/authRoutes');
 const router = Router();
 
-router.post('/signup', validation.signup, PushToBody, controller.signup);
-// signs up and creates a user : email id is unique
-router.post('/login', validation.login, controller.login);
-router.get('/logout', validation.logout, controller.logout);
+router.use('/auth',/*validation.tokenSchema,*/authRoutes);
+
+
 
 //fetch user profile details
 router.get('/:id', validation.getUser, PushToBody, controller.getUser);

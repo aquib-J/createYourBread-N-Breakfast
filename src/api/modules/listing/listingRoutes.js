@@ -1,11 +1,11 @@
 const { Router } = require('express');
 const validation = require('./listingValidation');
-const controller = require('./listingController');
+const controller = require('./listingControllers');
 const { Multer } = require('../../../utils');
 const { PushToBody } = require('./../../middlewares');
 const router = Router();
 
-// search using query params : which contains city for now with pageNo & pageSize as optional values 
+// search using query params : currently supports : ?city='..'&pageNo=''&resultsPerPage=''&upperPriceLimit=''&lowerPriceLimit=''&rating='' 
 router.get('/search', validation.search, PushToBody, controller.search);
 
 // create a new Listing 
@@ -18,6 +18,6 @@ router.get('/:listingId', validation.getListingById, controller.getListingById);
 router.get('user-id/:userId', validation.getListingByUserId, controller.getListingByUserId);
 
 //upload a users profile pic
-router.post('/upload-images', Multer.array('image',5), validation.uploadListingImages, controller.uploadListingImages);
+router.post('/upload-images', Multer.array('images',5), validation.uploadListingImages, controller.uploadListingImages);
 
 module.exports = router;

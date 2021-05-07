@@ -8,7 +8,7 @@ const location = require('./modules/location/locationRoutes');
 // const payment =require('./modules/payment/paymentRoutes'); //TODO: razorpay Integration : possibly might need to change the payment table migration/models
 
 exports.loadRoutes = (app, prefix) => {
-  app.use(`${prefix}/v1/user`, user); // TODO: relocate signup, login, logout into /user/auth -> {} separate auth module inside
+  app.use(`${prefix}/v1/user`, user);
   app.use(`${prefix}/v1/booking`, booking);
   app.use(`${prefix}/v1/listing`, listing);
   app.use(`${prefix}/v1/review`, review);
