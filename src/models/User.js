@@ -61,6 +61,9 @@ module.exports = (queryInterface, DataTypes) => {
     user.addHook('beforeCreate',obj=>{
         obj.id=getCryptoRandom();
     });
+    user.addHook('afterCreate',obj=>{
+        delete obj.dataValues.password;
+    });
 
     return user;
 };

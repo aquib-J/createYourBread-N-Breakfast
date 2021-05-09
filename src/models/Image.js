@@ -5,7 +5,7 @@ module.exports = (queryInterface, DataTypes) => {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement:true,
+        autoIncrement: true,
       },
       listingId: {
         type: DataTypes.STRING,
@@ -18,7 +18,7 @@ module.exports = (queryInterface, DataTypes) => {
       metadata: {
         type: DataTypes.JSONB,
         allowNull: true,
-        defaultValue:null
+        defaultValue: null,
       },
       createdAt: {
         type: DataTypes.DATE,

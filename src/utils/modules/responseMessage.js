@@ -100,4 +100,16 @@ module.exports = {
     resCode: 1014,
     message: 'Failed to fetch bookings for the user',
   },
+  IncorrectPassword:{
+    name:'CustomError',
+    code: StatusCodes.UNAUTHORIZED,
+    resCode:1015,
+    message: 'Incorrect password'
+  },
+  ListingNameExists:{
+    name:'CustomError',
+    code: StatusCodes.CONFLICT,
+    resCode:1016,
+    message: 'Listing Name already Exists, Please try a different Name'
+  }
 };

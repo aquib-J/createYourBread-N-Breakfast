@@ -44,7 +44,7 @@ module.exports = (queryInterface, DataTypes) => {
       timestamps: true,
       paranoid: true,
     },
-  );
+  );//TODO: add listing Id column here and change the association between review and booking to review & listing
 
   review.associate = function (models) {
     this.belongsTo(models.booking);

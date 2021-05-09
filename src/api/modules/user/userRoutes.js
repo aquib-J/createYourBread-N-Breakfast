@@ -4,12 +4,10 @@ const controller = require('./userControllers');
 const { Multer } = require('../../../utils');
 const { PushToBody } = require('./../../middlewares');
 
-const authRoutes=require('./auth/authRoutes');
+const authRoutes = require('./auth/authRoutes');
 const router = Router();
 
-router.use('/auth',/*validation.tokenSchema,*/authRoutes);
-
-
+router.use('/auth', /*validation.tokenSchema,*/ authRoutes);
 
 //fetch user profile details
 router.get('/:id', validation.getUser, PushToBody, controller.getUser);
@@ -21,6 +19,6 @@ router.patch('/:id', validation.updateUser, controller.updateUser);
 router.post('/dp-upload', Multer.single('image'), validation.dpUpload, controller.dpUpload);
 
 // fetch All Data associated with a particular user
-router.get('/complete-user-record/:id',validation.getCompleteUserRecord,PushToBody,controller.getCompleteUserRecord);
+router.get('/complete-user-record/:id', validation.getCompleteUserRecord, PushToBody, controller.getCompleteUserRecord);
 
 module.exports = router;

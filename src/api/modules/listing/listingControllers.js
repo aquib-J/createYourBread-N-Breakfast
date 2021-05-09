@@ -24,8 +24,7 @@ class ListingController {
   static async getListingById(req, res) {
     try {
       Logger.log('info', 'fetching all the listings by listing id');
-      let params = { body: req.body, id: req.params.id };
-      const servRes = await ListingService.getListingById(params);
+      const servRes = await ListingService.getListingById(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

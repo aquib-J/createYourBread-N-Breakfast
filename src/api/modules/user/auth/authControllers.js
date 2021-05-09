@@ -13,8 +13,8 @@ class AuthController {
   }
   static async login(req, res) {
     try {
-      Logger.log('info', 'loggin in a user');
-      const servRes = await UserService.login(req.headers, req.body);
+      Logger.log('info', 'logging in a user');
+      const servRes = await UserService.login(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

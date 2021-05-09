@@ -7,6 +7,7 @@ class UserService {
   static async createUser(params) {
     try {
       Logger.log('info', 'fetching user info for idempotency check');
+
       let user = await models.user.findOne({
         attributes: ['id'],
         where: {
@@ -15,12 +16,18 @@ class UserService {
         raw: true,
       });
       if (user) throw Response.createError(Message.userExists);
-      Logger.log('info', 'creating user');
+
+      Logger.log('info', 'generating hash ');
+
+      const password = await Authentication.hashPassword(params.password);
+
+      Logger.log('info', 'creating user record in db');
+
       user = await models.user.create({
         firstName: params.firstName,
         lastName: params.lastName,
         emailId: params.emailId,
-        password: params.password,
+        password,
         dob: params.dob,
         profilePictureUrl: params.profilePictureUrl,
       });
@@ -31,7 +38,28 @@ class UserService {
     }
   }
   static async login(params) {
-    return;
+    try {
+      Logger.log('info', 'fetching the user info from db');
+
+      const hash = await models.user.findOne({
+        attributes: ['password'],
+        where: {
+          emailId: params.emailId,
+        },
+        raw: true,
+      });
+
+      if (!hash) throw Response.createError(Message.userNotFound);
+
+      const passwordMatches = await Authentication.compareHashedPassword(params.password, hash.password);
+
+      if (passwordMatches) return { data: passwordMatches };
+
+      throw Response.createError(Message.IncorrectPassword);
+    } catch (err) {
+      Logger.log('error', 'error in user login', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
   }
   static async logout(params) {
     return;
@@ -77,7 +105,7 @@ class UserService {
   static async getCompleteUserRecord(params) {
     return;
   }
-  static async dpUpload(params){
+  static async dpUpload(params) {
     return;
   }
 }
