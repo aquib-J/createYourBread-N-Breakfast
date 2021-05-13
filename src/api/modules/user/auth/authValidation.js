@@ -28,4 +28,22 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
+  getResetLink: celebrate(
+    {
+      headers: {},
+      query: {},
+      params: {},
+      body: {},
+    },
+    { allowUnknown: true, abortEarly: false },
+  ),
+  reset: celebrate(
+    {
+      headers: {},
+      query: {},
+      params: {},
+      body: {},
+    },
+    { allowUnknown: true, abortEarly: false },
+  ),
 };

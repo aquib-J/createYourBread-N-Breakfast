@@ -2,23 +2,29 @@ const { Router } = require('express');
 const validation = require('./userValidation');
 const controller = require('./userControllers');
 const { Multer } = require('../../../utils');
-const { PushToBody } = require('./../../middlewares');
+const { PushToBody, Authenticate } = require('./../../middlewares');
 
 const authRoutes = require('./auth/authRoutes');
 const router = Router();
 
-router.use('/auth', /*validation.tokenSchema,*/ authRoutes);
+router.use('/auth', authRoutes);
 
 //fetch user profile details
-router.get('/:id', validation.getUser, PushToBody, controller.getUser);
+router.get('/:id', validation.getUser, Authenticate.checkSession, PushToBody, controller.getUser);
 
 // edit user profile info
-router.patch('/:id', validation.updateUser, controller.updateUser);
+router.patch('/:id', validation.updateUser, Authenticate.checkSession, controller.updateUser);
 
 //upload a users profile pic
-router.post('/dp-upload', Multer.single('image'), validation.dpUpload, controller.dpUpload);
+router.post('/dp-upload', Multer.single('image'), Authenticate.checkSession, validation.dpUpload, controller.dpUpload);
 
 // fetch All Data associated with a particular user
-router.get('/complete-user-record/:id', validation.getCompleteUserRecord, PushToBody, controller.getCompleteUserRecord);
+router.get(
+  '/complete-user-record/:id',
+  validation.getCompleteUserRecord,
+  Authenticate.checkSession,
+  PushToBody,
+  controller.getCompleteUserRecord,
+);
 
 module.exports = router;

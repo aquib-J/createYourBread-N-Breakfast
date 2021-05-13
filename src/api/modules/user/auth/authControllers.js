@@ -14,7 +14,7 @@ class AuthController {
   static async login(req, res) {
     try {
       Logger.log('info', 'logging in a user');
-      const servRes = await UserService.login(req.body);
+      const servRes = { message: `user successfully logged in` };
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
@@ -23,7 +23,7 @@ class AuthController {
   static async logout(req, res) {
     try {
       Logger.log('info', 'logging out user');
-      const servRes = await UserService.logout(req.body);
+      const servRes = { message: `user successfully logged out !!` };
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

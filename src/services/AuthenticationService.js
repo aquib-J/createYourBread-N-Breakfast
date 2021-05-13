@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('./../utils');
 
 const SALT_ROUNDS = 12;
@@ -10,7 +11,7 @@ class Authentication {
       const hash = await bcrypt.hash(plainTextPassword, salt);
       return hash;
     } catch (err) {
-      Logger.log('error', 'error hashing the password using bcrypt',err);
+      Logger.log('error', 'error hashing the password using bcrypt', err);
       Response.createError(Message.tryAgain, err);
     }
   }
@@ -21,17 +22,25 @@ class Authentication {
       const status = await bcrypt.compare(plainTextPassword, hash);
       return status;
     } catch (err) {
-      Logger.log('error', 'error hashing password using bcrypt',err);
+      Logger.log('error', 'error hashing password using bcrypt', err);
       Response.createError(Message.tryAgain, err);
     }
   }
 
-  static async setCookie() {
-    return;
-  }
-
-  static async parseSession() {
-    return;
+  static async fetchUserHash(params) {
+    try {
+      const hash = await models.user.findOne({
+        attributes: ['password', 'id'],
+        where: {
+          emailId: params.emailId,
+        },
+        raw: true,
+      });
+      return hash;
+    } catch (err) {
+      Logger.log('error', 'error fetching the hash with the email Id ', err);
+      Response.createError(Message.tryAgain, err);
+    }
   }
 }
 

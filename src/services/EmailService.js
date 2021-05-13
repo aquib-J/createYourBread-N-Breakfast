@@ -7,11 +7,11 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS,
   },
-  logger:true,
-  debug:true,
+  logger: false,
+  debug: false,
 });
 
-const generateMail = ({from, to, sub, text, html, cc = '', bcc = ''}) => {
+const generateMail = ({ from, to, sub, text, html, cc = '', bcc = '' }) => {
   return {
     from: from || `Bread & Breakfast 🏠🌍☕️🍔🍕🍣 🛌 <${process.env.EMAIL}>`,
     to,
@@ -19,35 +19,30 @@ const generateMail = ({from, to, sub, text, html, cc = '', bcc = ''}) => {
     bcc,
     subject: sub,
     text, // plain body text
-    html=html || `<p><b>Hello</b> to Bread & Breakfast 🏠🌍☕️🍔 <img src="cid:note@example.com"/></p>
+    html:
+      html ||
+      `<p><b>Hello</b> to Bread & Breakfast 🏠🌍☕️🍔 <img src="cid:note@example.com"/></p>
     <p>Here's a nyan cat for you as an embedded attachment:<br/><img src="cid:nyan@example.com"/></p>`, //multiline html content supported with backticks
   };
 };
 
 class Email {
-    /**
-   *
-   * @param {Object} params
-   * @param {Object} params.features
-   * @param {number} params.cityId
-   * @param {number} params.pricePerDay
-   * @param {Array[Object]} params.listingImages
-   * @param {string} params.listingImages.url
-   * @param {Object} params.listingImages.metadata
-   * @returns {Promise<void>}
-   */
-  static async signupEmail(params) {
-    try{
-    const config={
+  static async signupEmail(email) {
+    try {
+      const config = {
         from: `Bread & Breakfast 🏠🌍☕️🍔🍕🍣 🛌 <aquib.jansher@gmail.com>`,
-        to:params.email,
-
-    }
-    const sentMail = await transporter.sendMail(generateMail(config));
-    return sentMail;
-    }catch(err){
-        Logger.log('error',Message.tryAgain,err);
-        Response.createError(Message.tryAgain,err);
+        to: email,
+        sub: `Welcome to Bread and Breakfast !!`,
+        text: 'welcome to our amazing test site',
+        html: `<p><b>Hello</b> to Bread & Breakfast 🏠🌍☕️🍔 <img src="cid:note@example.com"/></p>
+        <p>Here's a nyan cat for you as an embedded attachment:<br/><img src="cid:nyan@example.com"/></p>`,
+      };
+      const sentMail = await transporter.sendMail(generateMail(config));
+      if (sentMail) return sentMail;
+      Response.createError(Message.FailedToSendEmail);
+    } catch (err) {
+      Logger.log('error', Message.tryAgain, err);
+      Response.createError(Message.tryAgain, err);
     }
   }
   static async passwordResetEmail(params) {

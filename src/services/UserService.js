@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const Authentication = require('./AuthenticationService');
+const Email = require('./EmailService');
 
 class UserService {
   static async createUser(params) {
@@ -31,45 +32,24 @@ class UserService {
         dob: params.dob,
         profilePictureUrl: params.profilePictureUrl,
       });
+
+      Logger.log('info', 'sending welcome email to the user');
+
+      await Email.signupEmail(params.emailId); //TODO: move it to a job-queue or a worker thread, takes too long
+
       return { data: user.get({ plain: true }) };
     } catch (err) {
       Logger.log('error', 'error creating user ', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }
-  static async getResetLink(params){
+  static async getResetLink(params) {
     return;
   }
-  static async reset(params){
+  static async reset(params) {
     return;
   }
-  static async login(params) {
-    try {
-      Logger.log('info', 'fetching the user info from db');
 
-      const hash = await models.user.findOne({
-        attributes: ['password'],
-        where: {
-          emailId: params.emailId,
-        },
-        raw: true,
-      });
-
-      if (!hash) throw Response.createError(Message.userNotFound);
-
-      const passwordMatches = await Authentication.compareHashedPassword(params.password, hash.password);
-
-      if (passwordMatches) return { data: passwordMatches };
-
-      throw Response.createError(Message.IncorrectPassword);
-    } catch (err) {
-      Logger.log('error', 'error in user login', err);
-      throw Response.createError(Message.tryAgain, err);
-    }
-  }
-  static async logout(params) {
-    return;
-  }
   static async getUser(params) {
     try {
       Logger.log('info', 'getting user');
@@ -114,7 +94,6 @@ class UserService {
   static async dpUpload(params) {
     return;
   }
- 
 }
 
 module.exports = UserService;

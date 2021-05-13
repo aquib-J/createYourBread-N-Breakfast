@@ -1,6 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 
-// list of possible customer error messages and codes | can be extended and added as required.
+// list of possible custom error messages and codes | can be extended and added as required.
 
 // custom error code helps track down the exact cause of the error
 
@@ -28,11 +28,11 @@ module.exports = {
     resCode: 1002,
     message: 'error updating User, please try again',
   },
-  tokenMissing: {
+  sessionMissing: {
     name: 'CustomError',
     code: StatusCodes.UNAUTHORIZED,
     resCode: 1003,
-    message: 'cognito id token missing',
+    message: 'session not found for the user, please log in again',
   },
   userIdMissing: {
     name: 'CustomError',
@@ -100,16 +100,28 @@ module.exports = {
     resCode: 1014,
     message: 'Failed to fetch bookings for the user',
   },
-  IncorrectPassword:{
-    name:'CustomError',
+  IncorrectPassword: {
+    name: 'CustomError',
     code: StatusCodes.UNAUTHORIZED,
-    resCode:1015,
-    message: 'Incorrect password'
+    resCode: 1015,
+    message: 'Incorrect password',
   },
-  ListingNameExists:{
-    name:'CustomError',
+  ListingNameExists: {
+    name: 'CustomError',
     code: StatusCodes.CONFLICT,
-    resCode:1016,
-    message: 'Listing Name already Exists, Please try a different Name'
-  }
+    resCode: 1016,
+    message: 'Listing Name already Exists, Please try a different Name',
+  },
+  FailedToSendEmail: {
+    name: 'CustomError',
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    resCode: 1017,
+    message: 'Nodemailer failed to send email, please try again',
+  },
+  FailedToDeleteSession: {
+    name: 'CustomError',
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    resCode: 1018,
+    message: 'Failed to destroy user session, please try again',
+  },
 };
