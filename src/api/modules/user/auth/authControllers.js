@@ -23,7 +23,25 @@ class AuthController {
   static async logout(req, res) {
     try {
       Logger.log('info', 'logging out user');
-      const servRes = await UserService.logout(req.headers, req.body);
+      const servRes = await UserService.logout(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
+  static async getResetLink(req, res) {
+    try {
+      Logger.log('info', 'generating reset link');
+      const servRes = await UserService.getResetLink(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
+  static async reset(req, res) {
+    try {
+      Logger.log('info', 'resetting the new credentials');
+      const servRes = await UserService.reset(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

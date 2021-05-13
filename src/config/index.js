@@ -41,7 +41,17 @@ const config = {
     },
   },
   /**
-   * Your secret sauce
+   *
+   * Session stuff
+   *
+   */
+
+  sessionSecret: process.env.SESSION_SECRET,
+  sessionExpiry: process.env.SESSION_EXPIRY,
+  cookieName: process.env.SESSION_COOKIE_NAME,
+
+  /**
+   * Your secret sauce || not a good idea except for service to service communication
    */
   jwtSecret: process.env.JWT_SECRET,
 

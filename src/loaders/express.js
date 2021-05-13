@@ -6,8 +6,15 @@ const methodOverride = require('method-override');
 const { Logger, Response, AccessLog } = require('../utils');
 const { errors, isCelebrateError } = require('celebrate');
 const morgan = require('morgan');
+const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
 const { prefix } = require('./../config/index').api;
+
+const connectRedis = require('connect-redis');
+const redisClient = require('./redis');
+const session = require('express-session');
+
+const RedisStore = connectRedis(session);
 
 const router = require('../api');
 
@@ -20,9 +27,16 @@ exports.loadModules = ({ app }) => {
     Response.success(res, 'success');
   });
 
+  // pandoras box of security best practices, in a single package
+  // including but not limited to removing x-powered-by for powered by attacks etc
+  app.use(helmet());
+
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
-  // It shows the real origin IP in the heroku or Cloudwatch logs
-  app.enable('trust proxy');
+  // It shows the real origin IP in the heroku or Cloudwatch logs,
+  // but more importantly for the X-forwarded-to header chain
+  // and smooth protocol switching from secure proxy to unsecure localhost containers/servers
+
+  app.enable('trust proxy'); // vs 'trust proxy', 1 --> directly specify a single hop
 
   // HTTP request logger
   app.use(morgan('dev'));
@@ -52,6 +66,25 @@ exports.loadModules = ({ app }) => {
 */
   //handle errors from 'celebrate'
   app.use(errors());
+
+  /**
+   * cookie-session handling with redis as the session store
+   *
+   */
+  app.use(
+    session({
+      store: new RedisStore({ client: redisClient.getClient() }),
+      secret: process.env.SESSION_SECRET || 'Random difficult string 12345',
+      saveUninitialized: false,
+      resave: false,
+      name: process.env.SESSION_COOKIE_NAME || 'Session-ID',
+      cookie: {
+        secure: false, // to allow localhost testing , to be set to true in prod
+        httpOnly: true,
+        maxAge: parseInt(process.env.SESSION_EXPIRY) || 5 * 60 * 1000,
+      },
+    }),
+  );
 
   //load API routes
   /**

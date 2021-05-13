@@ -37,6 +37,12 @@ class UserService {
       throw Response.createError(Message.tryAgain, err);
     }
   }
+  static async getResetLink(params){
+    return;
+  }
+  static async reset(params){
+    return;
+  }
   static async login(params) {
     try {
       Logger.log('info', 'fetching the user info from db');
@@ -108,6 +114,7 @@ class UserService {
   static async dpUpload(params) {
     return;
   }
+ 
 }
 
 module.exports = UserService;

@@ -7,9 +7,9 @@
  */
 module.exports = (req, res, next) => {
   if (req.method === 'GET') {
-    Object.assign(req.body, req.query, req.params);
+    Object.assign(req.body, req.query, req.params, req.session);
   } else {
-    Object.assign(req.body, req.params);
+    Object.assign(req.body, req.params, req.session);
   }
   next();
 };

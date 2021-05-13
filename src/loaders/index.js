@@ -16,12 +16,8 @@ const loader = async function ({ expressApp }) {
     await mockAll(Config.noOfMockRecords, models, GCR);
     Logger.log('info', '** DB seeded with mock data **');
   }
-
   await sequelize.authenticate();
   Logger.log('info', '** DB loaded and connected! **');
-
-  await expressLoader.loadModules({ app: expressApp });
-  Logger.log('info', '** Express loaded **');
 
   if (Config.redis.enabled) {
     await Redis.init();
@@ -29,6 +25,9 @@ const loader = async function ({ expressApp }) {
   } else {
     Logger.log('info', '** Redis disabled **');
   }
+
+  await expressLoader.loadModules({ app: expressApp});
+  Logger.log('info', '** Express loaded **');
 };
 
 module.exports = loader;
