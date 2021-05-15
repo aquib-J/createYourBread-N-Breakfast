@@ -124,4 +124,17 @@ module.exports = {
     resCode: 1018,
     message: 'Failed to destroy user session, please try again',
   },
+  ResetFailedDueToSession: {
+    name: 'CustomError',
+    code: StatusCodes.UNAUTHORIZED,
+    resCode: 1019,
+    message:
+      'Failed to Reset due to either having expired token or due to incorrect session info or resetToken in params',
+  },
+  FailedToCreateSession: {
+    name: 'CustomError',
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    resCode: 1020,
+    message: 'Failed to regenerate user session, please try again',
+  },
 };

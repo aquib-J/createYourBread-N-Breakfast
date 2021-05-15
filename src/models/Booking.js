@@ -53,7 +53,7 @@ module.exports = (queryInterface, DataTypes) => {
 
   booking.associate = function (models) {
     this.hasMany(models.review);
-    this.hasMany(models.user);
+    // this.hasMany(models.user); //TODO: resolve many to many user<-->booking through a join table
     this.belongsTo(models.user);
     this.belongsTo(models.listing);
     this.hasOne(models.payment);

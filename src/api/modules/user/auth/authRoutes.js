@@ -15,8 +15,21 @@ route.post('/login', validation.login, Authenticate.attachSession, PushToBody, c
 
 route.get('/logout', Authenticate.checkSession, Authenticate.destroySession, controller.logout);
 
-route.post('/reset-link', validation.getResetLink, controller.getResetLink);
+route.post(
+  '/reset-link',
+  validation.getResetLink,
+  Authenticate.attachResetSession,
+  PushToBody,
+  controller.getResetLink,
+);
 
-route.post('/reset', validation.reset, controller.reset);
+route.post(
+  '/reset/:resetToken',
+  validation.reset,
+  Authenticate.checkSession,
+  Authenticate.destroySession,
+  PushToBody,
+  controller.reset,
+);
 
 module.exports = route;

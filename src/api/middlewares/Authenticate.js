@@ -1,11 +1,33 @@
 const { Logger, Response, Message } = require('../../utils');
 const { AuthenticationService } = require('../../services');
+const { v4: uuidv4 } = require('uuid');
 
 class Authenticate {
-  static checkSession(req, res, next) {
-    if (req.session && req.session.session && req.session.session.emailId && req.session.session.userId) {
-        //TODO: add checks for mismatch between the info in session and the one passed down in the req call once all the APIs are complete,
-      next();
+  static async checkSession(req, res, next) {
+    if (req.session && req.session.session) {
+      if (req.session.session.emailId && req.session.session.userId) {
+        next();
+      } else if (req.session.session.resetToken && req.session.session.expireToken) {
+        const hash = await AuthenticationService.fetchUserHash(req.body);
+
+        if (!hash) {
+          Response.fail(res, Response.createError(Message.userNotFound));
+          return;
+        }
+        if (
+          req.params.resetToken === req.session.session.resetToken &&
+          Date.now() - parseInt(req.session.session.expireToken) <= 0
+        ) {
+          next();
+        } else {
+          Response.fail(res, Response.createError(Message.ResetFailedDueToSession));
+          return;
+        }
+      } else {
+        Response.fail(res, Response.createError(Message.sessionMissing));
+        return;
+      }
+      //TODO: add checks for mismatch between the info in session and the one passed down in the req call once all the APIs are complete,
     } else {
       Response.fail(res, Response.createError(Message.sessionMissing));
       return;
@@ -46,13 +68,40 @@ class Authenticate {
   }
   static destroySession(req, res, next) {
     // destroy the session && clear the cookie( doesnt close the connection )
-    req.session.destroy((err) => {
-      if (err) Response.fail(res, Response.createError(Message.FailedToDeleteSession));
+    if (req.session) {
+      req.session.destroy((err) => {
+        if (err) Response.fail(res, Response.createError(Message.FailedToDeleteSession));
 
-      res.clearCookie(process.env.SESSION_COOKIE_NAME);
+        res.clearCookie(process.env.SESSION_COOKIE_NAME);
 
-      next();
-    });
+        next();
+      });
+    } else next();
+  }
+  static async attachResetSession(req, res, next) {
+    try {
+      const hash = await AuthenticationService.fetchUserHash(req.body);
+
+      if (!hash) {
+        Response.fail(res, Response.createError(Message.userNotFound));
+        return;
+      }
+// destroys and creates a new session if previously existed or just creates a new one
+      req.session.regenerate((err) => {
+        if (err) {
+          Response.fail(res, Response.createError(Message.FailedToCreateSession));
+          return;
+        }
+        req.session.session = {
+          resetToken: uuidv4(),
+          expireToken: Date.now() + 1 * 60 * 60 * 1000, // 1 hr of expiry time
+        };
+        next();
+      });
+    } catch (err) {
+      Logger.log('error', 'error in attach Reset Session middleware', err);
+      next(Response.createError(Message.tryAgain, err));
+    }
   }
 }
 

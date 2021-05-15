@@ -35,7 +35,7 @@ class UserService {
 
       Logger.log('info', 'sending welcome email to the user');
 
-      await Email.signupEmail(params.emailId); //TODO: move it to a job-queue or a worker thread, takes too long
+      Email.signupEmail(params.emailId); //TODO: move it to a job-queue & orchestrate batches or push them onto a worker thread so that when multiple concurrent signups happen, the next tick doesnt block everything else when it starts picking up these queued promise tasks
 
       return { data: user.get({ plain: true }) };
     } catch (err) {
@@ -44,10 +44,37 @@ class UserService {
     }
   }
   static async getResetLink(params) {
-    return;
+    try {
+      Logger.log('info', ' sending the reset email with the token');
+      let obj = { emailId: params.emailId, resetToken: params.session.resetToken };
+      // Email.passwordResetEmail(obj);
+      return { message: `Email with the reset link sent successfully`, data: obj.resetToken };
+    } catch (err) {
+      Logger.log('error', 'error in sending reset link', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
   }
   static async reset(params) {
-    return;
+    try {
+      Logger.log('info', 'updating the user credentials in the db');
+
+      const password = await Authentication.hashPassword(params.password);
+
+      const user = await models.user.update(
+        { password },
+        { where: { emailId: params.emailId }, returning: true, plain: true },
+      );
+
+      let plainUser = JSON.parse(JSON.stringify(user[1]));
+
+      ['password', 'createdAt', 'updatedAt', 'deletedAt'].forEach((field) => delete plainUser[field]);
+
+      //TODO: send an email as well saying your login credentials have been updated
+      return { data: plainUser };
+    } catch (err) {
+      Logger.log('error', 'error in reseting the user credentials', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
   }
 
   static async getUser(params) {
