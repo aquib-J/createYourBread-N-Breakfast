@@ -7,7 +7,7 @@ module.exports = (queryInterface, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      bookingId: {
+      listingId: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -23,9 +23,6 @@ module.exports = (queryInterface, DataTypes) => {
       userId: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      byHost: {
-        type: DataTypes.BOOLEAN,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -44,10 +41,10 @@ module.exports = (queryInterface, DataTypes) => {
       timestamps: true,
       paranoid: true,
     },
-  );//TODO: add listing Id column here and change the association between review and booking to review & listing
+  );
 
   review.associate = function (models) {
-    this.belongsTo(models.booking);
+    this.belongsTo(models.listing);
     this.belongsTo(models.user);
   };
 

@@ -37,17 +37,14 @@ module.exports = {
     if (!_.isObject(defaultMeta) || _.isArray(defaultMeta)) {
       throw new Error('invalid default meta');
     }
-    if (!_.isEmpty(transports)) {
+    if (_.isEmpty(transports)) {
       if (process.env.NODE_ENV === 'local') {
         transports.push(
           new winston.transports.Console({
             format: winston.format.combine(winston.format.cli(), winston.format.simple()),
           }),
         );
-      }
-      // heroku doesn't support
-      /* 
-      else {
+      } else {
         const fileTransport = new winston.transports.DailyRotateFile({
           filename: `/var/log/${Config.service.name}/app.log.%DATE%`,
           datePattern: 'YYYY-MM-DD',
@@ -65,7 +62,6 @@ module.exports = {
           fileTransport,
         );
       }
-      */
     }
     if (!_.isEmpty(defaultMeta) || !defaultMeta.service) {
       defaultMeta.application = Config.service.name;

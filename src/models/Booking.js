@@ -44,7 +44,11 @@ module.exports = (queryInterface, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: null,
       },
-    },//TODO: add another flag field called status:(ENUM->default(BOOKED))booked/cancelled which will allow this particular listing to be booked post cancellation on the same day and also filtering for double entry becomes easier
+      status: {
+        type: DataTypes.ENUM(['BOOKED', 'CANCELLED']),
+        defaultValue: 'BOOKED',
+      },
+    },
     {
       timestamps: true,
       paranoid: true,
@@ -52,8 +56,6 @@ module.exports = (queryInterface, DataTypes) => {
   );
 
   booking.associate = function (models) {
-    this.hasMany(models.review);
-    // this.hasMany(models.user); //TODO: resolve many to many user<-->booking through a join table
     this.belongsTo(models.user);
     this.belongsTo(models.listing);
     this.hasOne(models.payment);

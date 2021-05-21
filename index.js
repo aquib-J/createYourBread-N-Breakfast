@@ -14,7 +14,7 @@ const { secrets, configurations } = require('./config');
 
     await require(path.join(__dirname, 'src', 'app.js'));
 
-    console.log('Loaded main application');
+    console.log('🚀 Loaded main application');
  
 } catch (err) {
     console.log('Error in entry point index.js', err);

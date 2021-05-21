@@ -17,10 +17,10 @@ Logger.init({ level: config.logs.level });
         return;
       }
       Logger.log(
-        'info', //TODO: fix the winston transport error (parses the lines wrong)
+        'info',
         `
         ################################################
-            Welcome to bread and breakfast *BnB*
+          🌿🍁  Welcome to bread and breakfast 🌿🍁
         ################################################
 
       on port :${config.port}`,

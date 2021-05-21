@@ -29,20 +29,20 @@ class AccessLog {
       }),
     ];
     // works on ec2/ ecs deployment : not on heroku
-    /*
-      if (!Config.isLocal) { 
-        const fileTransport = new winston.transports.DailyRotateFile({
-          filename: `/var/log/${Config.service.name}/access.log.%DATE%`,
-          datePattern: 'YYYY-MM-DD',
-          zippedArchive: true,
-          handleExceptions: true,
-          json: true,
-          maxSize: '100m',
-          maxFiles: '15d',
-          format: winston.format.json(),
-        });
-        transports.push(fileTransport);
-      }*/
+
+    if (!Config.isLocal) {
+      const fileTransport = new winston.transports.DailyRotateFile({
+        filename: `/var/log/${Config.service.name}/access.log.%DATE%`,
+        datePattern: 'YYYY-MM-DD',
+        zippedArchive: true,
+        handleExceptions: true,
+        json: true,
+        maxSize: '100m',
+        maxFiles: '15d',
+        format: winston.format.json(),
+      });
+      transports.push(fileTransport);
+    }
 
     return expressWinston.logger({
       transports,

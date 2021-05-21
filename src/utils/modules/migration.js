@@ -13,7 +13,7 @@ module.exports = () =>
           } else if (stderr) {
             reject(stderr);
           } else {
-            resolve();
+            resolve(stdout);
           }
         });
       } else {

@@ -59,6 +59,10 @@ module.exports = (queryInterface, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: null,
       },
+      status: {
+        type: DataTypes.ENUM(['BOOKED', 'AVAILABLE']),
+        defaultValue: 'AVAILABLE',
+      },
     },
     {
       timestamps: true,
@@ -72,6 +76,7 @@ module.exports = (queryInterface, DataTypes) => {
     this.belongsTo(models.user);
     this.hasMany(models.bookmark);
     this.hasMany(models.booking);
+    this.hasMany(models.review);
   };
   listing.addHook('beforeCreate', (obj) => {
     obj.id = getCryptoRandom();
