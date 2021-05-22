@@ -1,12 +1,92 @@
-const { image } = require('faker');
 const { Op } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 
 class ListingService {
-  static async search(params) {
+  static async updateListing(params) {
     try {
       return;
+    } catch (err) {
+      Logger.log('error', 'error updating Listing', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
+
+  /**
+   * 
+   * "queryObj": {
+      "city": "",
+      "pageNo": "1",
+      "resultsPerPage": "10",
+      "lowerPriceLimit": "5000",
+      "upperPriceLimit": "15000",
+      "ratings":''
+      "sortBy":ENUM[ratings,price,updatedAt]
+    }  
+   *  
+   */
+  static async search(params) {
+    try {
+      Logger.log('info', 'fetching all the listings matching the required query params');
+
+      let filteredQueryArray = [];
+      Object.keys(params).forEach((key) => {
+        if (['cookie', 'session'].includes(key)) return;
+        else filteredQueryArray.push(key);
+      });
+
+      let queryObj = {};
+      filteredQueryArray.forEach((key) => {
+        queryObj[key] = params[key];
+      });
+
+      let fieldMap = {
+        ratings: 'avgRating',
+        price: 'pricePerDay',
+        updateAt: 'updatedAt',
+      };
+
+      let limit = queryObj.resultsPerPage;
+
+      let offset = (queryObj.pageNo - 1) * queryObj.resultsPerPage;
+
+      const listings = await models.listing.findAll({
+        order: [[fieldMap[queryObj.sortBy], 'DESC']],
+        limit,
+        offset,
+        where: {
+          [Op.and]: {
+            status: {
+              [Op.eq]: 'AVAILABLE',
+            },
+            pricePerDay: {
+              [Op.and]: {
+                [Op.gt]: parseFloat(queryObj.lowerPriceLimit),
+                [Op.lt]: parseFloat(queryObj.upperPriceLimit),
+              },
+            },
+            avgRating: {
+              [Op.gte]: parseInt(queryObj.ratings),
+            },
+          },
+        },
+        include: [
+          {
+            model: models.city,
+            attributes: ['cityName'],
+            where: {
+              cityName: queryObj.city,
+            },
+            required: true,
+          },
+          {
+            model: models.image,
+            attributes: ['url'],
+          },
+        ],
+        nested: true,
+      });
+      return { data: listings };
     } catch (err) {
       Logger.log('error', 'error searching for Listings', err);
       throw Response.createError(Message.tryAgain, err);
@@ -18,16 +98,33 @@ class ListingService {
    * @param {Object} params
    * @param {Object} params.features
    * @param {number} params.cityId
+   * @param {string} params.userId
    * @param {number} params.pricePerDay
    * @param {Array[Object]} params.listingImages
    * @param {string} params.listingImages.url
    * @param {Object} params.listingImages.metadata
    * @returns {Promise<void>}
    */
+  /*
+  TODO: note # current flow is to 
+        1. upload images
+        2. create listing with the Image url obtained in the response to (1)
+
+        Ideally : we should trace the entire process of listing creation in phases
+
+        so , the whole process of onboarding a normal user into a host who has listed his place
+
+        should be in steps , so that the user can check into the listing creation flow anytime and push onto the 
+        sequence of steps and then finally complete the whole transition
+
+        sort of like how zerodha or any payment application completes KYC and onboarding
+  
+  */
   static async createListing(params) {
     try {
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
       Logger.log('info', 'checking duplicate listing with same name');
-
+      //TODO: create a unique index on [listingName & city] and update this query to include a check with city as well
       let listing = await models.listing.findOne({
         attributes: ['listingName'],
         where: {
@@ -89,42 +186,66 @@ class ListingService {
   }
   static async getListingById(params) {
     try {
-      Logger.log('info', 'querying db for listing');
+      Logger.log('info', 'querying db to locate listing by listing Id');
       const listing = await models.listing.findOne({
         where: {
-          id: params.id,
+          id: params.listingId,
         },
         include: [
           {
             model: models.city,
+            include: [{ model: models.state, include: [{ model: models.country }] }],
+          },
+          {
+            attributes: ['id', 'firstName', 'lastName', 'bio', 'emailId', 'dob', 'profilePictureUrl'],
+            model: models.user,
           },
           {
             model: models.image,
           },
+          {
+            model: models.bookmark,
+          },
+          {
+            model: models.booking,
+          },
+          {
+            model: models.review,
+            include: [
+              {
+                attributes: ['id', 'firstName', 'lastName', 'bio', 'emailId', 'dob', 'profilePictureUrl'],
+                model: models.user,
+              },
+            ],
+          },
         ],
-        raw: true,
+        // nested:true,
       });
-      if (user) return { data: user };
-      throw Response.createError(Message.userNotFound);
+      if (listing) return { data: listing };
+      throw Response.createError(Message.FailedToFindListing);
     } catch (err) {
-      Logger.log('error', 'error fetching user details', err);
+      Logger.log('error', 'error fetching listing details', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }
   static async getListingByUserId(params) {
     try {
-      Logger.log('info', 'getting user');
-      const user = await models.user.findOne({
-        attributes: ['id', 'firstName', 'lastName', 'bio', 'emailId', 'dob', 'profilePictureUrl', 'updatedAt'],
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+      Logger.log('info', 'getting all the listings for this particular User');
+      const listing = await models.listing.findAll({
+        include: [
+          {
+            model: models.image,
+          },
+        ],
         where: {
-          id: params.id,
+          userId: params.userId,
         },
-        raw: true,
       });
-      if (user) return { data: user };
-      throw Response.createError(Message.userNotFound);
+      if (listing && listing.length) return { data: listing };
+      throw Response.createError(Message.FailedToFindListing);
     } catch (err) {
-      Logger.log('error', 'error fetching user details', err);
+      Logger.log('error', 'error fetching listing details', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }

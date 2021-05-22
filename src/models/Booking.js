@@ -45,7 +45,8 @@ module.exports = (queryInterface, DataTypes) => {
         defaultValue: null,
       },
       status: {
-        type: DataTypes.ENUM(['BOOKED', 'CANCELLED']),
+        type: DataTypes.ENUM,
+        values: ['BOOKED', 'CANCELLED'],
         defaultValue: 'BOOKED',
       },
     },

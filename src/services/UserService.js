@@ -97,25 +97,40 @@ class UserService {
 
   static async updateUser(params) {
     try {
-      Logger.log('info', 'updating user ');
-      let user = await models.user.update(
-        {
-          ...params.body,
+      if (params.session.userId !== params.id) throw Response.createError(Message.InconsistentCredentials);
+      Logger.log('info', 'updating user details');
+
+      let allowedFields = [];
+      Object.keys(params).forEach((key) => {
+        if (['session', 'cookie', 'id', 'emailId', 'password'].includes(key)) return;
+        else allowedFields.push(key);
+      });
+
+      let updateObject = {};
+
+      allowedFields.forEach((key) => {
+        updateObject[key] = params[key];
+      });
+      let user = await models.user.update(updateObject, {
+        where: {
+          id: params.id,
         },
-        {
-          where: {
-            id: params.id,
-          },
-        },
-      );
-      if (user) return { data: user.get({ plain: true }) };
-      throw Response.createError(Message.errorUpdatingUser);
+        returning: true,
+        plain: true,
+      });
+
+      let plainUser = JSON.parse(JSON.stringify(user[1]));
+
+      ['password', 'createdAt', 'updatedAt', 'deletedAt'].forEach((field) => delete plainUser[field]);
+
+      return { data: plainUser };
     } catch (err) {
       Logger.log('error', 'error updating user', err);
-      throw Response.createError(Message.tryAgain, err);
+      throw Response.createError(Message.errorUpdatingUser);
     }
   }
   static async getCompleteUserRecord(params) {
+    //TODO: can only happen when the corresponding tables are filled with values
     return;
   }
   static async dpUpload(params) {

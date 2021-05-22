@@ -9,7 +9,6 @@ module.exports = {
         {
           type: DataTypes.STRING,
           allowNull: false,
-          unique: true,
         },
         { transaction },
       );
@@ -17,7 +16,8 @@ module.exports = {
         'bookings',
         'status',
         {
-          type: DataTypes.STRING,
+          type: DataTypes.ENUM,
+          values: ['BOOKED', 'CANCELLED'],
           defaultValue: 'BOOKED',
         },
         { transaction },
@@ -26,7 +26,8 @@ module.exports = {
         'listings',
         'status',
         {
-          type: DataTypes.STRING,
+          type: DataTypes.ENUM,
+          values: ['AVAILABLE', 'BOOKED'],
           defaultValue: 'AVAILABLE',
         },
         { transaction },

@@ -21,6 +21,15 @@ class ListingController {
       Response.fail(res, err);
     }
   }
+  static async updateListing(req, res) {
+    try {
+      Logger.log('info', 'update Listing Information');
+      const servRes = await ListingService.updateListing(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
   static async getListingById(req, res) {
     try {
       Logger.log('info', 'fetching all the listings by listing id');
@@ -33,7 +42,7 @@ class ListingController {
   static async getListingByUserId(req, res) {
     try {
       Logger.log('info', 'fetching all the listings owned by a user');
-      const servRes = await ListingService.getListingByUserId(req.headers, req.body);
+      const servRes = await ListingService.getListingByUserId(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
@@ -42,7 +51,7 @@ class ListingController {
   static async uploadListingImages(req, res) {
     try {
       Logger.log('info', 'upload user profile pic');
-      const servRes = await ListingService.uploadListingImages(req.headers, req.body);
+      const servRes = await ListingService.uploadListingImages(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

@@ -24,8 +24,7 @@ class UserController {
   static async updateUser(req, res) {
     try {
       Logger.log('info', 'updating user info');
-      let params = { body: req.body, id: req.params.id };
-      const servRes = await UserService.updateUser(params);
+      const servRes = await UserService.updateUser(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

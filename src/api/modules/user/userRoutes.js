@@ -13,10 +13,17 @@ router.use('/auth', authRoutes);
 router.get('/:id', validation.getUser, Authenticate.checkSession, PushToBody, controller.getUser);
 
 // edit user profile info
-router.patch('/:id', validation.updateUser, Authenticate.checkSession, controller.updateUser);
+router.patch('/:id', validation.updateUser, Authenticate.checkSession, PushToBody, controller.updateUser);
 
 //upload a users profile pic
-router.post('/dp-upload', Multer.single('image'), Authenticate.checkSession, validation.dpUpload, controller.dpUpload);
+router.post(
+  '/:id/dp-upload',
+  Multer.single('image'),
+  validation.dpUpload,
+  Authenticate.checkSession,
+  PushToBody,
+  controller.dpUpload,
+);
 
 // fetch All Data associated with a particular user
 router.get(

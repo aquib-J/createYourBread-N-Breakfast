@@ -137,4 +137,17 @@ module.exports = {
     resCode: 1020,
     message: 'Failed to regenerate user session, please try again',
   },
+  InconsistentCredentials: {
+    name: 'CustomError',
+    code: StatusCodes.UNAUTHORIZED,
+    resCode: 1021,
+    message:
+      "Incorrect User Login Credential, Please login with the correct user credentials for the user you're trying to view/update resources",
+  },
+  FailedToFindListing: {
+    name: 'CustomError',
+    code: StatusCodes.NOT_FOUND,
+    resCode: 1022,
+    message: 'Failed to find the listing with the Identifier provided',
+  },
 };

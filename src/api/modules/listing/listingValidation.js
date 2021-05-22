@@ -4,15 +4,22 @@ module.exports = {
   search: celebrate(
     {
       headers: {},
-      query: {
-          
-      },
+      query: {},
       params: {},
       body: {},
     },
     { allowUnknown: true, abortEarly: false },
   ),
   getListingById: celebrate(
+    {
+      headers: {},
+      query: {},
+      params: {},
+      body: {},
+    },
+    { allowUnknown: true, abortEarly: false },
+  ),
+  updateListing: celebrate(
     {
       headers: {},
       query: {},

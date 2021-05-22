@@ -2,6 +2,7 @@ const faker = require('faker');
 const { random, times } = require('lodash');
 
 module.exports = {
+  //TODO: fix the script to account for the recent db updates and take care of constraint collision so that anyone can run it comfortably for any number of records
   mockAll: async (noOfRecords, models, getCryptoRandom) => {
     try {
       console.log('info', 'begin seeding with mock values for the database');
