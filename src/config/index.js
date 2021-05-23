@@ -83,6 +83,9 @@ const config = {
     region: process.env.AWS_REGION,
     accessKey: process.env.AWS_ACCESS_KEY,
     secretKey: process.env.AWS_SECRET_KEY,
+    bnbTestBucket: process.env.S3_BUCKET,
+    dpBucket: process.env.S3_DP_BUCKET,
+    listingImagesBucket: process.env.S3_LISTING_IMAGES_BUCKET,
   },
 };
 

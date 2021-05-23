@@ -251,18 +251,13 @@ class ListingService {
   }
   static async uploadListingImages(params) {
     try {
-      Logger.log('info', 'getting user');
-      const user = await models.user.findOne({
-        attributes: ['id', 'firstName', 'lastName', 'bio', 'emailId', 'dob', 'profilePictureUrl', 'updatedAt'],
-        where: {
-          id: params.id,
-        },
-        raw: true,
-      });
-      if (user) return { data: user };
-      throw Response.createError(Message.userNotFound);
+      Logger.log('info', 'sending back the listing s3 urls');
+
+      let imageArray = params.images.map((image) => image.location);
+
+      return { data: imageArray, message: 'Successfully uploaded these listing images' };
     } catch (err) {
-      Logger.log('error', 'error fetching user details', err);
+      Logger.log('error', 'error uploading listing Images', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }

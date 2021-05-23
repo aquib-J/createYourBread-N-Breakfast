@@ -4,6 +4,7 @@
   "description": "backend to https://desi-airbnb.netlify.app/",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.912.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "celebrate": "^14.0.0",
@@ -24,6 +25,7 @@
     "moment-timezone": "^0.5.33",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "node-cmd": "^4.0.0",
     "nodemailer": "^6.6.0",
     "nodemon": "^2.0.7",

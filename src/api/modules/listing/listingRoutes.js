@@ -31,12 +31,13 @@ router.get(
   controller.getListingByUserId,
 );
 
-//upload a users profile pic
+//upload the listing pictures
 router.post(
-  '/upload-images',
+  '/:userId/upload',
   Authenticate.checkSession,
   Multer.array('images', 5),
   validation.uploadListingImages,
+  PushToBody,
   controller.uploadListingImages,
 );
 

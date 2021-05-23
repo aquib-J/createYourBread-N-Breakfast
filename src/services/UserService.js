@@ -134,7 +134,23 @@ class UserService {
     return;
   }
   static async dpUpload(params) {
-    return;
+    try {
+      Logger.log('info', 'updating the user record with the s3 display pic url');
+      const user = await models.user.update(
+        {
+          profilePictureUrl: params.image.location,
+        },
+        {
+          where: {
+            id: params.userId,
+          },
+        },
+      );
+      return { data: params.image.location, message: 'Successfully uploaded the display pic and updated' };
+    } catch (err) {
+      Logger.log('error', 'error uploading display pic ', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
   }
 }
 

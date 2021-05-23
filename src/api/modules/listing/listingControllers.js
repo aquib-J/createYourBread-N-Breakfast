@@ -50,7 +50,7 @@ class ListingController {
   }
   static async uploadListingImages(req, res) {
     try {
-      Logger.log('info', 'upload user profile pic');
+      Logger.log('info', 'uploading the listing images to s3');
       const servRes = await ListingService.uploadListingImages(req.body);
       Response.success(res, servRes);
     } catch (err) {

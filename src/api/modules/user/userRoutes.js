@@ -17,10 +17,10 @@ router.patch('/:id', validation.updateUser, Authenticate.checkSession, PushToBod
 
 //upload a users profile pic
 router.post(
-  '/:id/dp-upload',
+  '/:userId/dp-upload',
+  Authenticate.checkSession,
   Multer.single('image'),
   validation.dpUpload,
-  Authenticate.checkSession,
   PushToBody,
   controller.dpUpload,
 );
