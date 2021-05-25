@@ -1,70 +1,138 @@
 const { Op } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
-const Authentication = require('./AuthenticationService');
+const moment = require('moment');
 
 class ReviewService {
   static async createReview(params) {
     try {
-      Logger.log('info', 'fetching user info for idempotency check');
-      let user = await models.user.findOne({
-        attributes: ['id'],
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+      // userId <----> listingId ( no implicit mapping to booking as the previous rating on a particular listing for a booking will have already factored into the rating of the place calculated periodically by the TODO: job server)
+      // Just need to make sure this user has a booking recently and no review has been made for this listing after the booking duration, then we allow
+      // a brand new review for the latest booking
+      Logger.log(
+        'info',
+        'fetching latest booking info for this customer for the same listing info to reconcile the latest review',
+      );
+
+      let booking = await models.booking.findAll({
+        attributes: ['checkInDate', 'checkOutDate', 'status'],
         where: {
-          emailId: params.emailId,
+          [Op.and]: {
+            listingId: params.listingId,
+            userId: params.userId,
+          },
         },
-        raw: true,
+        order: [['checkOutDate', 'DESC']],
+        limit: 1,
       });
-      if (user) throw Response.createError(Message.userExists);
-      Logger.log('info', 'creating user');
-      user = await models.user.create({
-        firstName: params.firstName,
-        lastName: params.lastName,
-        emailId: params.emailId,
-        password: params.password,
-        dob: params.dob,
-        profilePictureUrl: params.profilePictureUrl,
+
+      let review = await models.review.findAll({
+        attributes: ['createdAt'],
+        where: {
+          [Op.and]: {
+            listingId: params.listingId,
+            userId: params.userId,
+          },
+        },
+        order: [['createdAt', 'DESC']],
+        limit: 1,
       });
-      return { data: user.get({ plain: true }) };
+      if (booking && booking.length) {
+        if (booking[0].status === 'BOOKED') {
+          if (review && review.length) {
+            let d1 = moment(booking[0].checkOutDate);
+            let d2 = moment(review[0].createdAt);
+            let diff = d2.diff(d1, 'days');
+            if (diff >= 0) throw Response.createError(Message.AlreadyReviewedForTheLatestBooking);
+          }
+        }
+      }
+
+      review = await models.review.create({
+        rating: params.rating,
+        description: params.description,
+        userId: params.userId,
+        listingId: params.listingId,
+      });
+
+      return { data: review.get({ plain: true }) };
     } catch (err) {
-      Logger.log('error', 'error creating user ', err);
+      Logger.log('error', 'error creating Review for the listing by the user ', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }
   static async getUserReviews(params) {
+    /**
+     * here, we'll get all the user reviews and sort them month-Wise, listing wise and booking wise (which can be displayed in the user's private account section )
+     * and return listing images as well , could be useful in building UI blocks 
+     */
     try {
-      Logger.log('info', 'getting user');
-      const user = await models.user.findOne({
-        attributes: ['id', 'firstName', 'lastName', 'bio', 'emailId', 'dob', 'profilePictureUrl', 'updatedAt'],
-        where: {
-          id: params.id,
-        },
-        raw: true,
-      });
-      if (user) return { data: user };
-      throw Response.createError(Message.userNotFound);
+      Logger.log('info', 'getting all the reviews by this user');
+      return;
     } catch (err) {
-      Logger.log('error', 'error fetching user details', err);
+      Logger.log('error', 'error fetching all the reviews by this user', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }
 
   static async getListingReviews(params) {
+    /**
+     * here, we'll get all the latest review per user per listing according to the user's latest booking for this listing and have 
+     * user's profile pic as well in the response
+     */
     try {
-      Logger.log('info', 'updating user ');
-      let user = await models.user.update(
-        {
-          ...params.body,
-        },
-        {
-          where: {
-            id: params.id,
-          },
-        },
-      );
-      if (user) return { data: user.get({ plain: true }) };
-      throw Response.createError(Message.errorUpdatingUser);
+      Logger.log('info', 'getting all the reviews for this listing');
+      
+      return;
     } catch (err) {
-      Logger.log('error', 'error updating user', err);
+      Logger.log('error', 'error fetching all the reviews for this particular listing', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
+
+  static async editUserReview(params) {
+    try {
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+
+      Logger.log('info', 'updating the particular review');
+      let keysToUpdate = ['rating', 'description'];
+      let kvMap = {};
+      keysToUpdate.forEach((key) => (kvMap[key] = params[key]));
+
+      let review = await models.review.update(kvMap, {
+        where: {
+          id: params.id,
+          listingId: params.listingId,
+          userId: params.userId,
+        },
+        returning: true,
+      });
+      return { data: review[1] };
+    } catch (err) {
+      Logger.log('error', 'error updating user review', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
+
+  static async deleteUserReview(params) {
+    try {
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+
+      Logger.log('info', 'deleting the particular user review');
+
+      let deleted = await models.review.destroy({
+        where: {
+          id: params.id,
+          listingId: params.listingId,
+          userId: params.userId,
+        },
+        returning: true,
+      });
+      if (deleted && deleted.length) return { data: { message: `Successfully deleted the user review !!` } };
+      if (deleted && !deleted.length) return { data: { message: `No review found to delete` }, code: 404 };
+    } catch (err) {
+      Logger.log('error', 'error deleting the  user review', err);
       throw Response.createError(Message.tryAgain, err);
     }
   }

@@ -28,4 +28,13 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
+  deleteUserReview: celebrate(
+    {
+      headers: {},
+      query: {},
+      params: {},
+      body: {},
+    },
+    { allowUnknown: true, abortEarly: false },
+  ),
 };

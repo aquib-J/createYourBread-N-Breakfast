@@ -5,6 +5,7 @@ const UtilityService = require('./UtilityService');
 
 class BookingService {
   static async createBooking(params) {
+    //TODO: factor in payment Id while booking and also factor in status while doing an initial check
     try {
       let cost = 0;
       let obj = {};

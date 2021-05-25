@@ -31,6 +31,24 @@ class ReviewController {
       Response.fail(res, err);
     }
   }
+  static async deleteUserReview(req, res) {
+    try {
+      Logger.log('info', 'deleting the current review');
+      const servRes = await ReviewService.deleteUserReview(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
+  static async editUserReview(req, res) {
+    try {
+      Logger.log('info', 'patching the current review');
+      const servRes = await ReviewService.editUserReview(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
 }
 
 module.exports = ReviewController;

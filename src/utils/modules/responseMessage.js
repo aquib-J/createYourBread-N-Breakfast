@@ -150,4 +150,11 @@ module.exports = {
     resCode: 1022,
     message: 'Failed to find the listing with the Identifier provided',
   },
+  AlreadyReviewedForTheLatestBooking: {
+    name: 'CustomError',
+    code: StatusCodes.CONFLICT,
+    resCode: 1023,
+    message:
+      'Failed to create a new Review for the listing by the User as the User has already reviewed listing post the latest booking',
+  },
 };
