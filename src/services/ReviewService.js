@@ -1,9 +1,23 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const moment = require('moment');
 
 class ReviewService {
+  static blackListedFields = [
+    'createdAt',
+    'updatedAt',
+    'deletedAt',
+    'password',
+    'miscCostPercentage',
+    'policies',
+    'amenities',
+    'bathrooms',
+    'status',
+    'metadata',
+    'features',
+    'images',
+  ];
   static async createReview(params) {
     try {
       if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
@@ -63,13 +77,45 @@ class ReviewService {
     }
   }
   static async getUserReviews(params) {
+    if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+
     /**
      * here, we'll get all the user reviews and sort them month-Wise, listing wise and booking wise (which can be displayed in the user's private account section )
-     * and return listing images as well , could be useful in building UI blocks 
+     * and return listing images as well , could be useful in building UI blocks
      */
     try {
       Logger.log('info', 'getting all the reviews by this user');
-      return;
+      let userReviews = await models.review.findAll({
+        where: {
+          userId: params.userId,
+        },
+        include: [
+          {
+            model: models.listing,
+            include: [
+              {
+                model: models.image,
+              },
+            ],
+          },
+        ],
+        order: [['createdAt', 'DESC']],
+      });
+
+      userReviews = JSON.parse(JSON.stringify(userReviews));
+
+      let response = [];
+      userReviews.forEach((review) => {
+        let resp = {
+          ...review,
+          listing: {
+            ...this.filter(review.listing, this.blackListedFields),
+            images: review.listing.images.map((image) => this.filter(image, this.blackListedFields)),
+          },
+        };
+        response.push(resp);
+      });
+      return { data: response };
     } catch (err) {
       Logger.log('error', 'error fetching all the reviews by this user', err);
       throw Response.createError(Message.tryAgain, err);
@@ -78,13 +124,58 @@ class ReviewService {
 
   static async getListingReviews(params) {
     /**
-     * here, we'll get all the latest review per user per listing according to the user's latest booking for this listing and have 
+     * here, we'll get all the latest review per user per listing according to the user's latest booking for this listing and have
      * user's profile pic as well in the response
      */
     try {
       Logger.log('info', 'getting all the reviews for this listing');
-      
-      return;
+
+      let listingReviews = await models.review.findAll({
+        where: {
+          listingId: params.listingId,
+        },
+        include: [
+          {
+            model: models.user,
+          },
+          {
+            model: models.listing,
+            include: [
+              {
+                model: models.image,
+              },
+            ],
+          },
+        ],
+        order: [['createdAt', 'DESC']],
+      });
+      listingReviews = JSON.parse(JSON.stringify(listingReviews));
+
+      let uniqueUserReviews = [];
+      let uniqueUsers = [];
+      uniqueUserReviews = listingReviews.map((x) => {
+        if (uniqueUsers.includes(x.userId)) return;
+        else {
+          uniqueUsers.push(x.userId);
+          return x;
+        }
+      });
+
+      let response = [];
+      uniqueUserReviews.forEach((review) => {
+        if (review) {
+          let resp = {
+            ...review,
+            user: this.filter(review.user, this.blackListedFields),
+            listing: {
+              ...this.filter(review.listing, this.blackListedFields),
+              images: review.listing.images.map((image) => this.filter(image, this.blackListedFields)),
+            },
+          };
+          response.push(resp);
+        }
+      });
+      return { data: response };
     } catch (err) {
       Logger.log('error', 'error fetching all the reviews for this particular listing', err);
       throw Response.createError(Message.tryAgain, err);
@@ -135,6 +226,14 @@ class ReviewService {
       Logger.log('error', 'error deleting the  user review', err);
       throw Response.createError(Message.tryAgain, err);
     }
+  }
+  static filter(dataObject, arrayOfKeysToFilterOut) {
+    let resultObj = {};
+    let filteredKeys = Object.keys(dataObject).filter((key) => !arrayOfKeysToFilterOut.includes(key));
+    filteredKeys.forEach((key) => {
+      resultObj[key] = dataObject[key];
+    });
+    return resultObj;
   }
 }
 

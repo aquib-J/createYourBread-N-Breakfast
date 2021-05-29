@@ -12,7 +12,7 @@ router.get('/search', validation.search, PushToBody, controller.search);
 router.post('/:userId', validation.createListing, Authenticate.checkSession, PushToBody, controller.createListing);
 
 // fetch all the relevant listing info for a particular listing Id
-router.get('/:listingId', validation.getListingById, Authenticate.checkSession, PushToBody, controller.getListingById);
+router.get('/:listingId', validation.getListingById, PushToBody, controller.getListingById);
 
 // update the listing information
 router.patch(
@@ -25,8 +25,8 @@ router.patch(
 //fetch all listings by user Id (owner of the listing)
 router.get(
   '/user-Id/:userId',
-  validation.getListingByUserId,
   Authenticate.checkSession,
+  validation.getListingByUserId,
   PushToBody,
   controller.getListingByUserId,
 );

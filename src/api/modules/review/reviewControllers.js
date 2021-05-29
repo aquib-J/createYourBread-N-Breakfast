@@ -24,8 +24,7 @@ class ReviewController {
   static async getListingReview(req, res) {
     try {
       Logger.log('info', 'fetching all reviews for a listing');
-      let params = { body: req.body, id: req.params.id };
-      const servRes = await ReviewService.getListingReviews(params);
+      const servRes = await ReviewService.getListingReviews(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

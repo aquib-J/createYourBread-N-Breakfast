@@ -5,7 +5,49 @@ const { Logger, Response, Message } = require('../utils');
 class ListingService {
   static async updateListing(params) {
     try {
-      return;
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+
+      const allowedUpdateOnKeys = {
+        l1: ['listingName', 'pricePerDay', 'address', 'status'],
+        l2: ['beds', 'bedroom', 'policies', 'amenities', 'bathrooms'],
+      };
+
+      let listing = await models.listing.findOne({
+        where: {
+          id: params.listingId,
+        },
+      });
+
+      listing = JSON.parse(JSON.stringify(listing));
+
+      let updatedObj = {};
+      let updatedFeatures = Object.assign({}, listing.features);
+      updatedFeatures.amenities = Object.assign([], listing.features.amenities);
+      Object.keys(listing).forEach((key) => {
+        if (allowedUpdateOnKeys.l1.includes(key)) {
+          updatedObj[key] = params[key];
+        }
+      });
+
+      Object.keys(listing.features).forEach((key) => {
+        if (allowedUpdateOnKeys.l2.includes(key)) {
+          if (key === 'policies') {
+            updatedFeatures[key] = { ...updatedFeatures[key], ...params['features'][key] };
+          }
+          if (key === 'amenities') {
+            if (typeof params['features'][key] === 'string') {
+              updatedFeatures[key].push(params['features'][key]);
+            } else if (typeof params['features'][key] === 'object' && params['features'][key].length) {
+              updatedFeatures[key].push(...params['features'][key]);
+            }
+          }
+          updatedFeatures[key] = params['features'][key];
+        }
+      });
+
+      updatedObj.features = updatedFeatures;
+
+      return { data: { og: listing, updated: updatedObj } };
     } catch (err) {
       Logger.log('error', 'error updating Listing', err);
       throw Response.createError(Message.tryAgain, err);

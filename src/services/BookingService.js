@@ -65,7 +65,7 @@ class BookingService {
       Logger.log('info', 'getting all the bookings for the user');
       const user = await models.booking.findAll({
         where: {
-          userId: params.id,
+          userId: params.userId,
         },
         include: [
           {
@@ -79,7 +79,7 @@ class BookingService {
         ],
         order: [['checkOutDate', 'DESC']],
       });
-      if (user) return { data: user };
+      if (user && user.length) return { data: user };
       throw Response.createError(Message.BookingNotFound);
     } catch (err) {
       Logger.log('error', 'error fetching bookings for the user', err);

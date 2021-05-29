@@ -157,4 +157,10 @@ module.exports = {
     message:
       'Failed to create a new Review for the listing by the User as the User has already reviewed listing post the latest booking',
   },
+  bookmarkExists: {
+    name: 'CustomError',
+    code: StatusCodes.CONFLICT,
+    resCode: 1024,
+    message: 'Bookmark already exists for the user for the listing',
+  },
 };
