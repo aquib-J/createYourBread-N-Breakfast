@@ -17,8 +17,8 @@ router.get('/:listingId', validation.getListingById, PushToBody, controller.getL
 // update the listing information
 router.patch(
   '/:userId/:listingId',
-  validation.updateListing,
   Authenticate.checkSession,
+  validation.updateListing,
   PushToBody,
   controller.updateListing,
 );
@@ -40,5 +40,7 @@ router.post(
   PushToBody,
   controller.uploadListingImages,
 );
+
+router.delete('/:userId/:listingId', Authenticate.checkSession, PushToBody, controller.deleteListing);
 
 module.exports = router;

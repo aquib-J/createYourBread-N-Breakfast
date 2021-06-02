@@ -86,6 +86,23 @@ class BookingService {
       throw Response.createError(Message.tryAgain, err);
     }
   }
+
+  static async updateBooking(params) {
+    try {
+      return;
+    } catch (err) {
+      Logger.log('error', 'error updating booking for the user', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
+  static async cancelBooking(params) {
+    try {
+      return;
+    } catch (err) {
+      Logger.log('error', 'error cancelling booking for the user', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
 }
 
 module.exports = BookingService;

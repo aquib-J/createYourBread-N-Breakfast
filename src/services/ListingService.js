@@ -3,51 +3,98 @@ const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 
 class ListingService {
+  static async deleteListing(params) {
+    try {
+      if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+      Logger.log('info', 'deleting the particular listing from the DB');
+      const deleted = await models.listing.destroy({
+        where: {
+          [Op.and]: {
+            id: params.listingId,
+            userId: params.userId,
+          },
+        },
+        returning: true,
+      });
+      if (deleted && deleted.length) return { data: { message: `Successfully deleted the particular listing !!` } };
+      if (deleted && !deleted.length) return { data: { message: `No such listing found to delete` }, code: 404 };
+    } catch (err) {
+      Logger.log('error', 'error deleting the  user review', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
   static async updateListing(params) {
     try {
       if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
 
-      const allowedUpdateOnKeys = {
-        l1: ['listingName', 'pricePerDay', 'address', 'status'],
+      const allowed = {
+        l1: ['listingName', 'pricePerDay', 'address', 'description'],
         l2: ['beds', 'bedroom', 'policies', 'amenities', 'bathrooms'],
+        filteredOutput: ['listingName', 'pricePerDay', 'address', 'description', 'features'],
       };
 
       let listing = await models.listing.findOne({
         where: {
           id: params.listingId,
+          userId: params.userId,
         },
       });
+
+      if (!listing) throw Response.createError(Message.FailedToFindListing);
 
       listing = JSON.parse(JSON.stringify(listing));
 
       let updatedObj = {};
       let updatedFeatures = Object.assign({}, listing.features);
+      updatedFeatures.policies = Object.assign({}, listing.features.policies);
       updatedFeatures.amenities = Object.assign([], listing.features.amenities);
       Object.keys(listing).forEach((key) => {
-        if (allowedUpdateOnKeys.l1.includes(key)) {
+        if (allowed.l1.includes(key)) {
           updatedObj[key] = params[key];
         }
       });
 
       Object.keys(listing.features).forEach((key) => {
-        if (allowedUpdateOnKeys.l2.includes(key)) {
-          if (key === 'policies') {
-            updatedFeatures[key] = { ...updatedFeatures[key], ...params['features'][key] };
+        if (allowed.l2.includes(key)) {
+          if (!['policies', 'amenities'].includes(key)) {
+            updatedFeatures[key] = params['features'][key];
           }
-          if (key === 'amenities') {
+          if (key === 'policies') {
+            updatedFeatures[key] = Object.assign({}, updatedFeatures[key], params['features'][key]);
+          }
+          if (key === 'amenities' && params['features'][key] !== null) {
             if (typeof params['features'][key] === 'string') {
               updatedFeatures[key].push(params['features'][key]);
             } else if (typeof params['features'][key] === 'object' && params['features'][key].length) {
               updatedFeatures[key].push(...params['features'][key]);
             }
+            updatedFeatures[key] = Array.from(new Set(updatedFeatures[key]));
           }
-          updatedFeatures[key] = params['features'][key];
         }
       });
 
-      updatedObj.features = updatedFeatures;
+      updatedObj.features = Object.assign({}, updatedFeatures);
 
-      return { data: { og: listing, updated: updatedObj } };
+      Logger.log('info', 'applying the selected updates to the listing', updatedObj);
+
+      let listingUpdates = await models.listing.update(updatedObj, {
+        where: {
+          id: params.listingId,
+          userId: params.userId,
+        },
+        returning: true,
+      });
+
+      let rawResponse = JSON.parse(JSON.stringify(listingUpdates[1][0]));
+
+      let response = Object.keys(rawResponse)
+        .filter((key) => allowed.filteredOutput.includes(key))
+        .reduce((outputObj, key) => {
+          outputObj[key] = rawResponse[key];
+          return outputObj;
+        }, {});
+
+      return { data: response };
     } catch (err) {
       Logger.log('error', 'error updating Listing', err);
       throw Response.createError(Message.tryAgain, err);
@@ -296,6 +343,7 @@ class ListingService {
       Logger.log('info', 'sending back the listing s3 urls');
 
       let imageArray = params.images.map((image) => image.location);
+      //TODO: make the bucket private and only return signed Urls and cache it for the similar duration
 
       return { data: imageArray, message: 'Successfully uploaded these listing images' };
     } catch (err) {

@@ -57,6 +57,15 @@ class ListingController {
       Response.fail(res, err);
     }
   }
+  static async deleteListing(req, res) {
+    try {
+      Logger.log('info', 'delete the particular listing');
+      const servRes = await ListingService.deleteListing(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
 }
 
 module.exports = ListingController;
