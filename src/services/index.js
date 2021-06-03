@@ -6,8 +6,10 @@ const ListingService = require('./ListingService');
 const ReviewService = require('./ReviewService');
 const EmailService = require('./EmailService');
 const BookmarkService = require('./BookmarkService');
+const PaymentService = require('./PaymentService');
 
 module.exports = {
+  PaymentService,
   EmailService,
   ReviewService,
   ListingService,

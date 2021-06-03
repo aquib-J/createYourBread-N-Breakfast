@@ -7,10 +7,12 @@ const {
     utilityMethods,
     mockAll,
     Message,
+    Razorpay
 } = require('./modules');
 
 
-module.exports={
+module.exports = {
+    Razorpay,
     mockAll,
     utilityMethods,    
     AccessLog,

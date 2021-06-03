@@ -9,7 +9,7 @@ const listing = require('./modules/listing/listingRoutes');
 const review = require('./modules/review/reviewRoutes');
 const location = require('./modules/location/locationRoutes');
 const bookmark = require('./modules/bookmark/bookmarkRoutes');
-// const payment =require('./modules/payment/paymentRoutes'); //TODO: razorpay Integration : possibly might need to change the payment table migration/models
+const payment =require('./modules/payment/paymentRoutes'); //TODO: razorpay Integration : possibly might need to change the payment table migration/models
 
 exports.loadRoutes = (app, prefix) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -20,7 +20,7 @@ exports.loadRoutes = (app, prefix) => {
   app.use(`${prefix}/v1/review`, review);
   app.use(`${prefix}/v1/location`, location);
   app.use(`${prefix}/v1/bookmark`, bookmark);
-  // app.use(`${prefix}/v1/payment`, payment);
+  app.use(`${prefix}/v1/payment`, payment);
 
   app.all('/status', (req, res) => {
     const data = {

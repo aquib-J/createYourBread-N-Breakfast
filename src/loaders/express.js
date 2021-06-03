@@ -10,7 +10,6 @@ const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
 const { prefix } = require('./../config/index').api;
 
-
 const connectRedis = require('connect-redis');
 const redisClient = require('./redis');
 const session = require('express-session');
@@ -30,7 +29,12 @@ exports.loadModules = ({ app }) => {
 
   // pandoras box of security best practices, in a single package
   // including but not limited to removing x-powered-by for powered by attacks etc
-  app.use(helmet());
+  app.use(
+    helmet.contentSecurityPolicy({
+      useDefaults: true,
+      reportOnly: true, // to allow the local scripts in the test-payment.ejs as well as razorpay frame to load and run 
+    }),
+  );
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs,
@@ -86,6 +90,8 @@ exports.loadModules = ({ app }) => {
       },
     }),
   );
+
+  app.set('view engine', 'ejs');
 
   //load API routes
   /**

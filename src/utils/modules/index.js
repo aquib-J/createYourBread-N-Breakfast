@@ -5,9 +5,11 @@ const Response = require('./response');
 const Migration = require('./migration');
 const utilityMethods=require('./utilityMethods');
 const mockAll=require('./seedMockData');
-const Message=require('./responseMessage');
+const Message = require('./responseMessage');
+const Razorpay = require('./Razorpay');
 
 module.exports = {
+  Razorpay,
   Message,
   mockAll,
   utilityMethods,

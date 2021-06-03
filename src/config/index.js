@@ -87,6 +87,10 @@ const config = {
     dpBucket: process.env.S3_DP_BUCKET,
     listingImagesBucket: process.env.S3_LISTING_IMAGES_BUCKET,
   },
+  razorpayConfig: {
+    keyId: process.env.RAZORPAY_KEY_ID,
+    keySecret: process.env.RAZORPAY_KEY_SECRET,
+  },
 };
 
 module.exports = config;
