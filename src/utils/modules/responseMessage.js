@@ -163,4 +163,10 @@ module.exports = {
     resCode: 1024,
     message: 'Bookmark already exists for the user for the listing',
   },
+  paymentFailedToVerify: {
+    name: 'CustomError',
+    code: StatusCodes.UNAUTHORIZED,
+    resCode: 1025,
+    message: 'Failed to Verify the Signaure, possible case of fraudulent payment transaction details',
+  },
 };

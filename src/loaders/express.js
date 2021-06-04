@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
 const { prefix } = require('./../config/index').api;
+const favicon = require('serve-favicon');
 
 const connectRedis = require('connect-redis');
 const redisClient = require('./redis');
@@ -32,9 +33,10 @@ exports.loadModules = ({ app }) => {
   app.use(
     helmet.contentSecurityPolicy({
       useDefaults: true,
-      reportOnly: true, // to allow the local scripts in the test-payment.ejs as well as razorpay frame to load and run 
+      reportOnly: true, // to allow the local scripts in the test-payment.ejs as well as razorpay frame to load and run
     }),
   );
+ 
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs,
@@ -92,6 +94,8 @@ exports.loadModules = ({ app }) => {
   );
 
   app.set('view engine', 'ejs');
+
+  app.use(favicon(__dirname + '../../../views/favicon/favicon.ico'));
 
   //load API routes
   /**

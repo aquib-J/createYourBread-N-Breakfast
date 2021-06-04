@@ -5,90 +5,220 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test page for Razorpay Integration</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="undefined"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </head>
   <body>
-    <label for="">Amount: </label>
-    <input type="text" id="orderAmount" />
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h3 class="display-4">Razorpay Integration Page</h3>
+        <br />
+        <p class="lead">
+          Welcome to the Razorpay Integration page,<br />Here we'll be able to test out the Integration locally .
+          <br />Everything is detailed in a step by step fashion
+        </p>
+      </div>
+    </div>
+    <!-- forms  -->
+    <div class="mx-auto" style="width: 500px">
+      <h2>1. Create an Order</h2>
+      <small id="orderCreate" class="form-text text-muted mx-3">
+        * End Point used * -> api/v1/payment/order <br />
+        ** the returned payload contains the <b>order-ID</b>**
+      </small>
+    </div>
+    <form>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="InputAmount">Enter Amount</label>
+        <input type="number" min="1" class="form-control" id="inputAmount" />
+        <small id="InputAmount" class="form-text text-muted">Please enter a positive number</small>
+      </div>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="inputCurrency">Select Currency</label>
+        <input type="string" class="form-control" id="inputCurrency" value="INR" />
+        <small id="inputCurrency" class="form-text text-muted">currency -> 'INR' supported by default</small>
+      </div>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="receiptId">Receipt ID</label>
+        <input type="string" class="form-control" id="receiptId" />
+        <small id="receiptId" class="form-text text-muted">receipt ID -> used to track payment internally</small>
+      </div>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="inputNote">Notes</label>
+        <input type="JSON" class="form-control" id="inputNote" />
+        <small id="inputNote" class="form-text text-muted">Notes object --> Optional request parameter</small>
+      </div>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="paymentCapture">Payment-Capture</label>
+        <input type="Integer" class="form-control" id="paymentCapture" value="1" />
+        <small id="paymentCapture" class="form-text text-muted"
+          >0 --> Manual Payment Capture <br />
+          1 --> Auto Payment Capture (please read the doc)</small
+        >
+      </div>
+      <button type="submit" class="btn btn-primary mx-5" id="order-button">Create Order</button>
+    </form>
     <br />
-    <button id="order-button">create an order</button>
-    <br />
+    <div class="mx-auto" style="width: 500px">
+      <h2>2. Initiate a Checkout</h2>
+      <small id="initiateCheckout" class="form-text text-muted mx-3">
+        * End Point used * -> NONE <br />
+        All checkout creation happens through the <b> razorpay payment frame </b> <br />
+        The `order-ID` obtained from above is used to create a payment here <br />
+        Some values can be <b>Prefilled</b> here in the Payment Creation process<br /><br />
+        For more detail on possible input fields : please visit <br />
+        `https://razorpay.com/docs/payment-gateway/web-integration/standard/checkout-options/`</small
+      >
+    </div>
 
-    <br />
-    <hr />
-    <label for="">Order id: </label>
-    <input type="text" name="" id="rzp-text" />
-    <br />
-    <button id="rzp-button1">Initiate a Checkout</button>
-    <div id="paymentDetails"></div>
+    <form>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="orderID">Order ID</label>
+        <input type="string" class="form-control" id="orderID" />
+        <small id="orderID" class="form-text text-muted"
+          >prefilled from the value in the response from order creation</small
+        >
+      </div>
+      <div class="form-group col-sm-10 mx-5">
+        <label for="prefill">prefill checkout form</label>
+        <small id="prefill" class="form-text text-muted"></small>
+        <div class="form-group col-sm-3 mx-5">
+          <label for="customerName">Name</label>
+          <input type="string" class="form-control" id="customerName" />
+          <small id="customerName" class="form-text text-muted"
+            >customer Name -> to prefill the payment checkout form</small
+          >
+        </div>
+        <div class="form-group col-sm-3 mx-5">
+          <label for="customerEmail">Email</label>
+          <input type="email" class="form-control" id="customerEmail" />
+          <small id="customerEmail" class="form-text text-muted"
+            >email ID --> to prefill the payment checkout form</small
+          >
+        </div>
+        <div class="form-group col-sm-3 mx-5">
+          <label for="customerPhone">Contact No</label>
+          <input type="phone" class="form-control" id="customerPhone" />
+          <small id="customerPhone" class="form-text text-muted"
+            >contact No --> to prefill the payment checkout form</small
+          >
+        </div>
+      </div>
 
-    <br />
-    <hr />
-    <label for="">Order id :</label>
-    <input type="text" id="order-id" />
-    <label for="">Payment id :</label>
-    <input type="text" id="order-pay-id" />
-    <label for="">Order signature :</label>
-    <input type="text" id="order-sig" />
-    <br />
-    <button id="verify-button1">Verify</button>
+      <button type="submit" class="btn btn-primary mx-5" id="checkOut">Initiate CheckOut</button>
+    </form>
+
+    <div class="mx-auto" style="width: 500px">
+      <h2>3. Verify the transaction details returned</h2>
+      <small id="InputAmount" class="form-text text-muted mx-3">
+        * End Point used * -> api/v1/payment/verify <br />
+        since we used ,auto capture payment, payment will be captured
+        <b>
+          But we can be sure when we verify the signature returned in the payload of the completed checkout response</b
+        >
+        <br />
+        It contains 3 values : <br />
+        <b>razorpay_payment_id</b> <br />
+        <b>razorpay_order_id</b> <br />
+        <b>razorpay_signature</b> <br />
+        These 3 values will be auto-filled below post the checkout above <br />
+      </small>
+    </div>
+    <form>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="verifyOrderID">Order ID</label>
+        <input type="string" class="form-control" id="verifyOrderID" />
+        <small id="verifyOrderID" class="form-text text-muted"></small>
+      </div>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="verifyPaymentID">Payment ID</label>
+        <input type="string" class="form-control" id="verifyPaymentID" />
+        <small id="verifyPaymentID" class="form-text text-muted"></small>
+      </div>
+      <div class="form-group col-sm-3 mx-5">
+        <label for="verifyPaymentSignature">Payment Signature</label>
+        <input type="string" class="form-control" id="verifyPaymentSignature" />
+        <small id="verifyPaymentSignature" class="form-text text-muted"></small>
+      </div>
+      <button type="submit" class="btn btn-primary mx-5" id="verify">Verify Payment</button>
+    </form>
+    <br /><br />
 
     <script>
-      document.getElementById('order-button').onclick = function (e) {
-        var url = '/api/v1/payment/order';
-        var params = {
-          amount: document.getElementById('orderAmount').value,
-          currency: 'INR',
-          receipt: 'Bread & Bourbon',
-          payment_capture: '1', // 1 -> auto payment capture, 0 -> manual payment capture
+      document.getElementById('order-button').onclick = (e) => {
+        e.preventDefault();
+        let url = '/api/v1/payment/order';
+        let amount = document.getElementById('inputAmount').value;
+        if (amount <= 0) {
+          /*do some ting, alert, breadcrumb*/
+        }
+        let notes = document.getElementById('inputNote').value;
+        let params = {
+          amount: parseFloat(amount) * 100,
+          currency: document.getElementById('inputCurrency').value,
+          receipt: document.getElementById('receiptId').value,
+          payment_capture: document.getElementById('paymentCapture').value,
+          notes: notes ? notes : '',
         };
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function (res) {
-          if (xmlHttp.readyState === 4) {
-            res = JSON.parse(xmlHttp.responseText);
-            document.getElementById('rzp-text').value = res.data.id;
-          }
-        };
-        xmlHttp.open('POST', url, true);
-        xmlHttp.setRequestHeader('Content-type', 'application/json');
-        xmlHttp.send(JSON.stringify(params));
+        axios
+          .post(url, params)
+          .then((response) => {
+            document.getElementById('orderID').value = response.data.data.id;
+          })
+          .catch((e) => console.error('error in creating order', e));
       };
-      document.getElementById('rzp-button1').onclick = function (e) {
-        var options = {
-          key: '<%= key %>',
-          currency: 'INR',
-          name: 'Bread & Bourbon',
-          description: 'B&B Payment',
-          order_id: document.getElementById('rzp-text').value,
+      document.getElementById('checkOut').onclick = (e) => {
+        e.preventDefault();
+        let amount = document.getElementById('inputAmount').value;
+        let logo =
+          'https://bnb-display-pic.s3.ap-south-1.amazonaws.com/144939128d1100/Meshuggah-Obzen-banner-ghostcultmag-1621792117860-.jpg';
+        let options = {
+          key: '<%= key %>', // razorpay key_ID
+          currency: document.getElementById('inputCurrency').value,
+          amount: parseFloat(amount) * 100,
+          name: 'Bread & Bourbon', // company name
+          description: 'B&B Test Payment', //description of the payment
+          image: logo, // logo for the business
+          order_id: document.getElementById('orderID').value,
+          // alternative is to use a webhook
           handler: function (response) {
             document.getElementById('order-pay-id').value = response.razorpay_payment_id;
             document.getElementById('order-id').value = response.razorpay_order_id;
             document.getElementById('order-sig').value = response.razorpay_signature;
           },
+          prefill: {
+            name: document.getElementById('customerName').value || 'aquib-J',
+            email: document.getElementById('customerEmail').value || 'aquib.jansher@gmail.com',
+            contact: document.getElementById('customerPhone').value || '9999999999',
+          },
+          notes: {
+            address: 'test address',
+          },
           theme: {
-            color: '#0EB9F2',
+            color: '#3399cc',
           },
         };
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
-        e.preventDefault();
+        let razorpay = new Razorpay(options);
+        razorpay.open();
       };
-      document.getElementById('verify-button1').onclick = function (e) {
-        var url = '/api/v1/payment/verify';
-        var params = {
-          razorpay_order_id: document.getElementById('order-id').value,
-          razorpay_payment_id: document.getElementById('order-pay-id').value,
-          razorpay_signature: document.getElementById('order-sig').value,
+      document.getElementById('verify').onclick = (e) => {
+        e.preventDefault();
+        let url = '/api/v1/payment/verify';
+        let params = {
+          razorpay_order_id: document.getElementById('verifyOrderID').value,
+          razorpay_payment_id: document.getElementById('verifyPaymentID').value,
+          razorpay_signature: document.getElementById('verifyPaymentSignature').value,
         };
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function (res) {
-          if (xmlHttp.readyState === 4) {
-            alert(xmlHttp.responseText);
-          }
-        };
-        xmlHttp.open('POST', url, true); 
-        xmlHttp.setRequestHeader('Content-type', 'application/json');
-        xmlHttp.send(JSON.stringify(params));
+        axios
+          .post(url, params)
+          .then((response) => alert(JSON.stringify(response.data.message)))
+          .catch((error) => alert(JSON.stringify(error.response.data.message)));
       };
     </script>
   </body>
