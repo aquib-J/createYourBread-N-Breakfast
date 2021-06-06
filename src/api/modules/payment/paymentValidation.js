@@ -19,15 +19,6 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  processWebHook: celebrate(
-    {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
-    },
-    { allowUnknown: true, abortEarly: false },
-  ),
   refundPayment: celebrate(
     {
       headers: {},

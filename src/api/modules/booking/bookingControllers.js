@@ -23,8 +23,8 @@ class BookingController {
   }
   static async updateBooking(req, res) {
     try {
-      Logger.log('info', `fetching booking information for ${req.path.split('/')[2]} id`);
-      const servRes = await BookingService.getBooking(req.body);
+      Logger.log('info', `checking if its possible to update booking and book if possible`);
+      const servRes = await BookingService.updateBooking(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);
@@ -33,7 +33,7 @@ class BookingController {
   static async cancelBooking(req, res) {
     try {
       Logger.log('info', `fetching booking information for ${req.path.split('/')[2]} id`);
-      const servRes = await BookingService.getBooking(req.body);
+      const servRes = await BookingService.cancelBooking(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

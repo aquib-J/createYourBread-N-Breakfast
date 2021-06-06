@@ -33,8 +33,8 @@ class PaymentController {
   static async processWebHook(req, res) {
     try {
       Logger.log('info', 'in goes the webhook payload');
-      const servRes = await PaymentService.processWebHook(req.body);
-      Response.success(res, servRes);
+      PaymentService.processWebHook(req);
+      Response.success(res);
     } catch (err) {
       Response.fail(res, err);
     }
@@ -43,6 +43,24 @@ class PaymentController {
     try {
       Logger.log('info', 'initiating payment refund flow');
       const servRes = await PaymentService.refundPayment(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
+  static async fetchAllPayments(req, res) {
+    try {
+      Logger.log('info', 'fetching all the payments for an order ID');
+      const servRes = await PaymentService.fetchAllPayments(req.body);
+      Response.success(res, servRes);
+    } catch (err) {
+      Response.fail(res, err);
+    }
+  }
+  static async getPaymentStatus(req, res) {
+    try {
+      Logger.log('info', 'fetching the status for the payment Id');
+      const servRes = await PaymentService.getPaymentStatus(req.body);
       Response.success(res, servRes);
     } catch (err) {
       Response.fail(res, err);

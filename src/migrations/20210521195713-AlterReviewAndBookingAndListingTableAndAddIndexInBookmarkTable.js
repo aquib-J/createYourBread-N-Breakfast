@@ -73,7 +73,7 @@ module.exports = {
         },
         { transaction },
       );
+      await queryInterface.removeIndex('bookmarks', ['listingId', 'userId'], { transaction });
     });
-    await queryInterface.removeIndex('bookmarks', ['listingId', 'userId'], { transaction });
   },
 };

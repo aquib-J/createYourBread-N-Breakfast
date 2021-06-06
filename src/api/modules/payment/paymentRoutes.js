@@ -10,11 +10,15 @@ router.get('/test-razorpay', controller.loadStaticTestPage);
 // create an order, capture the order details(ORDER-ID/transaction-Id) and forward the order Id and other credentials to the FE
 router.post('/order', validation.createPaymentOrder, controller.createPaymentOrder);
 
-// signs up and creates a user : email id is unique
 router.post('/verify', validation.verifyPaymentSignature, controller.verifyPaymentSignature);
 
-router.post('/capture', validation.processWebHook, controller.processWebHook);
+router.post('/capture', controller.processWebHook);
 
-router.post('/cancel', validation.refundPayment, controller.refundPayment);
+router.post('/refund/:gatewayPaymentId', PushToBody, controller.refundPayment);
+
+router.get('/status/:paymentId', PushToBody, controller.getPaymentStatus);
+
+// test route : to not be used directly
+// router.get('/:orderId', PushToBody, controller.fetchAllPayments);
 
 module.exports = router;

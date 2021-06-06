@@ -167,6 +167,18 @@ module.exports = {
     name: 'CustomError',
     code: StatusCodes.UNAUTHORIZED,
     resCode: 1025,
-    message: 'Failed to Verify the Signaure, possible case of fraudulent payment transaction details',
+    message: 'Failed to Verify the Signature, possible case of fraudulent payment transaction details',
+  },
+  cannotBookInThePastOrToday: {
+    name: 'CustomError',
+    code: StatusCodes.BAD_REQUEST,
+    resCode: 1026,
+    message: 'Cannot book in the past or the same date',
+  },
+  FailedToCreatePaymentOrder: {
+    name: 'CustomError',
+    code: StatusCodes.BAD_REQUEST,
+    resCode: 1027,
+    message: 'Failed to Create Order, Possible error in Request Payload, please try again',
   },
 };

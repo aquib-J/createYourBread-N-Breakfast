@@ -52,7 +52,7 @@
       <div class="form-group col-sm-3 mx-5">
         <label for="inputNote">Notes</label>
         <input type="JSON" class="form-control" id="inputNote" />
-        <small id="inputNote" class="form-text text-muted">Notes object --> Optional request parameter</small>
+        <small id="inputNote" class="form-text text-muted">Notes object --> Optional request parameter (JSON.stringified Object)</small>
       </div>
       <div class="form-group col-sm-3 mx-5">
         <label for="paymentCapture">Payment-Capture</label>
@@ -156,22 +156,23 @@
         let url = '/api/v1/payment/order';
         let amount = document.getElementById('inputAmount').value;
         if (amount <= 0) {
-          /*do some ting, alert, breadcrumb*/
+          alert('Amount has to be greater than 0, please try again !!');
+        } else {
+          let notes = document.getElementById('inputNote').value;
+          let params = {
+            amount: parseFloat(amount),
+            currency: document.getElementById('inputCurrency').value,
+            receipt: document.getElementById('receiptId').value,
+            payment_capture: document.getElementById('paymentCapture').value,
+            notes: notes ? JSON.parse(notes) : '',
+          };
+          axios
+            .post(url, params)
+            .then((response) => {
+              document.getElementById('orderID').value = response.data.data.order.id;
+            })
+            .catch((e) => console.error('error in creating order', e));
         }
-        let notes = document.getElementById('inputNote').value;
-        let params = {
-          amount: parseFloat(amount) * 100,
-          currency: document.getElementById('inputCurrency').value,
-          receipt: document.getElementById('receiptId').value,
-          payment_capture: document.getElementById('paymentCapture').value,
-          notes: notes ? notes : '',
-        };
-        axios
-          .post(url, params)
-          .then((response) => {
-            document.getElementById('orderID').value = response.data.data.id;
-          })
-          .catch((e) => console.error('error in creating order', e));
       };
       document.getElementById('checkOut').onclick = (e) => {
         e.preventDefault();
@@ -188,9 +189,9 @@
           order_id: document.getElementById('orderID').value,
           // alternative is to use a webhook
           handler: function (response) {
-            document.getElementById('order-pay-id').value = response.razorpay_payment_id;
-            document.getElementById('order-id').value = response.razorpay_order_id;
-            document.getElementById('order-sig').value = response.razorpay_signature;
+            document.getElementById('verifyPaymentID').value = response.razorpay_payment_id;
+            document.getElementById('verifyOrderID').value = response.razorpay_order_id;
+            document.getElementById('verifyPaymentSignature').value = response.razorpay_signature;
           },
           prefill: {
             name: document.getElementById('customerName').value || 'aquib-J',
@@ -198,7 +199,7 @@
             contact: document.getElementById('customerPhone').value || '9999999999',
           },
           notes: {
-            address: 'test address',
+            address: 'Abbey Road',
           },
           theme: {
             color: '#3399cc',

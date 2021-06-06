@@ -1,36 +1,35 @@
 module.exports = (queryInterface, DataTypes) => {
-  const payment = queryInterface.define(
-    'payment',
+  const razorwebhook = queryInterface.define(
+    'razorwebhook',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      bookingId: {
+      eventType: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      gatewayOrderId: {
+      paymentId: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      gatewayPaymentId: {
+      orderId: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      gatewayRefundId: {
+      refundId: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      amount: {
-        type: DataTypes.DECIMAL(20, 3),
-        allowNull: true,
-      },
-      paymentStatus: {
-        type: DataTypes.ENUM(['PENDING', 'SUCCESS', 'FAILED', 'REFUNDED']),
+      payload: {
+        type: DataTypes.JSONB,
         allowNull: false,
-        defaultValue: 'PENDING',
+      },
+      headers: {
+        type: DataTypes.JSONB,
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -51,11 +50,5 @@ module.exports = (queryInterface, DataTypes) => {
     },
   );
 
-  payment.associate = function (models) {
-    this.hasOne(models.booking);
-    this.belongsTo(models.booking);
-
-  };
-
-  return payment;
+  return razorwebhook;
 };

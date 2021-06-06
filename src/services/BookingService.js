@@ -2,19 +2,28 @@ const { Op } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const UtilityService = require('./UtilityService');
+const moment = require('moment');
 
 class BookingService {
   static async createBooking(params) {
-    //TODO: factor in payment Id while booking and also factor in status while doing an initial check
+    if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
     try {
       let cost = 0;
       let obj = {};
+      const today = moment().format('YYYY-MM-DD');
+      if (
+        !(moment(params.checkInDate).diff(today, 'days') > 0) ||
+        !(moment(params.checkOutDate).diff(today, 'days') > 0)
+      )
+        throw Response.createError(Message.cannotBookInThePastOrToday);
+
       Logger.log('info', 'checking if the Listing is already booked for the current dates');
       let booking = await models.booking.findAll({
         where: {
           [Op.and]: [
             {
               listingId: params.listingId,
+              status: 'BOOKED',
               [Op.or]: [
                 {
                   [Op.and]: [
@@ -51,7 +60,7 @@ class BookingService {
         listingId: params.listingId,
         checkInDate: params.checkInDate,
         checkOutDate: params.checkOutDate,
-        totalPrice: cost || params.totalPrice,
+        totalPrice: cost,
       });
       return { data: booking.get({ plain: true }) };
     } catch (err) {
@@ -61,6 +70,7 @@ class BookingService {
   }
 
   static async getBooking(params) {
+    if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
     try {
       Logger.log('info', 'getting all the bookings for the user');
       const user = await models.booking.findAll({
@@ -96,8 +106,37 @@ class BookingService {
     }
   }
   static async cancelBooking(params) {
+    if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+
     try {
-      return;
+      const [update, booking] = await Promise.all([
+        models.booking.update(
+          {
+            status: 'CANCELLED',
+          },
+          {
+            where: {
+              id: params.bookingId,
+            },
+          },
+        ),
+        models.booking.findOne({
+          attributes: [],
+
+          include: [
+            {
+              model: models.payment,
+              attributes: ['gatewayPaymentId'],
+            },
+          ],
+        }),
+      ]);
+      if (update && booking) return { data: booking.get({ plain: true }) };
+      else {
+        return {
+          message: `The booking is cancelled ,but no payment found for the booking`,
+        };
+      }
     } catch (err) {
       Logger.log('error', 'error cancelling booking for the user', err);
       throw Response.createError(Message.tryAgain, err);
