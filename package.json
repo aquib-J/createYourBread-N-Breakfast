@@ -4,9 +4,11 @@
   "description": "backend to https://desi-airbnb.netlify.app/",
   "main": "index.js",
   "dependencies": {
+    "@bull-board/express": "^3.2.7",
     "aws-sdk": "^2.912.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
+    "bull": "^3.22.7",
     "celebrate": "^14.0.0",
     "connect-redis": "^5.2.0",
     "cors": "^2.8.5",

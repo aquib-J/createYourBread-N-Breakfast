@@ -181,4 +181,10 @@ module.exports = {
     resCode: 1027,
     message: 'Failed to Create Order, Possible error in Request Payload, please try again',
   },
+  FailedUpdatingListingRatings: {
+    name: 'CustomError',
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    resCode: 1028,
+    message: 'Failed to Update the Ratings of Listings',
+  },
 };

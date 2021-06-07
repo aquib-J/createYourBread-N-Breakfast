@@ -76,6 +76,21 @@ class UtilityService {
     // where dateB > dateA
     return moment(dateB).diff(moment(dateA), 'days');
   }
+
+  static async resetListingRatings(params) {
+    //TODO: fetch all the bookings for the past week, and all the reviews in the past week and aggregate the ratings for the listing
+    // and update the ratings on the particular listing
+
+    // TODO: figure out the exact calculation
+    try {
+      return;
+
+      throw Response.createError(Message.FailedUpdatingListingRatings);
+    } catch (err) {
+      Logger.log('error', 'error in updating the Listing ratings', err);
+      throw Response.createError(Message.tryAgain, err);
+    }
+  }
 }
 
 module.exports = UtilityService;

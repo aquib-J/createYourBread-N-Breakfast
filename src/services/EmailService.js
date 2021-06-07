@@ -28,11 +28,11 @@ const generateMail = ({ from, to, sub, text, html, cc = '', bcc = '' }) => {
 
 /* 🏠🌍☕️🍔🍕🍣 🛌  */
 class Email {
-  static async signupEmail(email) {
+  static async signupEmail(job) {
     try {
       const config = {
         from: `Bread & Breakfast  <aquib.jansher@gmail.com>`,
-        to: email,
+        to: job.data.email,
         sub: `Welcome to Bread and Breakfast !!`,
         text: 'welcome to our amazing test site',
         html: `<p><b>Hello</b> to Bread & Breakfast 🏠🌍☕️🍔 <img src="cid:note@example.com"/></p>
@@ -46,26 +46,32 @@ class Email {
       Response.createError(Message.tryAgain, err);
     }
   }
-  static async passwordResetEmail(params) {
+  static async passwordResetEmail(job) {
     try {
       const config = {
         from: `Bread & Breakfast  <aquib.jansher@gmail.com>`,
-        to: params.emailId,
+        to: job.data.emailId,
         sub: `Reset Link - Bread and Breakfast !!`,
-        text: `Hi user, here's your reset link ${process.env.RESET_URL}${params.resetToken} Valid for an hour`,
+        text: `Hi user, here's your reset link ${process.env.RESET_URL}${job.data.resetToken} Valid for an hour`,
       };
       const sentMail = await transporter.sendMail(generateMail(config));
-      if (sentMail) Logger.log('info', 'reset email sent successfully', sentMail);
+      if (sentMail) {
+        Logger.log('info', 'reset email sent successfully', sentMail);
+        return sentMail;
+      }
       Response.createError(Message.FailedToSendEmail);
     } catch (err) {
       Logger.log('error', 'error sending email with the reset token', err);
       Response.createError(Message.tryAgain, err);
     }
   }
-  static async postResetEmail(params) {
+  static async postResetEmail(job) {
     return;
   }
-  static async bookingConfirmationEmail(params) {
+  static async bookingConfirmationEmail(job) {
+    return;
+  }
+  static async bookingCancellationEmail(job) {
     return;
   }
 }

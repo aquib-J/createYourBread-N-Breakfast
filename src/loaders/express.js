@@ -10,6 +10,16 @@ const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
 const { prefix } = require('./../config/index').api;
 const favicon = require('serve-favicon');
+const { producer } = require('../queues');
+const { createBullBoard } = require('@bull-board/api');
+const { BullAdapter } = require('@bull-board/api/bullAdapter');
+const { ExpressAdapter } = require('@bull-board/express');
+const serverAdapter = new ExpressAdapter();
+const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
+  queues: [new BullAdapter(producer.EmailQueue), new BullAdapter(producer.RatingAggregationQueue)],
+  serverAdapter: serverAdapter,
+});
+
 
 const connectRedis = require('connect-redis');
 const redisClient = require('./redis');
@@ -96,6 +106,9 @@ exports.loadModules = ({ app }) => {
   app.set('view engine', 'ejs');
 
   app.use(favicon(__dirname + '../../../views/favicon/favicon.ico'));
+
+  serverAdapter.setBasePath('/admin/queues');
+  app.use('/admin/queues', serverAdapter.getRouter());
 
   //load API routes
   /**

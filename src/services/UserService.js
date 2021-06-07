@@ -3,6 +3,12 @@ const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const Authentication = require('./AuthenticationService');
 const Email = require('./EmailService');
+const { producer } = require('../queues');
+const {
+  constants: {
+    emailJobTypes: { resetEmail, signupEmail, bookingCancellation, bookingConfirmation },
+  },
+} = require('../utils');
 
 class UserService {
   static async createUser(params) {
@@ -35,8 +41,7 @@ class UserService {
 
       Logger.log('info', 'sending welcome email to the user');
 
-      Email.signupEmail(params.emailId); //TODO: move it to a job-queue & orchestrate batches or push them onto a worker thread so that when multiple concurrent signups happen, the next tick doesnt block everything else when it starts picking up these queued promise tasks
-
+      const Job = await producer.enqueueEmailJobs(signupEmail, { email: params.emailId });
       return { data: user.get({ plain: true }) };
     } catch (err) {
       Logger.log('error', 'error creating user ', err);
@@ -46,9 +51,12 @@ class UserService {
   static async getResetLink(params) {
     try {
       Logger.log('info', ' sending the reset email with the token');
-      let obj = { emailId: params.emailId, resetToken: params.session.resetToken };
-      // Email.passwordResetEmail(obj);
-      return { message: `Email with the reset link sent successfully`, data: obj.resetToken };
+
+      let jobData = { emailId: params.emailId, resetToken: params.session.resetToken };
+
+      const Job = await producer.enqueueEmailJobs(resetEmail, jobData); 
+
+      return { message: `Email with the reset link sent successfully`, data: Job.data };
     } catch (err) {
       Logger.log('error', 'error in sending reset link', err);
       throw Response.createError(Message.tryAgain, err);
