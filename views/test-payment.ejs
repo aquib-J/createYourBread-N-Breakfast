@@ -46,13 +46,18 @@
       </div>
       <div class="form-group col-sm-3 mx-5">
         <label for="receiptId">Receipt ID</label>
+        <small id="receiptId" class="form-text text-muted"
+          >Please enter the `bookingId` here from booking creation</small
+        >
         <input type="string" class="form-control" id="receiptId" />
         <small id="receiptId" class="form-text text-muted">receipt ID -> used to track payment internally</small>
       </div>
       <div class="form-group col-sm-3 mx-5">
         <label for="inputNote">Notes</label>
-        <input type="JSON" class="form-control" id="inputNote" />
-        <small id="inputNote" class="form-text text-muted">Notes object --> Optional request parameter (JSON.stringified Object)</small>
+        <input type="JSON" class="form-control" id="inputNote" disabled />
+        <small id="inputNote" class="form-text text-muted"
+          >Notes object --> Optional request parameter (JSON.stringified Object)</small
+        >
       </div>
       <div class="form-group col-sm-3 mx-5">
         <label for="paymentCapture">Payment-Capture</label>
@@ -149,6 +154,40 @@
       <button type="submit" class="btn btn-primary mx-5" id="verify">Verify Payment</button>
     </form>
     <br /><br />
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h3>Prod Payment flows</h3>
+        <br />
+        <p class="lead">
+          In production, these manual verification won't be required,its just for testing and its actually
+          counter-productive to the payment flow, Webhook consumption APIs are already there, which do the signature
+          verification before consuming the payloads, here we've made provisions in the code for 6 kinds of events<br />Specifically
+          for
+        </p>
+
+        <ul class="list-group col-3">
+          <li class="list-group-item">payment.failed</li>
+          <li class="list-group-item">payment.captured</li>
+          <li class="list-group-item">order.paid</li>
+          <li class="list-group-item">refund.processed</li>
+          <li class="list-group-item">refund.failed</li>
+          <li class="list-group-item">refund.created</li>
+        </ul>
+        <br />
+        <p class="lead">
+          Positive/Happy Flows :<br />
+          <h3>-------------------------</h3>
+          <h4>1. create Booking :</h4> <br />Booking (Create) --> Create Order(bookingId in receipt)(direct API calls) --> create
+          appropriate checkout (from the FE UI) <br />
+          Poll the payment status with `orderId` --> Email will be dispatched on successfull payment post booking
+        <h3>--------------------------------------------------------------------------------------------------------------</h3>
+          <br />
+          <h3>2. cancel Booking :</h3> <br />
+          Booking (Cancel) --> use the `paymentId` in the response to call Payment Refund API --> Poll the payment
+          status with the `paymentId` --> Email will be dispatched post refund initiation
+        </p>
+      </div>
+    </div>
 
     <script>
       document.getElementById('order-button').onclick = (e) => {
