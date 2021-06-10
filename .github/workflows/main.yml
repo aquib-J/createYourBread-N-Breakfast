@@ -1,0 +1,32 @@
+name: CI | Deploy to DO Droplet
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: login, shutdown container, pull latest master and trigger fresh build
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.DO_HOST}}
+          username: ${{secrets.DO_USERNAME}}
+          password: ${{secrets.DO_PASSWORD}}
+          script: |
+            #shut down all the containers:
+            docker-compose down
+            
+            cd createYourBread-N-Breakfast
+            git checkout main
+            git pull
+            
+            #rebuild from the existing app as and when required
+            docker-compose up --build
+            
+        
+      
+  
