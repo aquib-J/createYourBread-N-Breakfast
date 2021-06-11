@@ -7,27 +7,33 @@ const { mockAll } = require('./../utils').mockAll;
 const { getCryptoRandom: GCR } = require('./../utils').utilityMethods;
 
 const loader = async function ({ expressApp }) {
-  if (Config.sequelizeConfig.autoMigrate === 'true' || Config.sequelizeConfig.autoMigrate === true) {
-    await migrate();
-    Logger.log('info', '🔥 DB Migrated 🔥');
-  }
+  try {
+    if (Config.sequelizeConfig.autoMigrate === 'true' || Config.sequelizeConfig.autoMigrate === true) {
+      await migrate();
+      Logger.log('info', '🔥 DB Migrated 🔥');
+    }
 
-  if (Config.dataMock) {
-    await mockAll(Config.noOfMockRecords, models, GCR);
-    Logger.log('info', '🍻 ✔️  DB seeded with mock data **');
-  }
-  await sequelize.authenticate();
-  Logger.log('info', '🍻 ✔️  DB loaded and connected! **');
+    if (Config.dataMock) {
+      await mockAll(Config.noOfMockRecords, models, GCR);
+      Logger.log('info', '🍻 ✔️  DB seeded with mock data **');
+    }
+    await sequelize.authenticate();
+    Logger.log('info', '🍻 ✔️  DB loaded and connected! **');
 
-  if (Config.redis.enabled) {
-    await Redis.init();
-    Logger.log('info', '🍻 ✔️  Redis connected **');
-  } else {
-    Logger.log('info', '** Redis disabled **');
-  }
+    if (Config.redis.enabled) {
+      await Redis.init();
+      Redis.getClient().on('connect', () => {
+        Logger.log('info', '🍻 ✔️  Redis connected **');
+      });
+    } else {
+      Logger.log('info', '** Redis disabled **');
+    }
 
-  await expressLoader.loadModules({ app: expressApp});
-  Logger.log('info', '🚀 ✔️  Express loaded 🚀');
+    await expressLoader.loadModules({ app: expressApp });
+    Logger.log('info', '🚀 ✔️  Express loaded 🚀');
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 module.exports = loader;

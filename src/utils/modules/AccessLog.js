@@ -29,7 +29,7 @@ class AccessLog {
       }),
     ];
 
-    if (!Config.isLocal) {
+    /* if (!Config.isLocal) {
       const fileTransport = new winston.transports.DailyRotateFile({
         filename: `/var/log/${Config.service.name}/access.log.%DATE%`,
         datePattern: 'YYYY-MM-DD',
@@ -42,7 +42,7 @@ class AccessLog {
       });
       transports.push(fileTransport);
     }
-
+*/
     return expressWinston.logger({
       transports,
       format: winston.format.combine(

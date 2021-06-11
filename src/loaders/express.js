@@ -72,16 +72,16 @@ exports.loadModules = ({ app }) => {
   // might come handy some day if sensitive data is stored in prod for
   // something like PCI DSS compliance etc
 
-  /* app.use(
+  app.use(
     AccessLog.global({
-      requestWhitelist: ['params', 'body'],
+      requestWhitelist: ['params', 'body','query'],
       bodyWhitelist: [],
       bodyBlacklist: [],
       responseWhitelist: ['body'],
       headerBlacklist: [],
     }),
   );
-*/
+
   //handle errors from 'celebrate'
   app.use(errors());
 

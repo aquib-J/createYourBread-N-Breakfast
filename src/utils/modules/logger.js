@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const winston = require('winston');
-const { Logger } = require('.');
 require('winston-daily-rotate-file');
 
 const Config = require('../../config');
@@ -45,7 +44,7 @@ module.exports = {
           }),
         );
       } else {
-        const fileTransport = new winston.transports.DailyRotateFile({
+        /*const fileTransport = new winston.transports.DailyRotateFile({
           filename: `/var/log/${Config.service.name}/app.log.%DATE%`,
           datePattern: 'YYYY-MM-DD',
           zippedArchive: true,
@@ -54,12 +53,12 @@ module.exports = {
           maxSize: '100m',
           maxFiles: '15d',
           format: winston.format.json,
-        });
+        });*/
         transports.push(
           new winston.transports.Console({
             format: winston.format.combine(winston.format.cli(), winston.format.simple()),
           }),
-          fileTransport,
+          //fileTransport,
         );
       }
     }
