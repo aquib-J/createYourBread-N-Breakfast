@@ -1,6 +1,7 @@
 const { Logger, Response, Message } = require('../../utils');
 const { AuthenticationService } = require('../../services');
 const { v4: uuidv4 } = require('uuid');
+const { sessionConfig: { cookieName } } = require('./../../config');
 
 class Authenticate {
   static async checkSession(req, res, next) {
@@ -72,7 +73,7 @@ class Authenticate {
       req.session.destroy((err) => {
         if (err) Response.fail(res, Response.createError(Message.FailedToDeleteSession));
 
-        res.clearCookie(process.env.SESSION_COOKIE_NAME);
+        res.clearCookie(cookieName);
 
         next();
       });

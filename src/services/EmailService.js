@@ -1,11 +1,15 @@
 const nodemailer = require('nodemailer');
 const { Logger, Response, Message } = require('./../utils');
+const {
+  emailConfig: { serviceEmail, serviceEmailPassword },
+  resetUrl,
+} = require('./../config');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS,
+    user: serviceEmail,
+    pass: serviceEmailPassword,
   },
   logger: false,
   debug: false,
@@ -13,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 const generateMail = ({ from, to, sub, text, html, cc = '', bcc = '' }) => {
   return {
-    from: from || `Bread & Breakfast 🏠🌍☕️🍔🍕🍣 🛌 <${process.env.EMAIL}>`,
+    from: from || `Bread & Breakfast 🏠🌍☕️🍔🍕🍣 🛌 <${serviceEmail}>`,
     to,
     cc,
     bcc,
@@ -52,7 +56,7 @@ class Email {
         from: `Bread & Breakfast  <aquib.jansher@gmail.com>`,
         to: job.data.emailId,
         sub: `Reset Link - Bread and Breakfast !!`,
-        text: `Hi user, here's your reset link ${process.env.RESET_URL}${job.data.resetToken} Valid for an hour`,
+        text: `Hi user, here's your reset link ${resetUrl.link}${job.data.resetToken} Valid for an hour`,
       };
       const sentMail = await transporter.sendMail(generateMail(config));
       if (sentMail) {

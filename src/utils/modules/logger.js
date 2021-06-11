@@ -3,7 +3,7 @@ const winston = require('winston');
 const { Logger } = require('.');
 require('winston-daily-rotate-file');
 
-const Config = require('../config');
+const Config = require('../../config');
 
 let LoggerInstance = null;
 

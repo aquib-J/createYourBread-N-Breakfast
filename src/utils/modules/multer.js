@@ -2,7 +2,7 @@ const multer = require('multer');
 const _ = require('lodash');
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
-const { awsConfig } = require('../../config');
+const { awsConfig, awsConfig:{s3Config} } = require('../../config');
 const path = require('path');
 
 if (process.env.NODE_ENV) {
@@ -30,7 +30,7 @@ const fileFilter = function (req, file, cb) {
 const listingStorage = multerS3({
   s3,
   acl: 'public-read',
-  bucket: awsConfig.listingImagesBucket,
+  bucket: s3Config.listingImagesBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   metadata(req, file, cb) {
     let ext = path.extname(file.originalname);
@@ -47,7 +47,7 @@ const listingStorage = multerS3({
 const dpStorage = multerS3({
   s3,
   acl: 'public-read',
-  bucket: awsConfig.dpBucket,
+  bucket: s3Config.dpBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   metadata(req, file, cb) {
     let ext = path.extname(file.originalname);
@@ -63,10 +63,10 @@ const dpStorage = multerS3({
 
 const listingUpload = multer({
   storage: listingStorage,
-  limits: { fileSize: process.env.S3_MAX_FILE_SIZE },
+  limits: { fileSize: s3Config.maxFileSize },
   fileFilter,
 });
-const dpUpload = multer({ storage: dpStorage, limits: { fileSize: process.env.MAX_FILE_SIZE }, fileFilter });
+const dpUpload = multer({ storage: dpStorage, limits: { fileSize: s3Config.maxFileSize }, fileFilter });
 
 class MulterMiddleware {
   static single(name) {

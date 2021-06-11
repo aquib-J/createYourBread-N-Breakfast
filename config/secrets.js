@@ -6,7 +6,7 @@ module.exports.load = async function (envPath) {
         path: envPath,
       });
     } else {
-      // have to configure loadup from heroku
+      // don't need in prod as the env variables are injected into the local shell
     }
   }
   catch(err){

@@ -1,7 +1,7 @@
 const winston = require('winston');
 const expressWinston = require('express-winston');
 
-const Config = require('../config');
+const Config = require('../../config');
 
 class AccessLog {
   static global({
@@ -28,7 +28,6 @@ class AccessLog {
         format: winston.format.combine(winston.format.cli(), winston.format.simple()),
       }),
     ];
-    // works on ec2/ ecs deployment : not on heroku
 
     if (!Config.isLocal) {
       const fileTransport = new winston.transports.DailyRotateFile({

@@ -8,7 +8,10 @@ const { errors, isCelebrateError } = require('celebrate');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
-const { prefix } = require('./../config/index').api;
+const {
+  api: { prefix },
+  sessionConfig: { secret, cookieName, expiry },
+} = require('./../config');
 const favicon = require('serve-favicon');
 const { producer } = require('../queues');
 const { createBullBoard } = require('@bull-board/api');
@@ -19,7 +22,6 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
   queues: [new BullAdapter(producer.EmailQueue), new BullAdapter(producer.RatingAggregationQueue)],
   serverAdapter: serverAdapter,
 });
-
 
 const connectRedis = require('connect-redis');
 const redisClient = require('./redis');
@@ -46,7 +48,6 @@ exports.loadModules = ({ app }) => {
       reportOnly: true, // to allow the local scripts in the test-payment.ejs as well as razorpay frame to load and run
     }),
   );
- 
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs,
@@ -91,14 +92,14 @@ exports.loadModules = ({ app }) => {
   app.use(
     session({
       store: new RedisStore({ client: redisClient.getClient() }),
-      secret: process.env.SESSION_SECRET || 'Random difficult string 12345',
+      secret: secret || 'Random difficult string 12345',
       saveUninitialized: false,
       resave: false,
-      name: process.env.SESSION_COOKIE_NAME || 'Session-ID',
+      name: cookieName || 'Session-ID',
       cookie: {
         secure: false, // to allow localhost testing , to be set to true in prod
         httpOnly: true,
-        maxAge: parseInt(process.env.SESSION_EXPIRY) || 5 * 60 * 1000,
+        maxAge: parseInt(expiry) || 5 * 60 * 1000,
       },
     }),
   );
