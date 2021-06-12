@@ -1,6 +1,6 @@
 const redis = require('redis');
 const _ = require('lodash');
-const Config = require('../config');
+const {redis:{config:{host}}} = require('../config');
 
 let redisClient = null;
 
@@ -24,7 +24,7 @@ const retry_strategy = function (options) {
 class Redis {
   static async init() {
     redisClient = await redis.createClient({
-      ...Config.redis.config,
+      host,
       retry_strategy,
     });
   }

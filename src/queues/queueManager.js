@@ -1,7 +1,7 @@
 const Queue = require('bull');
 const { redis } = require('../config');
+const { Logger } = require('../utils');
 
-const { EmailService: Email, UtilityService: Utility } = require('../services');
 const {
   constants: {
     emailJobTypes: { resetEmail, signupEmail, bookingCancellation, bookingConfirmation },
@@ -9,41 +9,49 @@ const {
 } = require('../utils');
 
 let redisConf = {
-  redis: redis.config.url,
+  redis: { host: redis.config.host },
 };
+let Email = require('../services/EmailService');
+let Utility = require('../services/UtilityService');
 
-const EmailQueue = new Queue('email', redisConf);
+class QueueM {
+  constructor() {
+    this.EmailQueue = new Queue('email', redisConf);
+    this.RatingAggregationQueue = new Queue('ratings', redisConf);
+  }
 
-const RatingAggregationQueue = new Queue('ratings', redisConf);
+  // method to create and enqueue email jobs
+  async enqueueEmailJobs(type, data) {
+    const job = await this.EmailQueue.add(type, data, {
+      retry: 2,
+    });
+    return job;
+  }
+  async getQueues() {
+    return {
+      EmailQueue: this.EmailQueue,
+      RatingAggregationQueue: this.RatingAggregationQueue,
+    };
+  }
 
-const ratingUpdateJob = RatingAggregationQueue.add({}, { repeat: { cron: '1 0 * * *' } }); // set some relevant payload data in the empty object
+  async IntializeConsumersAndAttachEvents() {
+    this.RatingAggregationQueue.add({}, { repeat: { cron: '1 0 * * *' } }), // set some relevant payload data in the empty object
+      //Consumers;
+    this.EmailQueue.process(resetEmail, Email.passwordResetEmail);
+    this.EmailQueue.process(signupEmail, Email.signupEmail);
+    this.EmailQueue.process(bookingConfirmation, Email.bookingConfirmationEmail);
+    this.EmailQueue.process(bookingCancellation, Email.bookingCancellationEmail);
+    this.RatingAggregationQueue.process('DailyListingUpdate', Utility.resetListingRatings);
 
-// function to create and enqueue email jobs 
-const enqueueEmailJobs = async (type, data) => {
-  const job = await EmailQueue.add(type, data, {
-    retry: 2,
-  });
-  return job;
-};
+    // post consumption event publishers :
 
-//  Consumers 
+    this.EmailQueue.on('completed', (job, result) => {
+      Logger.log('info', `${JSON.stringify(job.name)} completed with result ${JSON.stringify(result.response)}`);
+    });
+    this.RatingAggregationQueue.on('completed', (job, result) => {
+      Logger.log('info', `Job completed with result ${result}`);
+    });
+  }
+}
 
-EmailQueue.process(resetEmail, Email.passwordResetEmail);
-EmailQueue.process(signupEmail, Email.signupEmail);
-EmailQueue.process(bookingConfirmation, Email.bookingConfirmationEmail);
-EmailQueue.process(bookingCancellation, Email.bookingCancellationEmail);
-RatingAggregationQueue.process('DailyListingUpdate', Utility.resetListingRatings);
-
-
-// post consumption event publishers :
-
-EmailQueue.on('completed', (job, result) => {
-  console.log(`Job completed with result ${result}`);
-});
-RatingAggregationQueue.on('completed', (job, result) => {
-  console.log(`Job completed with result ${result}`);
-});
-
-
-
-module.exports = { EmailQueue, RatingAggregationQueue, enqueueEmailJobs };
+module.exports = new QueueM();

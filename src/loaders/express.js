@@ -13,13 +13,15 @@ const {
   sessionConfig: { secret, cookieName, expiry },
 } = require('./../config');
 const favicon = require('serve-favicon');
-const { producer } = require('../queues');
+const {
+  Queues
+} = require('../queues');
 const { createBullBoard } = require('@bull-board/api');
 const { BullAdapter } = require('@bull-board/api/bullAdapter');
 const { ExpressAdapter } = require('@bull-board/express');
 const serverAdapter = new ExpressAdapter();
 const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-  queues: [new BullAdapter(producer.EmailQueue), new BullAdapter(producer.RatingAggregationQueue)],
+  queues: [new BullAdapter(Queues.EmailQueue), new BullAdapter(Queues.RatingAggregationQueue)],
   serverAdapter: serverAdapter,
 });
 
@@ -74,7 +76,7 @@ exports.loadModules = ({ app }) => {
 
   app.use(
     AccessLog.global({
-      requestWhitelist: ['params', 'body','query'],
+      requestWhitelist: ['params', 'body', 'query'],
       bodyWhitelist: [],
       bodyBlacklist: [],
       responseWhitelist: ['body'],

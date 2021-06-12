@@ -20,10 +20,12 @@ jobs:
             set -o allexport; source ~/.env; set +o allexport
             #shut down all the containers:
             docker-compose down
+            # remove all the dangling containers
+            docker rmi $(docker images -f dangling=true -q)
             git checkout main
             git pull
             #rebuild from the existing app as and when required
-            docker-compose up --build
+            docker-compose up --build -d
             
         
       

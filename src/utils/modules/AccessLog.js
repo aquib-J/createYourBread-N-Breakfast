@@ -85,7 +85,6 @@ class AccessLog {
       dynamicMeta(req, res) {
         return {
           application: Config.service.name,
-          traceId: Tracer.id(),
           remoteIp: req.ip.indexOf(':') >= 0 ? req.ip.substring(req.ip.lastIndexOf(':') + 1) : req.ip, // just ipv4
           referrer: req.get('Referrer'),
         };

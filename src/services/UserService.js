@@ -2,8 +2,7 @@ const { Op } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
 const Authentication = require('./AuthenticationService');
-const Email = require('./EmailService');
-const { producer } = require('../queues');
+const { Queues } = require('../queues');
 const {
   constants: {
     emailJobTypes: { resetEmail, signupEmail, bookingCancellation, bookingConfirmation },
@@ -40,9 +39,8 @@ class UserService {
       });
 
       Logger.log('info', 'sending welcome email to the user');
-
-      const Job = await producer.enqueueEmailJobs(signupEmail, { email: params.emailId });
-      return { data: user.get({ plain: true }) };
+      const Job = await Queues.enqueueEmailJobs(signupEmail, { email: params.emailId });
+      return { data: { Job, user: user.get({ plain: true }) } };
     } catch (err) {
       Logger.log('error', 'error creating user ', err);
       throw Response.createError(Message.tryAgain, err);
@@ -54,7 +52,7 @@ class UserService {
 
       let jobData = { emailId: params.emailId, resetToken: params.session.resetToken };
 
-      const Job = await producer.enqueueEmailJobs(resetEmail, jobData); 
+      const Job = await Queues.enqueueEmailJobs(resetEmail, jobData);
 
       return { message: `Email with the reset link sent successfully`, data: Job.data };
     } catch (err) {

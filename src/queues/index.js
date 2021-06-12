@@ -1,3 +1,3 @@
 module.exports = {
-  producer: require('./queueManager'),
+  Queues: require('./queueManager'),
 };

@@ -1,10 +1,11 @@
 const { Logger, Migration: migrate } = require('../utils');
 const Config = require('../config');
 const { sequelize, models } = require('./sequelize');
-const expressLoader = require('./express');
 const Redis = require('./redis');
+const { Queues } = require('../queues');
 const { mockAll } = require('./../utils').mockAll;
 const { getCryptoRandom: GCR } = require('./../utils').utilityMethods;
+const expressLoader = require('./express');
 
 const loader = async function ({ expressApp }) {
   try {
@@ -28,6 +29,8 @@ const loader = async function ({ expressApp }) {
     } else {
       Logger.log('info', '** Redis disabled **');
     }
+    await Queues.IntializeConsumersAndAttachEvents();
+    Logger.log('info', '🍻 ✔️ Queues set up and consumers ready');
 
     await expressLoader.loadModules({ app: expressApp });
     Logger.log('info', '🚀 ✔️  Express loaded 🚀');
