@@ -32,7 +32,7 @@ class UserController {
   }
   static async dpUpload(req, res) {
     try {
-      Logger.log('info', 'upload user profile pic');
+      Logger.log('info', 'uploading user profile pic');
       const servRes = await UserService.dpUpload(req.body);
       Response.success(res, servRes);
     } catch (err) {

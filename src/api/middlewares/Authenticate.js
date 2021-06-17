@@ -28,7 +28,6 @@ class Authenticate {
         Response.fail(res, Response.createError(Message.sessionMissing));
         return;
       }
-      //TODO: add checks for mismatch between the info in session and the one passed down in the req call once all the APIs are complete,
     } else {
       Response.fail(res, Response.createError(Message.sessionMissing));
       return;

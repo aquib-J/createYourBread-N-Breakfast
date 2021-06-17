@@ -5,15 +5,13 @@ const { PushToBody, Authenticate } = require('../../../middlewares');
 
 const route = Router();
 
+// signs up and creates a user : email Id is unique
+
 route.post('/signup', validation.signup, PushToBody, controller.signup);
-// signs up and creates a user : email id is unique
 
 route.post('/login', validation.login, Authenticate.attachSession, PushToBody, controller.login);
 
-// separate get method on login for the frontEnd to hit and acquire session info
-// route.get('/login', validation.login, controller.returnSessionInfo);
-
-route.get('/logout', Authenticate.checkSession, Authenticate.destroySession, controller.logout);
+route.post('/logout', Authenticate.checkSession, Authenticate.destroySession, controller.logout);
 
 route.post(
   '/reset-link',

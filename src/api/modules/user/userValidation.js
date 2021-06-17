@@ -3,38 +3,41 @@ const { celebrate, Joi } = require('celebrate');
 module.exports = {
   getUser: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      params: {
+        userId: Joi.string().required(),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
   getCompleteUserRecord: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      params: {
+        userId: Joi.string().required(),
+      },
     },
     { allowUnknown: true, abortEarly: false },
   ),
   updateUser: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      params: {
+        userId: Joi.string().required(),
+      },
+      body: {
+        firstName: Joi.string().trim(),
+        lastName: Joi.string().trim(),
+        bio: Joi.string().trim(),
+        emailId: Joi.string().trim().email(),
+        dob: Joi.date().less(new Date()),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
   dpUpload: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      params: {
+        userId: Joi.string().required(),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
 };

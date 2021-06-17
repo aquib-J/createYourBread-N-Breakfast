@@ -13,9 +13,7 @@ const {
   sessionConfig: { secret, cookieName, expiry },
 } = require('./../config');
 const favicon = require('serve-favicon');
-const {
-  Queues
-} = require('../queues');
+const { Queues } = require('../queues');
 const { createBullBoard } = require('@bull-board/api');
 const { BullAdapter } = require('@bull-board/api/bullAdapter');
 const { ExpressAdapter } = require('@bull-board/express');
@@ -145,8 +143,12 @@ exports.loadModules = ({ app }) => {
         errors: err.details,
       });
     }
+    // Handle multer error
+    if (err.name === 'MulterError') {
+      return Response.fail(res, err.message, StatusCodes.UNPROCESSABLE_ENTITY);
+    }
 
-    return Response.fail(res, err.message, err.status);
+    return Response.fail(res, err.message, err.status || StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   app.use((err, req, res) => {

@@ -32,7 +32,7 @@ module.exports = {
     name: 'CustomError',
     code: StatusCodes.UNAUTHORIZED,
     resCode: 1003,
-    message: 'session not found for the user, please log in again',
+    message: 'session not found for the user, user is logged out, please log in again',
   },
   userIdMissing: {
     name: 'CustomError',

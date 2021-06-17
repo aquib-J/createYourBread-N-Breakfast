@@ -3,47 +3,44 @@ const { celebrate, Joi } = require('celebrate');
 module.exports = {
   signup: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      body: {
+        firstName: Joi.string().trim().required(),
+        lastName: Joi.string().trim().required(),
+        emailId: Joi.string().trim().email().required(),
+        password: Joi.string().trim().required(),
+        dob: Joi.date().less(new Date()).required(),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
   login: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      body: {
+        emailId: Joi.string().trim().email().required(),
+        password: Joi.string().required(),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
-  ),
-  logout: celebrate(
-    {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
-    },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
   getResetLink: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      body: {
+        emailId: Joi.string().trim().email().required(),
+        urlPathTemplate: Joi.string().trim().required(),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
   reset: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      params: {
+        resetToken: Joi.string().trim().uuid().required(),
+      },
+      body: {
+        emailId: Joi.string().trim().email().required(),
+        password: Joi.string().required(),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
 };

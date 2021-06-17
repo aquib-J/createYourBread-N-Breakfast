@@ -10,24 +10,24 @@ const router = Router();
 router.use('/auth', authRoutes);
 
 //fetch user profile details
-router.get('/:id', validation.getUser, Authenticate.checkSession, PushToBody, controller.getUser);
+router.get('/:userId', validation.getUser, Authenticate.checkSession, PushToBody, controller.getUser);
 
 // edit user profile info
-router.patch('/:id', validation.updateUser, Authenticate.checkSession, PushToBody, controller.updateUser);
+router.patch('/:userId', validation.updateUser, Authenticate.checkSession, PushToBody, controller.updateUser);
 
 //upload a users profile pic
 router.post(
   '/:userId/dp-upload',
+  validation.dpUpload,
   Authenticate.checkSession,
   Multer.single('image'),
-  validation.dpUpload,
   PushToBody,
   controller.dpUpload,
 );
 
 // fetch All Data associated with a particular user
 router.get(
-  '/complete-user-record/:id',
+  '/:userId/complete-user-record',
   validation.getCompleteUserRecord,
   Authenticate.checkSession,
   PushToBody,
