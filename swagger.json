@@ -1,1055 +1,2860 @@
 {
-   "openapi": "3.0.0",
-   "info": {
-      "description": "This covers almost all the API's and the responses pertaining to the project. \nFor more Information about the project, \n\nplease checkout :\n\n[https://github.com/aquib-J/bread-and-breakfast-backend](Bread&Bourbon)",
-      "version": "1.0.0",
-      "title": "Swagger Bread & Bourbon",
-      "termsOfService": "http://swagger.io/terms/",
-      "contact": {
-         "email": "aquib.jansher@gmail.com",
-         "name": "me"
+  "openapi": "3.0.3",
+  "info": {
+    "title": "createYourBreadNBreakfast",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "http://139.59.70.64"
+    },
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/api/v1/booking/cancel/{userId}/{bookingId}": {
+      "delete": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "cancel a booking",
+        "description": "cancel a booking",
+        "operationId": "cancelABooking",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       },
-      "license": {
-         "name": "Apache 2.0",
-         "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-      }
-   },
-   "servers": [
-     {
-       "description": "localhost -> your local test server",
-       "url": "http://localhost:5000/api/v1/"
-     },
-     {
-       "description": "development server -> To be set up for dev tests",
-       "url": "https:// :TODO"
-     },
-     {
-       "description": "Prod -> Prod Environment",
-       "url": "https:// :TODO"
-     }
-   ],
-   "tags": [
-      {
-         "name": "User",
-         "description": "Everything User Related",
-         "externalDocs": {
-            "description": "Find out more",
-            "url": "http://swagger.io"
-         }
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "bookingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/booking/user/{userId}": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "get all the bookings made by a user",
+        "description": "get all the bookings made by a user",
+        "operationId": "getAllTheBookingsMadeByAUser",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       },
-      {
-         "name": "store",
-         "description": "Access to Petstore orders"
-      },
-      {
-         "name": "user",
-         "description": "Operations about user",
-         "externalDocs": {
-            "description": "Find out more about our store",
-            "url": "http://swagger.io"
-         }
-      },
-      {
-         "name": "Bookings",
-         "description": "APIs for booking"
-      }
-   ],
-   "paths": {
-      "/pet": {
-         "post": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Add a new pet to the store",
-            "operationId": "addPet",
-            "responses": {
-               "405": {
-                  "description": "Invalid input"
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ],
-            "requestBody": {
-               "$ref": "#/components/requestBodies/Pet"
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/booking/{userId}": {
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "create a booking ",
+        "description": "create a booking ",
+        "operationId": "createABooking",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "checkInDate": {
+                    "type": "string",
+                    "example": "2021-06-08T00:00:00.000Z"
+                  },
+                  "checkOutDate": {
+                    "type": "string",
+                    "example": "2021-06-10T00:00:00.000Z"
+                  },
+                  "listingId": {
+                    "type": "string",
+                    "example": "ae9748e5ad4201"
+                  }
+                }
+              },
+              "example": {
+                "checkInDate": "2021-06-08T00:00:00.000Z",
+                "checkOutDate": "2021-06-10T00:00:00.000Z",
+                "listingId": "ae9748e5ad4201"
+              }
             }
-         },
-         "put": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Update an existing pet",
-            "operationId": "updatePet",
-            "responses": {
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "Pet not found"
-               },
-               "405": {
-                  "description": "Validation exception"
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ],
-            "requestBody": {
-               "$ref": "#/components/requestBodies/Pet"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/bookmark/{userId}": {
+      "get": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "get all bookmarks made by the user",
+        "description": "get all bookmarks made by the user",
+        "operationId": "getAllBookmarksMadeByTheUser",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/bookmark/{userId}/{bookmarkId}": {
+      "delete": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "delete a specific bookmark",
+        "description": "delete a specific bookmark",
+        "operationId": "deleteASpecificBookmark",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "bookmarkId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/bookmark/{userId}/{listingId}/create": {
+      "post": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "create a bookmark",
+        "description": "create a bookmark",
+        "operationId": "createABookmark",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "listingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/listing/host/{userId}": {
+      "get": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "get listings hosted by user",
+        "description": "get listings hosted by user",
+        "operationId": "getListingsHostedByUser",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "41db9c193cd50a"
+          }
+        }
+      ]
+    },
+    "/api/v1/listing/search": {
+      "get": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "search listings",
+        "description": "search listings",
+        "operationId": "searchListings",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "Bangalore"
             }
-         }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "resultsPerPage",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          },
+          {
+            "name": "lowerPriceLimit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "1000"
+            }
+          },
+          {
+            "name": "upperPriceLimit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "15000"
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "3"
+            },
+            "description": "minimum rating threshold"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "price"
+            },
+            "description": "sortBy can have 3 options [\"ratings\",\"price\",\"updatedAt\"]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/listing/{listingId}": {
+      "get": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "fetch a particular listing info",
+        "description": "fetch a particular listing info",
+        "operationId": "fetchAParticularListingInfo",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       },
-      "/pet/findByStatus": {
-         "get": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Finds Pets by status",
-            "description": "Multiple status values can be provided with comma separated strings",
-            "operationId": "findPetsByStatus",
-            "parameters": [
-               {
-                  "name": "status",
-                  "in": "query",
-                  "description": "Status values that need to be considered for filter",
-                  "required": true,
-                  "explode": true,
-                  "schema": {
-                     "type": "array",
-                     "items": {
-                        "type": "string",
-                        "enum": [
-                           "available",
-                           "pending",
-                           "sold"
-                        ],
-                        "default": "available"
-                     }
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "array",
-                           "items": {
-                              "$ref": "#/components/schemas/Pet"
-                           }
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "type": "array",
-                           "items": {
-                              "$ref": "#/components/schemas/Pet"
-                           }
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid status value"
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ]
-         }
-      },
-      "/pet/findByTags": {
-         "get": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Finds Pets by tags",
-            "description": "Muliple tags can be provided with comma separated strings. Use\\ \\ tag1, tag2, tag3 for testing.",
-            "operationId": "findPetsByTags",
-            "parameters": [
-               {
-                  "name": "tags",
-                  "in": "query",
-                  "description": "Tags to filter by",
-                  "required": true,
-                  "explode": true,
-                  "schema": {
-                     "type": "array",
-                     "items": {
-                        "type": "string"
-                     }
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "array",
-                           "items": {
-                              "$ref": "#/components/schemas/Pet"
-                           }
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "type": "array",
-                           "items": {
-                              "$ref": "#/components/schemas/Pet"
-                           }
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid tag value"
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ],
-            "deprecated": true
-         }
-      },
-      "/pet/{petId}": {
-         "get": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Find pet by ID",
-            "description": "Returns a single pet",
-            "operationId": "getPetById",
-            "parameters": [
-               {
-                  "name": "petId",
-                  "in": "path",
-                  "description": "ID of pet to return",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Pet"
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Pet"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "Pet not found"
-               }
-            },
-            "security": [
-               {
-                  "api_key": []
-               }
-            ]
-         },
-         "post": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Updates a pet in the store with form data",
-            "operationId": "updatePetWithForm",
-            "parameters": [
-               {
-                  "name": "petId",
-                  "in": "path",
-                  "description": "ID of pet that needs to be updated",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "405": {
-                  "description": "Invalid input"
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ],
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
+      "parameters": [
+        {
+          "name": "listingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/listing/{userId}": {
+      "post": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "create a new Listing",
+        "description": "create a new Listing",
+        "operationId": "createANewListing",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "example": "JP nagar , Bengaluru"
+                  },
+                  "cityId": {
+                    "type": "number",
+                    "example": 17109
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "some generic description"
+                  },
+                  "features": {
+                    "type": "object",
+                    "properties": {
+                      "amenities": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "wonderful balcony"
+                        },
+                        "example": [
+                          "wonderful balcony",
+                          "some other bs"
+                        ]
+                      },
+                      "bathrooms": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "bedroom": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "beds": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "policies": {
                         "type": "object",
                         "properties": {
-                           "name": {
-                              "description": "Updated name of the pet",
-                              "type": "string"
-                           },
-                           "status": {
-                              "description": "Updated status of the pet",
-                              "type": "string"
-                           }
+                          "Smoking": {
+                            "type": "string",
+                            "example": "allowed"
+                          },
+                          "pets": {
+                            "type": "string",
+                            "example": "not allowed"
+                          }
                         }
-                     }
+                      }
+                    }
+                  },
+                  "listingImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "metadata": {
+                          "type": "object",
+                          "properties": {
+                            "alignment": {
+                              "type": "string",
+                              "example": "top"
+                            },
+                            "pos": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        },
+                        "url": {
+                          "type": "string",
+                          "example": "http://placeimg.com/640/480"
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "metadata": {
+                          "alignment": "top",
+                          "pos": 1
+                        },
+                        "url": "http://placeimg.com/640/480"
+                      },
+                      {
+                        "metadata": {
+                          "alignment": "bottom",
+                          "pos": 3
+                        },
+                        "url": "http://placeimg.com/640/480"
+                      },
+                      {
+                        "metadata": {
+                          "alignment": "left",
+                          "pos": 2
+                        },
+                        "url": "http://placeimg.com/640/480"
+                      },
+                      {
+                        "metadata": {
+                          "alignment": "right",
+                          "pos": 4
+                        },
+                        "url": "http://placeimg.com/640/480"
+                      }
+                    ]
+                  },
+                  "listingName": {
+                    "type": "string",
+                    "example": "Hells Kitchen-New & Improved"
+                  },
+                  "pricePerDay": {
+                    "type": "number",
+                    "example": 1500.35
                   }
-               }
+                }
+              },
+              "example": {
+                "address": "JP nagar , Bengaluru",
+                "cityId": 17109,
+                "description": "some generic description",
+                "features": {
+                  "amenities": [
+                    "wonderful balcony",
+                    "some other bs"
+                  ],
+                  "bathrooms": 3,
+                  "bedroom": 2,
+                  "beds": 2,
+                  "policies": {
+                    "Smoking": "allowed",
+                    "pets": "not allowed"
+                  }
+                },
+                "listingImages": [
+                  {
+                    "metadata": {
+                      "alignment": "top",
+                      "pos": 1
+                    },
+                    "url": "http://placeimg.com/640/480"
+                  },
+                  {
+                    "metadata": {
+                      "alignment": "bottom",
+                      "pos": 3
+                    },
+                    "url": "http://placeimg.com/640/480"
+                  },
+                  {
+                    "metadata": {
+                      "alignment": "left",
+                      "pos": 2
+                    },
+                    "url": "http://placeimg.com/640/480"
+                  },
+                  {
+                    "metadata": {
+                      "alignment": "right",
+                      "pos": 4
+                    },
+                    "url": "http://placeimg.com/640/480"
+                  }
+                ],
+                "listingName": "Hells Kitchen-New & Improved",
+                "pricePerDay": 1500.35
+              }
             }
-         },
-         "delete": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "Deletes a pet",
-            "operationId": "deletePet",
-            "parameters": [
-               {
-                  "name": "api_key",
-                  "in": "header",
-                  "required": false,
-                  "schema": {
-                     "type": "string"
-                  }
-               },
-               {
-                  "name": "petId",
-                  "in": "path",
-                  "description": "Pet id to delete",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "Pet not found"
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ]
-         }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       },
-      "/pet/{petId}/uploadImage": {
-         "post": {
-            "tags": [
-               "pet"
-            ],
-            "summary": "uploads an image",
-            "operationId": "uploadFile",
-            "parameters": [
-               {
-                  "name": "petId",
-                  "in": "path",
-                  "description": "ID of pet to update",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64"
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/ApiResponse"
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/listing/{userId}/upload": {
+      "post": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "upload Listing Images",
+        "description": "upload Listing Images",
+        "operationId": "uploadListingImages",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {}
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/listing/{userId}/{listingId}": {
+      "delete": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "delete a Listing",
+        "description": "delete a Listing",
+        "operationId": "deleteAListing",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Listings"
+        ],
+        "summary": "update Listing details",
+        "description": "update Listing details",
+        "operationId": "updateListingDetails",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "not so garbage, it's pretty chill actually"
+                  },
+                  "features": {
+                    "type": "object",
+                    "properties": {
+                      "amenities": {
+                        "nullable": true,
+                        "example": null
+                      },
+                      "beds": {
+                        "type": "number",
+                        "example": 50
+                      },
+                      "policies": {
+                        "type": "object",
+                        "properties": {
+                          "barter": {
+                            "type": "string",
+                            "example": "accepted as payment"
+                          }
                         }
-                     }
+                      }
+                    }
+                  },
+                  "pricePerDay": {
+                    "type": "string",
+                    "example": "2500"
                   }
-               }
-            },
-            "security": [
-               {
-                  "petstore_auth": [
-                     "write:pets",
-                     "read:pets"
-                  ]
-               }
-            ],
-            "requestBody": {
-               "content": {
-                  "application/octet-stream": {
-                     "schema": {
+                }
+              },
+              "example": {
+                "description": "not so garbage, it's pretty chill actually",
+                "features": {
+                  "amenities": null,
+                  "beds": 50,
+                  "policies": {
+                    "barter": "accepted as payment"
+                  }
+                },
+                "pricePerDay": "2500"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "listingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/location/cities/{stateId}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "get cities",
+        "description": "get cities",
+        "operationId": "getCities",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "stateId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "1635"
+          }
+        }
+      ]
+    },
+    "/api/v1/location/countries": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "get countries",
+        "description": "get countries",
+        "operationId": "getCountries",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/location/states/{countryId}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "get states",
+        "description": "get states",
+        "operationId": "getStates",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "countryId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "101"
+          }
+        }
+      ]
+    },
+    "/api/v1/payment/order": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "create an order",
+        "description": "An order needs to be created post a successfull booking with the bookingId passed in ",
+        "operationId": "createAnOrder",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "example": 5000
+                  },
+                  "currency": {
+                    "type": "string",
+                    "example": "INR"
+                  },
+                  "notes": {
+                    "type": "object",
+                    "properties": {
+                      "calledBy": {
                         "type": "string",
-                        "format": "binary"
-                     }
-                  }
-               }
-            }
-         }
-      },
-      "/store/inventory": {
-         "get": {
-            "tags": [
-               "store"
-            ],
-            "summary": "Returns pet inventories by status",
-            "description": "Returns a map of status codes to quantities",
-            "operationId": "getInventory",
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "object",
-                           "additionalProperties": {
-                              "type": "integer",
-                              "format": "int32"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "security": [
-               {
-                  "api_key": []
-               }
-            ]
-         }
-      },
-      "/store/order": {
-         "post": {
-            "tags": [
-               "store"
-            ],
-            "summary": "Place an order for a pet",
-            "operationId": "placeOrder",
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Order"
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Order"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid Order"
-               }
-            },
-            "requestBody": {
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "$ref": "#/components/schemas/Order"
-                     }
-                  }
-               },
-               "description": "order placed for purchasing the pet",
-               "required": true
-            }
-         }
-      },
-      "/store/order/{orderId}": {
-         "get": {
-            "tags": [
-               "store"
-            ],
-            "summary": "Find purchase order by ID",
-            "description": "For valid response try integer IDs with value >= 1 and <= 10.\\ \\ Other values will generated exceptions",
-            "operationId": "getOrderById",
-            "parameters": [
-               {
-                  "name": "orderId",
-                  "in": "path",
-                  "description": "ID of pet that needs to be fetched",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64",
-                     "minimum": 1,
-                     "maximum": 10
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Order"
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "$ref": "#/components/schemas/Order"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "Order not found"
-               }
-            }
-         },
-         "delete": {
-            "tags": [
-               "store"
-            ],
-            "summary": "Delete purchase order by ID",
-            "description": "For valid response try integer IDs with positive integer value.\\ \\ Negative or non-integer values will generate API errors",
-            "operationId": "deleteOrder",
-            "parameters": [
-               {
-                  "name": "orderId",
-                  "in": "path",
-                  "description": "ID of the order that needs to be deleted",
-                  "required": true,
-                  "schema": {
-                     "type": "integer",
-                     "format": "int64",
-                     "minimum": 1
-                  }
-               }
-            ],
-            "responses": {
-               "400": {
-                  "description": "Invalid ID supplied"
-               },
-               "404": {
-                  "description": "Order not found"
-               }
-            }
-         }
-      },
-      "/user": {
-         "post": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Create user",
-            "description": "This can only be done by the logged in user.",
-            "operationId": "createUser",
-            "responses": {
-               "default": {
-                  "description": "successful operation"
-               }
-            },
-            "requestBody": {
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "$ref": "#/components/schemas/User"
-                     }
-                  }
-               },
-               "description": "Created user object",
-               "required": true
-            }
-         }
-      },
-      "/user/createWithArray": {
-         "post": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Creates list of users with given input array",
-            "operationId": "createUsersWithArrayInput",
-            "responses": {
-               "default": {
-                  "description": "successful operation"
-               }
-            },
-            "requestBody": {
-               "$ref": "#/components/requestBodies/UserArray"
-            }
-         }
-      },
-      "/user/createWithList": {
-         "post": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Creates list of users with given input array",
-            "operationId": "createUsersWithListInput",
-            "responses": {
-               "default": {
-                  "description": "successful operation"
-               }
-            },
-            "requestBody": {
-               "$ref": "#/components/requestBodies/UserArray"
-            }
-         }
-      },
-      "/user/login": {
-         "get": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Logs user into the system",
-            "operationId": "loginUser",
-            "parameters": [
-               {
-                  "name": "username",
-                  "in": "query",
-                  "description": "The user name for login",
-                  "required": true,
-                  "schema": {
-                     "type": "string"
-                  }
-               },
-               {
-                  "name": "password",
-                  "in": "query",
-                  "description": "The password for login in clear text",
-                  "required": true,
-                  "schema": {
-                     "type": "string"
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "headers": {
-                     "X-Rate-Limit": {
-                        "description": "calls per hour allowed by the user",
-                        "schema": {
-                           "type": "integer",
-                           "format": "int32"
-                        }
-                     },
-                     "X-Expires-After": {
-                        "description": "date in UTC when token expires",
-                        "schema": {
-                           "type": "string",
-                           "format": "date-time"
-                        }
-                     }
+                        "example": "API"
+                      },
+                      "logstash": {
+                        "type": "string",
+                        "example": "yes"
+                      },
+                      "mein-date": {
+                        "type": "string",
+                        "example": "2021-06-07T00:00:00.000Z"
+                      }
+                    }
                   },
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "string"
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "type": "string"
-                        }
-                     }
+                  "payment_capture": {
+                    "type": "string",
+                    "example": "1"
+                  },
+                  "receipt": {
+                    "type": "string",
+                    "example": "31d356c9de61c3"
                   }
-               },
-               "400": {
-                  "description": "Invalid username/password supplied"
-               }
+                }
+              },
+              "example": {
+                "amount": 5000,
+                "currency": "INR",
+                "notes": {
+                  "calledBy": "API",
+                  "logstash": "yes",
+                  "mein-date": "2021-06-07T00:00:00.000Z"
+                },
+                "payment_capture": "1",
+                "receipt": "31d356c9de61c3"
+              }
             }
-         }
-      },
-      "/user/logout": {
-         "get": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Logs out current logged in user session",
-            "operationId": "logoutUser",
-            "responses": {
-               "default": {
-                  "description": "successful operation"
-               }
-            }
-         }
-      },
-      "/user/{username}": {
-         "get": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Get user by user name",
-            "operationId": "getUserByName",
-            "parameters": [
-               {
-                  "name": "username",
-                  "in": "path",
-                  "description": "The name that needs to be fetched. Use user1 for testing.",
-                  "required": true,
-                  "schema": {
-                     "type": "string"
-                  }
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "successful operation",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/User"
-                        }
-                     },
-                     "application/xml": {
-                        "schema": {
-                           "$ref": "#/components/schemas/User"
-                        }
-                     }
-                  }
-               },
-               "400": {
-                  "description": "Invalid username supplied"
-               },
-               "404": {
-                  "description": "User not found"
-               }
-            }
-         },
-         "put": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Updated user",
-            "description": "This can only be done by the logged in user.",
-            "operationId": "updateUser",
-            "parameters": [
-               {
-                  "name": "username",
-                  "in": "path",
-                  "description": "name that need to be updated",
-                  "required": true,
-                  "schema": {
-                     "type": "string"
-                  }
-               }
-            ],
-            "responses": {
-               "400": {
-                  "description": "Invalid user supplied"
-               },
-               "404": {
-                  "description": "User not found"
-               }
-            },
-            "requestBody": {
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "$ref": "#/components/schemas/User"
-                     }
-                  }
-               },
-               "description": "Updated user object",
-               "required": true
-            }
-         },
-         "delete": {
-            "tags": [
-               "user"
-            ],
-            "summary": "Delete user",
-            "description": "This can only be done by the logged in user.",
-            "operationId": "deleteUser",
-            "parameters": [
-               {
-                  "name": "username",
-                  "in": "path",
-                  "description": "The name that needs to be deleted",
-                  "required": true,
-                  "schema": {
-                     "type": "string"
-                  }
-               }
-            ],
-            "responses": {
-               "400": {
-                  "description": "Invalid username supplied"
-               },
-               "404": {
-                  "description": "User not found"
-               }
-            }
-         }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
-   },
-   "externalDocs": {
-      "description": "Find out more about Swagger",
-      "url": "http://swagger.io"
-   },
-   "components": {
-      "schemas": {
-         "Order": {
-            "type": "object",
-            "properties": {
-               "id": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "petId": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "quantity": {
-                  "type": "integer",
-                  "format": "int32"
-               },
-               "shipDate": {
-                  "type": "string",
-                  "format": "date-time"
-               },
-               "status": {
-                  "type": "string",
-                  "description": "Order Status",
-                  "enum": [
-                     "placed",
-                     "approved",
-                     "delivered"
-                  ]
-               },
-               "complete": {
-                  "type": "boolean",
-                  "default": false
-               }
-            },
-            "xml": {
-               "name": "Order"
-            }
-         },
-         "Category": {
-            "type": "object",
-            "properties": {
-               "id": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "name": {
-                  "type": "string"
-               }
-            },
-            "xml": {
-               "name": "Category"
-            }
-         },
-         "User": {
-            "type": "object",
-            "properties": {
-               "id": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "username": {
-                  "type": "string"
-               },
-               "firstName": {
-                  "type": "string"
-               },
-               "lastName": {
-                  "type": "string"
-               },
-               "email": {
-                  "type": "string"
-               },
-               "password": {
-                  "type": "string"
-               },
-               "phone": {
-                  "type": "string"
-               },
-               "userStatus": {
-                  "type": "integer",
-                  "format": "int32",
-                  "description": "User Status"
-               }
-            },
-            "xml": {
-               "name": "User"
-            }
-         },
-         "Tag": {
-            "type": "object",
-            "properties": {
-               "id": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "name": {
-                  "type": "string"
-               }
-            },
-            "xml": {
-               "name": "Tag"
-            }
-         },
-         "Pet": {
-            "type": "object",
-            "required": [
-               "name",
-               "photoUrls"
-            ],
-            "properties": {
-               "id": {
-                  "type": "integer",
-                  "format": "int64"
-               },
-               "category": {
-                  "$ref": "#/components/schemas/Category"
-               },
-               "name": {
-                  "type": "string",
-                  "example": "doggie"
-               },
-               "photoUrls": {
-                  "type": "array",
-                  "xml": {
-                     "name": "photoUrl",
-                     "wrapped": true
-                  },
-                  "items": {
-                     "type": "string"
-                  }
-               },
-               "tags": {
-                  "type": "array",
-                  "xml": {
-                     "name": "tag",
-                     "wrapped": true
-                  },
-                  "items": {
-                     "$ref": "#/components/schemas/Tag"
-                  }
-               },
-               "status": {
-                  "type": "string",
-                  "description": "pet status in the store",
-                  "enum": [
-                     "available",
-                     "pending",
-                     "sold"
-                  ]
-               }
-            },
-            "xml": {
-               "name": "Pet"
-            }
-         },
-         "ApiResponse": {
-            "type": "object",
-            "properties": {
-               "code": {
-                  "type": "integer",
-                  "format": "int32"
-               },
-               "type": {
-                  "type": "string"
-               },
-               "message": {
-                  "type": "string"
-               }
-            }
-         }
+    },
+    "/api/v1/payment/refund/{gatewayPaymentId}": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "create a refund",
+        "description": "to be initiated post a booking cancellation with the gateway Payment Id obtained in the response payload",
+        "operationId": "createARefund",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       },
-      "requestBodies": {
-         "Pet": {
-            "content": {
-               "application/json": {
-                  "schema": {
-                     "$ref": "#/components/schemas/Pet"
+      "parameters": [
+        {
+          "name": "gatewayPaymentId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/payment/verify": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "verify payment",
+        "description": " Only Used on the UI http://{{baseUrl}}/api/v1/payment/test-razorpay",
+        "operationId": "verifyPayment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "razorpay_order_id": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "razorpay_payment_id": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "razorpay_signature": {
+                    "type": "string",
+                    "example": ""
                   }
-               },
-               "application/xml": {
-                  "schema": {
-                     "$ref": "#/components/schemas/Pet"
-                  }
-               }
-            },
-            "description": "Pet object that needs to be added to the store",
-            "required": true
-         },
-         "UserArray": {
-            "content": {
-               "application/json": {
-                  "schema": {
-                     "type": "array",
-                     "items": {
-                        "$ref": "#/components/schemas/User"
-                     }
-                  }
-               }
-            },
-            "description": "List of user object",
-            "required": true
-         }
-      },
-      "securitySchemes": {
-         "petstore_auth": {
-            "type": "oauth2",
-            "flows": {
-               "implicit": {
-                  "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-                  "scopes": {
-                     "write:pets": "modify pets in your account",
-                     "read:pets": "read your pets"
-                  }
-               }
+                }
+              },
+              "example": {
+                "razorpay_order_id": "",
+                "razorpay_payment_id": "",
+                "razorpay_signature": ""
+              }
             }
-         },
-         "api_key": {
-            "type": "apiKey",
-            "name": "api_key",
-            "in": "header"
-         }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
-   }
+    },
+    "/api/v1/review/listing/{listingId}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "get all user reviews for a listing",
+        "description": "get all user reviews for a listing",
+        "operationId": "getAllUserReviewsForAListing",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "listingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/review/user/{userId}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "get all reviews made by the user",
+        "description": "get all reviews made by the user",
+        "operationId": "getAllReviewsMadeByTheUser",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/review/{userId}/{listingId}": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "post a review ",
+        "description": "post a review ",
+        "operationId": "postAReview",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "Not very good this time around"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "example": 3.5
+                  }
+                }
+              },
+              "example": {
+                "description": "Not very good this time around",
+                "rating": 3.5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "listingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/review/{userId}/{listingId}/{reviewId}": {
+      "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "delete a review ",
+        "description": "It's always soft deleted",
+        "operationId": "deleteAReview",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Edit Reviews",
+        "description": "Edit Reviews",
+        "operationId": "editReviews",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "Very Nice and Warm and cosy place !! Totally Enjoyed the Vibe of the Place, the creator is a real G, a super chill and warm human being"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "example": 3.5
+                  }
+                }
+              },
+              "example": {
+                "description": "Very Nice and Warm and cosy place !! Totally Enjoyed the Vibe of the Place, the creator is a real G, a super chill and warm human being",
+                "rating": 3.5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "listingId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        {
+          "name": "reviewId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      ]
+    },
+    "/api/v1/user/auth/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "user login",
+        "description": "user login",
+        "operationId": "userLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emailId": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password"
+                  }
+                }
+              },
+              "example": {
+                "emailId": "test@gmail.com",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user login success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "90"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 14:21:45 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"5a-k6t8u4sYLwTPRmsUFt9h8bhVoso\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "SESSION_ID=s%3AU1MZlPz0Icj4pRtNdWv1kmvzGcIaA6Zu.LwIyoQkMnOG51Tbt3qRPaJCJ5rIP3qLYnsCwqSfkYos; Path=/; Expires=Wed, 16 Jun 2021 14:51:45 GMT; HttpOnly"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "nullable": true,
+                      "example": null
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user successfully logged in"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "user login success": {
+                    "value": {
+                      "code": 200,
+                      "data": null,
+                      "extra": {},
+                      "message": "user successfully logged in",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "user login error",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "85"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 14:21:28 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"55-9VyUseMi8WT7Ae3hK6VH/oILClg\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Incorrect password"
+                    },
+                    "resCode": {
+                      "type": "number",
+                      "example": 1015
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                },
+                "examples": {
+                  "user login error": {
+                    "value": {
+                      "code": 401,
+                      "extra": {},
+                      "message": "Incorrect password",
+                      "resCode": 1015,
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "user login validation error",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "112"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 14:20:41 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"70-4WQvrtzC9PxZMtoWStI6y7yZ+a0\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {
+                        "errors": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "celebrate request validation failed"
+                    },
+                    "resCode": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                },
+                "examples": {
+                  "user login validation error": {
+                    "value": {
+                      "code": 422,
+                      "extra": {
+                        "errors": {}
+                      },
+                      "message": "celebrate request validation failed",
+                      "resCode": 422,
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/auth/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "user logout",
+        "description": "user logout",
+        "operationId": "userLogout",
+        "responses": {
+          "200": {
+            "description": "user logout success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "94"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 14:24:37 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"5e-9PM4cdCnY0hIssbG1CPm8A2xoH4\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "SESSION_ID=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "nullable": true,
+                      "example": null
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user successfully logged out !!"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "user logout success": {
+                    "value": {
+                      "code": 200,
+                      "data": null,
+                      "extra": {},
+                      "message": "user successfully logged out !!",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "post user logout",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "138"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 14:28:51 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"8a-O9WkNdhkBT8ArfBxcguS8Llq8SY\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "session not found for the user, user is logged out, please log in again"
+                    },
+                    "resCode": {
+                      "type": "number",
+                      "example": 1003
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                },
+                "examples": {
+                  "post user logout": {
+                    "value": {
+                      "code": 401,
+                      "extra": {},
+                      "message": "session not found for the user, user is logged out, please log in again",
+                      "resCode": 1003,
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/auth/reset-link": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "get reset link",
+        "description": "get reset link",
+        "operationId": "getResetLink",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emailId": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                  },
+                  "urlPathTemplate": {
+                    "type": "string",
+                    "example": "https://www.myRandomSiteName.com/auth/reset/{resetToken}"
+                  }
+                }
+              },
+              "example": {
+                "emailId": "test@gmail.com",
+                "urlPathTemplate": "https://www.myRandomSiteName.com/auth/reset/{resetToken}"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "get reset link success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "120"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 15:06:14 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"78-g1jsfeKNvqVvResfKFvSTkq6VCc\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "SESSION_ID=s%3Ajgmm0L2rOrIvAv7N_3NF2veKAswFF4_y.N8pizHWBZKSJW99noJhjatYOY%2Ff%2FXu0ybmXSkKB9z%2Fo; Path=/; Expires=Wed, 16 Jun 2021 15:36:14 GMT; HttpOnly"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "nullable": true,
+                      "example": null
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email with the reset link has been sent to test@gmail.com"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "get reset link success": {
+                    "value": {
+                      "code": 200,
+                      "data": null,
+                      "extra": {},
+                      "message": "Email with the reset link has been sent to test@gmail.com",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/auth/reset/{resetToken}": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "reset password",
+        "description": "reset password",
+        "operationId": "resetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emailId": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password"
+                  }
+                }
+              },
+              "example": {
+                "emailId": "test@gmail.com",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "reset password success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "93"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 15:47:23 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"5d-Tsa7IxzjC45xALmGZrh7r8mFRaQ\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "SESSION_ID=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "string",
+                          "example": "41db9c193cd50a"
+                        }
+                      }
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "reset password success": {
+                    "value": {
+                      "code": 200,
+                      "data": {
+                        "userId": "41db9c193cd50a"
+                      },
+                      "extra": {},
+                      "message": "success",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "reset password post token expiry",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "174"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 15:40:19 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"ae-CfiDrwsWuE7xTpYPoZ84UTSwIHo\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to Reset due to either having expired token or due to incorrect session info or resetToken in params"
+                    },
+                    "resCode": {
+                      "type": "number",
+                      "example": 1019
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                },
+                "examples": {
+                  "reset password post token expiry": {
+                    "value": {
+                      "code": 401,
+                      "extra": {},
+                      "message": "Failed to Reset due to either having expired token or due to incorrect session info or resetToken in params",
+                      "resCode": 1019,
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "resetToken",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "950035c9-9e34-4885-a360-574a9ddcecac"
+          }
+        }
+      ]
+    },
+    "/api/v1/user/auth/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "user signup",
+        "description": "user signup",
+        "operationId": "userSignup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dob": {
+                    "type": "string",
+                    "example": "2021-06-16T00:00:00.000Z"
+                  },
+                  "emailId": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Test"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "User"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password"
+                  }
+                }
+              },
+              "example": {
+                "dob": "2021-06-16T00:00:00.000Z",
+                "emailId": "test@gmail.com",
+                "firstName": "Test",
+                "lastName": "User",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user signup success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "93"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 14:18:32 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"5d-Tsa7IxzjC45xALmGZrh7r8mFRaQ\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "string",
+                          "example": "41db9c193cd50a"
+                        }
+                      }
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "user signup success": {
+                    "value": {
+                      "code": 200,
+                      "data": {
+                        "userId": "41db9c193cd50a"
+                      },
+                      "extra": {},
+                      "message": "success",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "user signup failure",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "584"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 12:39:30 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"248-lgKw2JFWQXQbp8nU8mN+qXzsM7U\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 409
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {
+                        "stacks": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "service": {
+                                "type": "string",
+                                "example": "createYourBread&Breakfast"
+                              },
+                              "stack": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "CustomError: user already exists"
+                                },
+                                "example": [
+                                  "CustomError: user already exists",
+                                  "    at Function.createError (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/utils/modules/response.js:136:15)",
+                                  "    at Function.createUser (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/services/UserService.js:24:32)",
+                                  "    at async signup (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/api/modules/user/auth/authControllers.js:8:23)"
+                                ]
+                              }
+                            }
+                          },
+                          "example": [
+                            {
+                              "service": "createYourBread&Breakfast",
+                              "stack": [
+                                "CustomError: user already exists",
+                                "    at Function.createError (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/utils/modules/response.js:136:15)",
+                                "    at Function.createUser (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/services/UserService.js:24:32)",
+                                "    at async signup (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/api/modules/user/auth/authControllers.js:8:23)"
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user already exists"
+                    },
+                    "resCode": {
+                      "type": "number",
+                      "example": 1001
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                },
+                "examples": {
+                  "user signup failure": {
+                    "value": {
+                      "code": 409,
+                      "extra": {
+                        "stacks": [
+                          {
+                            "service": "createYourBread&Breakfast",
+                            "stack": [
+                              "CustomError: user already exists",
+                              "    at Function.createError (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/utils/modules/response.js:136:15)",
+                              "    at Function.createUser (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/services/UserService.js:24:32)",
+                              "    at async signup (/home/jansher/WORK_personal/PROJECTS/bread-and-breakfast-backend/src/api/modules/user/auth/authControllers.js:8:23)"
+                            ]
+                          }
+                        ]
+                      },
+                      "message": "user already exists",
+                      "resCode": 1001,
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "get user details",
+        "description": "get user details",
+        "operationId": "getUserDetails",
+        "responses": {
+          "200": {
+            "description": "get user details success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "247"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 15:58:13 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"f7-hXmIUFUQ+ExWZQUil3bDphrmVRo\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "bio": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "dob": {
+                          "type": "string",
+                          "example": "2021-06-16T00:00:00.000Z"
+                        },
+                        "emailId": {
+                          "type": "string",
+                          "example": "test@gmail.com"
+                        },
+                        "firstName": {
+                          "type": "string",
+                          "example": "Test"
+                        },
+                        "id": {
+                          "type": "string",
+                          "example": "41db9c193cd50a"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "User"
+                        },
+                        "profilePictureUrl": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2021-06-16T15:47:23.778Z"
+                        }
+                      }
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "get user details success": {
+                    "value": {
+                      "code": 200,
+                      "data": {
+                        "bio": null,
+                        "dob": "2021-06-16T00:00:00.000Z",
+                        "emailId": "test@gmail.com",
+                        "firstName": "Test",
+                        "id": "41db9c193cd50a",
+                        "lastName": "User",
+                        "profilePictureUrl": null,
+                        "updatedAt": "2021-06-16T15:47:23.778Z"
+                      },
+                      "extra": {},
+                      "message": "success",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "update user ",
+        "description": "update user ",
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bio": {
+                    "type": "string",
+                    "example": "I just figured out I didn't add any mobile number to user lol "
+                  },
+                  "dob": {
+                    "type": "string",
+                    "example": "2020-03-25T00:00:00.000Z"
+                  },
+                  "emailId": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "test-firstName"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "test-lastName"
+                  }
+                }
+              },
+              "example": {
+                "bio": "I just figured out I didn't add any mobile number to user lol ",
+                "dob": "2020-03-25T00:00:00.000Z",
+                "emailId": "test@gmail.com",
+                "firstName": "test-firstName",
+                "lastName": "test-lastName"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "update user success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "286"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 16:26:01 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"11e-PkyP6la929ccyzJK9+g3WInhE9M\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "bio": {
+                          "type": "string",
+                          "example": "I just figured out I didn't add any mobile number to user lol"
+                        },
+                        "dob": {
+                          "type": "string",
+                          "example": "2020-03-25T00:00:00.000Z"
+                        },
+                        "emailId": {
+                          "type": "string",
+                          "example": "test@gmail.com"
+                        },
+                        "firstName": {
+                          "type": "string",
+                          "example": "test-firstName"
+                        },
+                        "id": {
+                          "type": "string",
+                          "example": "41db9c193cd50a"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "test-lastName"
+                        },
+                        "profilePictureUrl": {
+                          "nullable": true,
+                          "example": null
+                        }
+                      }
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "update user success": {
+                    "value": {
+                      "code": 200,
+                      "data": {
+                        "bio": "I just figured out I didn't add any mobile number to user lol",
+                        "dob": "2020-03-25T00:00:00.000Z",
+                        "emailId": "test@gmail.com",
+                        "firstName": "test-firstName",
+                        "id": "41db9c193cd50a",
+                        "lastName": "test-lastName",
+                        "profilePictureUrl": null
+                      },
+                      "extra": {},
+                      "message": "success",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "41db9c193cd50a"
+          }
+        }
+      ]
+    },
+    "/api/v1/user/{userId}/complete-user-record": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Fetch all user info",
+        "description": "Fetcha all the resources tied to an Individual user, bookings, payments, images, listings owned, booking made, reviews given, bookmarks done",
+        "operationId": "fetchAllUserInfo",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "41db9c193cd50a"
+          }
+        }
+      ]
+    },
+    "/api/v1/user/{userId}/dp-upload": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "upload display pic",
+        "description": "upload display pic",
+        "operationId": "uploadDisplayPic",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {}
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "upload display pic success",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "220"
+                }
+              },
+              "Content-Security-Policy-Report-Only": {
+                "schema": {
+                  "type": "string",
+                  "example": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 16 Jun 2021 20:45:29 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"dc-A/AmsYqxOxq57U9byye9kgz3wU0\""
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "X-HTTP-Method-Override"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "https://bnb-display-pic.s3.ap-south-1.amazonaws.com/41db9c193cd50a/Meshuggah-Obzen-banner-ghostcultmag-1623876328612-.jpg"
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully uploaded the display pic "
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "upload display pic success": {
+                    "value": {
+                      "code": 200,
+                      "data": "https://bnb-display-pic.s3.ap-south-1.amazonaws.com/41db9c193cd50a/Meshuggah-Obzen-banner-ghostcultmag-1623876328612-.jpg",
+                      "extra": {},
+                      "message": "Successfully uploaded the display pic ",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "41db9c193cd50a"
+          }
+        }
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Listings"
+    },
+    {
+      "name": "Location"
+    },
+    {
+      "name": "Bookmarks"
+    },
+    {
+      "name": "Bookings"
+    },
+    {
+      "name": "Payments"
+    },
+    {
+      "name": "Reviews"
+    }
+  ]
 }

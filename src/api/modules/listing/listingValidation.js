@@ -1,14 +1,36 @@
 const { celebrate, Joi } = require('celebrate');
+const { sortBy } = require('lodash');
 
 module.exports = {
   search: celebrate(
     {
-      headers: {},
-      query: {},
-      params: {},
-      body: {},
+      query: {
+        city: Joi.string().required(),
+        pageNo: Joi.number().integer().min(1).required(),
+        resultsPerPage: Joi.number().integer().min(5).required(),
+        lowerPriceLimit: Joi.number()
+          .positive()
+          .precision(2)
+          .when('sortBy', {
+            is: Joi.exist().equal('price'),
+            then: Joi.required(),
+          }),
+        upperPriceLimit: Joi.number()
+          .positive()
+          .precision(2)
+          .when('sortBy', {
+            is: Joi.exist().equal('price'),
+            then: Joi.required(),
+          }),
+        ratings: Joi.number()
+          .integer()
+          .min(2)
+          .max(5)
+          .default(4),
+        sortBy: Joi.string().valid('ratings', 'price', 'updatedAt').default('price'),
+      },
     },
-    { allowUnknown: true, abortEarly: false },
+    { allowUnknown: false, abortEarly: false },
   ),
   getListingById: celebrate(
     {
@@ -39,6 +61,14 @@ module.exports = {
   ),
   getListingByUserId: celebrate(
     {
+      params: {
+        userId: Joi.string().required(),
+      },
+    },
+    { allowUnknown: false, abortEarly: false },
+  ),
+  uploadListingImages: celebrate(
+    {
       headers: {},
       query: {},
       params: {},
@@ -46,7 +76,7 @@ module.exports = {
     },
     { allowUnknown: true, abortEarly: false },
   ),
-  uploadListingImages: celebrate(
+  deleteListing: celebrate(
     {
       headers: {},
       query: {},

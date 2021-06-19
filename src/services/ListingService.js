@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { models } = require('../loaders/sequelize');
 const { Logger, Response, Message } = require('../utils');
+const Redis = require('../loaders/redis');
 
 class ListingService {
   static async deleteListing(params) {
@@ -132,7 +133,7 @@ class ListingService {
       let fieldMap = {
         ratings: 'avgRating',
         price: 'pricePerDay',
-        updateAt: 'updatedAt',
+        updatedAt: 'updatedAt',
       };
 
       let limit = queryObj.resultsPerPage;
@@ -140,6 +141,7 @@ class ListingService {
       let offset = (queryObj.pageNo - 1) * queryObj.resultsPerPage;
 
       const listings = await models.listing.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'userId', 'cityId'] },
         order: [[fieldMap[queryObj.sortBy], 'DESC']],
         limit,
         offset,
@@ -320,18 +322,46 @@ class ListingService {
   static async getListingByUserId(params) {
     try {
       if (params.session.userId !== params.userId) throw Response.createError(Message.InconsistentCredentials);
+
+      let userHostedListings = await Redis.get(`${params.userId}HostedListings`);
+
+      if (userHostedListings) return { data: userHostedListings };
+
       Logger.log('info', 'getting all the listings for this particular User');
-      const listing = await models.listing.findAll({
+      const listings = await models.listing.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'cityId', 'userId'] },
         include: [
           {
             model: models.image,
+            attributes: { exclude: ['id', 'listingId', 'createdAt', 'updatedAt', 'deletedAt'] },
+          },
+          {
+            model: models.city,
+            attributes: { exclude: ['stateId', 'createdAt', 'updatedAt', 'deletedAt', 'id'] },
+
+            include: [
+              {
+                model: models.state,
+                attributes: { exclude: ['countryId', 'createdAt', 'updatedAt', 'deletedAt', 'id'] },
+
+                include: [
+                  {
+                    model: models.country,
+                    attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'id'] },
+                  },
+                ],
+              },
+            ],
           },
         ],
         where: {
           userId: params.userId,
         },
       });
-      if (listing && listing.length) return { data: listing };
+      if (listings && listings.length) {
+        Redis.set(`${params.userId}HostedListings`, listings, 2 * 3600);
+        return { data: listings };
+      }
       throw Response.createError(Message.FailedToFindListing);
     } catch (err) {
       Logger.log('error', 'error fetching listing details', err);
