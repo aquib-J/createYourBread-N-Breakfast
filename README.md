@@ -22,19 +22,19 @@ To this end, I believe with some modification into it's models and the associate
 
 ## Tech stack and services used
 
-- [<h3><b>Express</b>](https://expressjs.com/) on [<b>Node 12</b>](https://nodejs.org/en/about/) for Application server</h3>
-- [<h3><b>PostgreSQL</b>](https://www.postgresql.org/) as primary data store with [<b>Sequelize</b>](https://github.com/sequelize/sequelize/) as the <b>ORM</b></h3>
-- [<h3><b>Redis</b>](https://redis.io/) for <b>session caching</b> and also as a QUEUE</h3>
-- [<h3><b>NGINX</b>](https://www.nginx.com/) as <b>a reverse proxy</b> and also for <b>load balancing</b></h3>
-- [<h3><b>AWS S3</b>](https://aws.amazon.com/s3/) for Image storage</h3>
-- [<h3><b>Docker & Docker Compose</b>](https://www.docker.com/) for Containerization and simple service orchestration</h3>
-- [<h3><b>Github Actions</b>](https://github.com/features/actions) & [<b>Digital Ocean</b>](https://www.digitalocean.com/products/droplets/) for <b>CI & Deployments</b></h3>
-- [<h3><b>Razorpay </b>](https://razorpay.com/docs/payment-gateway/) for Payment Integration</h3>
-- [<h3><b>Bull</b>](https://github.com/OptimalBits/bull) for Queue management</h3>
-- [<h3><b>bull-board</b>](https://github.com/felixmosh/bull-board) as an UI for the Queues</h3>
-- [<h3><b>Nodemailer</b>](https://nodemailer.com/about/) for Emails</h3>
-- [<h3><b>Redis Commander</b>](https://joeferner.github.io/redis-commander/) as an UI for the Redis clusters</h3>
-- [<h3><b>Swagger</b>](https://swagger.io/) for API documentation</h3>
+- [<h4><b>Express</b>](https://expressjs.com/) on [<b>Node 12</b>](https://nodejs.org/en/about/) for Application server</h4>
+- [<h4><b>PostgreSQL</b>](https://www.postgresql.org/) as primary data store with [<b>Sequelize</b>](https://github.com/sequelize/sequelize/) as the <b>ORM</b></h4>
+- [<h4><b>Redis</b>](https://redis.io/) for <b>session caching</b> and also as a QUEUE</h4>
+- [<h4><b>NGINX</b>](https://www.nginx.com/) as <b>a reverse proxy</b> and also for <b>load balancing</b></h4>
+- [<h4><b>AWS S3</b>](https://aws.amazon.com/s3/) for Image storage</h4>
+- [<h4><b>Docker & Docker Compose</b>](https://www.docker.com/) for Containerization and simple service orchestration</h4>
+- [<h4><b>Github Actions</b>](https://github.com/features/actions) & [<b>Digital Ocean</b>](https://www.digitalocean.com/products/droplets/) for <b>CI & Deployments</b></h4>
+- [<h4><b>Razorpay </b>](https://razorpay.com/docs/payment-gateway/) for Payment Integration</h4>
+- [<h4><b>Bull</b>](https://github.com/OptimalBits/bull) for Queue management</h4>
+- [<h4><b>bull-board</b>](https://github.com/felixmosh/bull-board) as an UI for the Queues</h4>
+- [<h4><b>Nodemailer</b>](https://nodemailer.com/about/) for Emails</h4>
+- [<h4><b>Redis Commander</b>](https://joeferner.github.io/redis-commander/) as an UI for the Redis clusters</h4>
+- [<h4><b>Swagger</b>](https://swagger.io/) for API documentation</h4>
 
 ## Design and Architecture
 
@@ -49,12 +49,12 @@ To this end, I believe with some modification into it's models and the associate
 
 <h3>The project comes with Dashboards/UI for </h3>
 
-- <b>Queues -> located at http://139.59.70.64/admin/queues</b>
+- <b>Queues -> located at http://206.189.129.141/admin/queues</b>
 
-- <b>Redis -> located at http://139.59.70.64:8081/</b>
+- <b>Redis -> located at http://206.189.129.141:8081/</b>
 
-- <b>UI for tinkering with Razorpay Payment Integration -> located at http://139.59.70.64/api/v1/payment/test-razorpay</b>
-- <b>API documentation & testing -> located at http://139.59.70.64/api-docs</b>
+- <b>UI for tinkering with Razorpay Payment Integration -> located at http://206.189.129.141/api/v1/payment/test-razorpay</b>
+- <b>API documentation & testing -> located at http://206.189.129.141/api-docs</b>
 
 ## CI and Deployment Pipeline
 
@@ -99,7 +99,7 @@ The repo contains the <b> postman collection </b> which can be used to test loca
 
 <b>The swagger API documentation</b> can be found at
 
-http://139.59.70.64/api-docs/
+http://206.189.129.141/api-docs/
 
 or at
 
@@ -122,7 +122,7 @@ Razorpay Payment cycle consists of 3 major steps :
 <br>
 </p>
 
-- <b>UI we've built for tinkering with Razorpay Payment Integration -> located at http://139.59.70.64/api/v1/payment/test-razorpay</b>
+- <b>UI we've built for tinkering with Razorpay Payment Integration -> located at http://206.189.129.141/api/v1/payment/test-razorpay</b>
   <b><br>The static Page explains everything in great detail</b> <br>
 
 We have `Listings`, which we want to `book` by `payment`.
