@@ -133,7 +133,7 @@ We have `Listings`, which we want to `book` by `payment`.
 - We `create` a `Payment Order` for the payment with the `bookingId` passed in the `payload` as `receipt` || `receiptId`
 - `Checkout` is a stage which happens predominantly through the UI, once the checkout is complete, we can either pass
   - <b>a></b> `callback url`, which is automatically redirected to on payment completion
-  - <b>a></b> `capture return values`, which can be used to verify the payment as we've used in the static page
+  - <b>b></b> `capture return values`, which can be used to verify the payment as we've used in the static page
 - `Post Checkout`, the standart recommended way to verify payments in prod is by registering `webhooks` which we've done and we've added a status api which can be used to check if a payment has been successfull.
 
 <b> To cancel a Booking</b>
@@ -185,6 +185,7 @@ docker logs `serviceName` -f
 ### Roadmap
 
 - [ ] Add JOI/validation to all the routes
+- [ ] Add transactions and appropriate isolation levels to all *necessary* db queries
 - [x] Add Naive Caching to the appropriate API responses
 - [ ] Appropriate HTML templates for Emails
 - [ ] conversion of a normal user to a host be more informative and step wise with each step being locked in and verified by an admin backend(to be built)
