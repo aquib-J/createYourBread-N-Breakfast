@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://206.189.129.141"
+      "url": "http://139.59.71.89"
     },
     {
       "url": "http://localhost:5000"
@@ -16,9 +16,7 @@
   "paths": {
     "/api/v1/booking/cancel/{userId}/{bookingId}": {
       "delete": {
-        "tags": [
-          "Bookings"
-        ],
+        "tags": ["Bookings"],
         "summary": "cancel a booking",
         "description": "cancel a booking",
         "operationId": "cancelABooking",
@@ -51,9 +49,7 @@
     },
     "/api/v1/booking/user/{userId}": {
       "get": {
-        "tags": [
-          "Bookings"
-        ],
+        "tags": ["Bookings"],
         "summary": "get all the bookings made by a user",
         "description": "get all the bookings made by a user",
         "operationId": "getAllTheBookingsMadeByAUser",
@@ -77,9 +73,7 @@
     },
     "/api/v1/booking/{userId}": {
       "post": {
-        "tags": [
-          "Bookings"
-        ],
+        "tags": ["Bookings"],
         "summary": "create a booking ",
         "description": "create a booking ",
         "operationId": "createABooking",
@@ -131,9 +125,7 @@
     },
     "/api/v1/bookmark/{userId}": {
       "get": {
-        "tags": [
-          "Bookmarks"
-        ],
+        "tags": ["Bookmarks"],
         "summary": "get all bookmarks made by the user",
         "description": "get all bookmarks made by the user",
         "operationId": "getAllBookmarksMadeByTheUser",
@@ -157,9 +149,7 @@
     },
     "/api/v1/bookmark/{userId}/{bookmarkId}": {
       "delete": {
-        "tags": [
-          "Bookmarks"
-        ],
+        "tags": ["Bookmarks"],
         "summary": "delete a specific bookmark",
         "description": "delete a specific bookmark",
         "operationId": "deleteASpecificBookmark",
@@ -192,9 +182,7 @@
     },
     "/api/v1/bookmark/{userId}/{listingId}/create": {
       "post": {
-        "tags": [
-          "Bookmarks"
-        ],
+        "tags": ["Bookmarks"],
         "summary": "create a bookmark",
         "description": "create a bookmark",
         "operationId": "createABookmark",
@@ -227,9 +215,7 @@
     },
     "/api/v1/listing/host/{userId}": {
       "get": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "get listings hosted by user",
         "description": "get listings hosted by user",
         "operationId": "getListingsHostedByUser",
@@ -253,9 +239,7 @@
     },
     "/api/v1/listing/search": {
       "get": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "search listings",
         "description": "search listings",
         "operationId": "searchListings",
@@ -328,9 +312,7 @@
     },
     "/api/v1/listing/{listingId}": {
       "get": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "fetch a particular listing info",
         "description": "fetch a particular listing info",
         "operationId": "fetchAParticularListingInfo",
@@ -354,9 +336,7 @@
     },
     "/api/v1/listing/{userId}": {
       "post": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "create a new Listing",
         "description": "create a new Listing",
         "operationId": "createANewListing",
@@ -387,10 +367,7 @@
                           "type": "string",
                           "example": "wonderful balcony"
                         },
-                        "example": [
-                          "wonderful balcony",
-                          "some other bs"
-                        ]
+                        "example": ["wonderful balcony", "some other bs"]
                       },
                       "bathrooms": {
                         "type": "number",
@@ -489,10 +466,7 @@
                 "cityId": 17109,
                 "description": "some generic description",
                 "features": {
-                  "amenities": [
-                    "wonderful balcony",
-                    "some other bs"
-                  ],
+                  "amenities": ["wonderful balcony", "some other bs"],
                   "bathrooms": 3,
                   "bedroom": 2,
                   "beds": 2,
@@ -557,9 +531,7 @@
     },
     "/api/v1/listing/{userId}/upload": {
       "post": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "upload Listing Images",
         "description": "upload Listing Images",
         "operationId": "uploadListingImages",
@@ -588,9 +560,7 @@
     },
     "/api/v1/listing/{userId}/{listingId}": {
       "delete": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "delete a Listing",
         "description": "delete a Listing",
         "operationId": "deleteAListing",
@@ -601,9 +571,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Listings"
-        ],
+        "tags": ["Listings"],
         "summary": "update Listing details",
         "description": "update Listing details",
         "operationId": "updateListingDetails",
@@ -688,9 +656,7 @@
     },
     "/api/v1/location/cities/{stateId}": {
       "get": {
-        "tags": [
-          "Location"
-        ],
+        "tags": ["Location"],
         "summary": "get cities",
         "description": "get cities",
         "operationId": "getCities",
@@ -714,9 +680,7 @@
     },
     "/api/v1/location/countries": {
       "get": {
-        "tags": [
-          "Location"
-        ],
+        "tags": ["Location"],
         "summary": "get countries",
         "description": "get countries",
         "operationId": "getCountries",
@@ -729,9 +693,7 @@
     },
     "/api/v1/location/states/{countryId}": {
       "get": {
-        "tags": [
-          "Location"
-        ],
+        "tags": ["Location"],
         "summary": "get states",
         "description": "get states",
         "operationId": "getStates",
@@ -755,9 +717,7 @@
     },
     "/api/v1/payment/order": {
       "post": {
-        "tags": [
-          "Payments"
-        ],
+        "tags": ["Payments"],
         "summary": "create an order",
         "description": "An order needs to be created post a successfull booking with the bookingId passed in ",
         "operationId": "createAnOrder",
@@ -825,9 +785,7 @@
     },
     "/api/v1/payment/refund/{gatewayPaymentId}": {
       "post": {
-        "tags": [
-          "Payments"
-        ],
+        "tags": ["Payments"],
         "summary": "create a refund",
         "description": "to be initiated post a booking cancellation with the gateway Payment Id obtained in the response payload",
         "operationId": "createARefund",
@@ -851,9 +809,7 @@
     },
     "/api/v1/payment/verify": {
       "post": {
-        "tags": [
-          "Payments"
-        ],
+        "tags": ["Payments"],
         "summary": "verify payment",
         "description": " Only Used on the UI http://{{baseUrl}}/api/v1/payment/test-razorpay",
         "operationId": "verifyPayment",
@@ -894,9 +850,7 @@
     },
     "/api/v1/review/listing/{listingId}": {
       "get": {
-        "tags": [
-          "Reviews"
-        ],
+        "tags": ["Reviews"],
         "summary": "get all user reviews for a listing",
         "description": "get all user reviews for a listing",
         "operationId": "getAllUserReviewsForAListing",
@@ -920,9 +874,7 @@
     },
     "/api/v1/review/user/{userId}": {
       "get": {
-        "tags": [
-          "Reviews"
-        ],
+        "tags": ["Reviews"],
         "summary": "get all reviews made by the user",
         "description": "get all reviews made by the user",
         "operationId": "getAllReviewsMadeByTheUser",
@@ -946,9 +898,7 @@
     },
     "/api/v1/review/{userId}/{listingId}": {
       "post": {
-        "tags": [
-          "Reviews"
-        ],
+        "tags": ["Reviews"],
         "summary": "post a review ",
         "description": "post a review ",
         "operationId": "postAReview",
@@ -1004,9 +954,7 @@
     },
     "/api/v1/review/{userId}/{listingId}/{reviewId}": {
       "delete": {
-        "tags": [
-          "Reviews"
-        ],
+        "tags": ["Reviews"],
         "summary": "delete a review ",
         "description": "It's always soft deleted",
         "operationId": "deleteAReview",
@@ -1017,9 +965,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Reviews"
-        ],
+        "tags": ["Reviews"],
         "summary": "Edit Reviews",
         "description": "Edit Reviews",
         "operationId": "editReviews",
@@ -1084,9 +1030,7 @@
     },
     "/api/v1/user/auth/login": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "user login",
         "description": "user login",
         "operationId": "userLogin",
@@ -1429,9 +1373,7 @@
     },
     "/api/v1/user/auth/logout": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "user logout",
         "description": "user logout",
         "operationId": "userLogout",
@@ -1645,9 +1587,7 @@
     },
     "/api/v1/user/auth/reset-link": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "get reset link",
         "description": "get reset link",
         "operationId": "getResetLink",
@@ -1785,9 +1725,7 @@
     },
     "/api/v1/user/auth/reset/{resetToken}": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "reset password",
         "description": "reset password",
         "operationId": "resetPassword",
@@ -2042,9 +1980,7 @@
     },
     "/api/v1/user/auth/signup": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "user signup",
         "description": "user signup",
         "operationId": "userSignup",
@@ -2346,9 +2282,7 @@
     },
     "/api/v1/user/{userId}": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "get user details",
         "description": "get user details",
         "operationId": "getUserDetails",
@@ -2491,9 +2425,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "update user ",
         "description": "update user ",
         "operationId": "updateUser",
@@ -2682,9 +2614,7 @@
     },
     "/api/v1/user/{userId}/complete-user-record": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Fetch all user info",
         "description": "Fetcha all the resources tied to an Individual user, bookings, payments, images, listings owned, booking made, reviews given, bookmarks done",
         "operationId": "fetchAllUserInfo",
@@ -2708,9 +2638,7 @@
     },
     "/api/v1/user/{userId}/dp-upload": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "upload display pic",
         "description": "upload display pic",
         "operationId": "uploadDisplayPic",

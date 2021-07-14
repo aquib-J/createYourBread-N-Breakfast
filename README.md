@@ -49,12 +49,12 @@ To this end, I believe with some modification into it's models and the associate
 
 <h3>The project comes with Dashboards/UI for </h3>
 
-- <b>Queues -> located at http://206.189.129.141/admin/queues</b>
+- <b>Queues -> located at http://139.59.71.89/admin/queues</b>
 
-- <b>Redis -> located at http://206.189.129.141:8081/</b>
+- <b>Redis -> located at http://139.59.71.89:8081/</b>
 
-- <b>UI for tinkering with Razorpay Payment Integration -> located at http://206.189.129.141/api/v1/payment/test-razorpay</b>
-- <b>API documentation & testing -> located at http://206.189.129.141/api-docs</b>
+- <b>UI for tinkering with Razorpay Payment Integration -> located at http://139.59.71.89/api/v1/payment/test-razorpay</b>
+- <b>API documentation & testing -> located at http://139.59.71.89/api-docs</b>
 
 ## CI and Deployment Pipeline
 
@@ -99,7 +99,7 @@ The repo contains the <b> postman collection </b> which can be used to test loca
 
 <b>The swagger API documentation</b> can be found at
 
-http://206.189.129.141/api-docs/
+http://139.59.71.89/api-docs/
 
 or at
 
@@ -122,7 +122,7 @@ Razorpay Payment cycle consists of 3 major steps :
 <br>
 </p>
 
-- <b>UI we've built for tinkering with Razorpay Payment Integration -> located at http://206.189.129.141/api/v1/payment/test-razorpay</b>
+- <b>UI we've built for tinkering with Razorpay Payment Integration -> located at http://139.59.71.89/api/v1/payment/test-razorpay</b>
   <b><br>The static Page explains everything in great detail</b> <br>
 
 We have `Listings`, which we want to `book` by `payment`.
